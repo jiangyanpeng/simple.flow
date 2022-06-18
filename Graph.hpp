@@ -5,6 +5,7 @@
 #include <queue>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 
 namespace coreflow
 {
@@ -30,6 +31,22 @@ namespace coreflow
 
     public:
         Graph() = default;
+        Graph(const std::vector<Node *> &inputs, bool sorted = false) : m_nodes(inputs), m_sorted(sorted)
+        {
+        }
+        bool AddNode(Node *node)
+        {
+            if (!node)
+                return false;
+            auto it = std::find_if(m_nodes.begin(), m_nodes.end(), [&](Node *n)
+                                   { return n == node || n->Name() == node->Name(); });
+            if (it != m_nodes.end())
+            {
+                return false;
+            }
+            m_nodes.emplace_back(node);
+            return true;
+        }
         ~Graph() = default;
 
         std::vector<Node *> Sort(const std::vector<Node *> inputs)
@@ -81,11 +98,19 @@ namespace coreflow
             return order_nodes;
         }
 
+        std::string Dump()
+        {
+            // todo Graphviz
+            return "";
+        }
+
         std::string Dump(const Node *head)
         {
-            std::stringstream ss;
             if (!head)
+            {
                 return "";
+            }
+            std::stringstream ss;
             ss << head->Name() << "(" << std::to_string(head->InDegree()) << ")"
                << "->";
             std::queue<Node *> Q;
@@ -118,5 +143,9 @@ namespace coreflow
             std::string result = ss.str();
             return std::move(result.substr(0, result.length() - 2));
         }
+
+    private:
+        bool m_sorted;
+        std::vector<Node *> m_nodes;
     };
 }
