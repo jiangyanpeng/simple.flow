@@ -28,7 +28,7 @@ namespace coreflow
 
         Node *Next(size_t index)
         {
-            if (index < m_next_node.size())
+            if (index >= m_next_node.size())
             {
                 return nullptr;
             }

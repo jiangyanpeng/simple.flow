@@ -84,7 +84,9 @@ namespace coreflow
         std::string Dump(const Node *head)
         {
             std::stringstream ss;
-
+            if (!head)
+                return "";
+            ss << head->Name() << "->";
             std::queue<Node *> Q;
             Node *root = const_cast<Node *>(head);
             Q.push(root);
@@ -111,8 +113,8 @@ namespace coreflow
                     next = front->Next(++index);
                 }
             }
-
-            return ss.str();
+            std::string result = ss.str();
+            return std::move(result.substr(0, result.length() - 2));
         }
     };
 }
