@@ -86,7 +86,8 @@ namespace coreflow
             std::stringstream ss;
             if (!head)
                 return "";
-            ss << head->Name() << "->";
+            ss << head->Name() << "(" << std::to_string(head->InDegree()) << ")"
+               << "->";
             std::queue<Node *> Q;
             Node *root = const_cast<Node *>(head);
             Q.push(root);
@@ -103,7 +104,8 @@ namespace coreflow
                 {
                     if (next->InDegree() <= 1 || (next->InDegree() > 1 && visited.find(next->Name()) == visited.end()))
                     {
-                        ss << next->Name() << "->";
+                        ss << next->Name() << "(" << std::to_string(next->InDegree()) << ")"
+                           << "->";
                         Q.push(next);
                         if (next->InDegree() > 1)
                         {
