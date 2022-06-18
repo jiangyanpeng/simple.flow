@@ -5,4 +5,5 @@ set(CMAKE_CXX_STANDARD 11)
 file(GLOB_RECURSE src ./*.cpp ./*.h)
 include_directories(..)
 
-add_executable(Graph main.cpp)
+add_executable(Graph Graphviz.cpp)
+add_executable(Test main.cpp)
