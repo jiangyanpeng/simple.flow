@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <unordered_set>
+#include <atomic>
 
 namespace coreflow
 {
@@ -52,7 +53,7 @@ namespace coreflow
         size_t m_in_degree{0};
 
         // runtime join_nums == 0, push thread pool.
-        size_t m_join_count{0};
+        std::atomic<size_t> m_join_count{0};
 
         // used to know is the node visited or not.
         size_t m_current_traverse_seed;

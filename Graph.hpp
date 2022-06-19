@@ -6,6 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <functional>
 
 namespace coreflow
 {
@@ -27,6 +28,47 @@ namespace coreflow
                 m_degree = degree;
                 m_node = node;
             }
+        };
+
+        // static work handle
+        struct Static
+        {
+
+            template <typename C>
+            Static(C &&);
+
+            std::function<void()> work;
+        };
+
+        // dynamic work handle
+        struct Dynamic
+        {
+
+            template <typename C>
+            Dynamic(C &&);
+
+            std::function<void(Graph &)> work;
+            Graph &subgraph;
+        };
+
+        // condition work handle
+        struct Condition
+        {
+
+            template <typename C>
+            Condition(C &&);
+
+            std::function<bool()> work;
+        };
+
+        // module work handle
+        struct Module
+        {
+
+            template <typename T>
+            Module(T &);
+
+            Graph &graph;
         };
 
     public:
