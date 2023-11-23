@@ -1,0 +1,8 @@
+.vscode/*
+target/*
+build/*
+install
+cmake-build-debug/*
+.idea/*
+third_party/*
+!third_party/.keep
