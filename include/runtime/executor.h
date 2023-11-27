@@ -1,11 +1,11 @@
-#ifndef SIMPLE_PIPE_EXECUTOR_H_
-#define SIMPLE_PIPE_EXECUTOR_H_
+#ifndef ARCHITECT_EXECUTOR_H
+#define ARCHITECT_EXECUTOR_H
 
-#include <functional>
 #include <manager/pipe_manager.h>
 #include <memory>
-#include <string>
-namespace pipeline {
+
+namespace flow {
+
 class ExecutorOption {
 public:
     ExecutorOption() : use_gpu_(false), gpu_id_(0) {}
@@ -21,6 +21,7 @@ protected:
     std::string name_{};
 };
 
+
 class Executor {
 public:
     explicit Executor(size_t thread_nums,
@@ -32,9 +33,11 @@ public:
     void Stop();
 
 private:
-    std::shared_ptr<base::PipeManager> pipe_manager_;
+    std::shared_ptr<base::PipeManager> thread_pool_;
     std::shared_ptr<ExecutorOption> executor_option_;
 };
 
-} // namespace pipeline
-#endif // SIMPLE_PIPE_EXECUTOR_H_
+} // namespace flow
+
+
+#endif // ARCHITECT_EXECUTOR_H
