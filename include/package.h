@@ -17,9 +17,9 @@ constexpr int16_t MAX_NUM_ELEMENTS = 1024;
 
 class PackageShape {
 public:
-    PackageShape() = default;
+    PackageShape() {}
 
-    ~PackageShape();
+    ~PackageShape() {}
 
     void SetShape(std::vector<uint8_t> shape);
 
@@ -119,9 +119,8 @@ private:
 // 对于Buffer类的，需设计Buffer的MetaData，使用Package管理，数据部分考虑使用连续内存，便于设备使用。
 class Package {
 public:
-    Package() = default;
-
-    ~Package() = default;
+    Package() {}
+    ~Package() {}
 
     void SetShape(std::vector<uint8_t> shape);
 
@@ -130,17 +129,45 @@ public:
     const PackageShape& GetShape() const;
 
     template <typename T>
-    bool AddData(const std::vector<uint8_t>& index, std::shared_ptr<T> data);
+    bool AddData(const std::vector<uint8_t>& index, std::shared_ptr<T> data) {
+        int16_t indicator = shape_.GetIdFromFullIndex(index);
+        if (data_index_.find(indicator) != data_index_.end()) {
+            return false;
+        }
+        if (shape_.IsMarked(indicator)) {
+            return false;
+        }
+        data_.push_back(data);
+        //        data_index_.push_back(indicator);
+        data_index_[indicator] = data_.size() - 1;
+        shape_.Mark(indicator);
+        return true;
+    }
 
     template <class T>
-    bool AddData(int16_t index, std::shared_ptr<T> data);
+    bool AddData(int16_t index, std::shared_ptr<T> data) {
+        MATRIX_ASSERT(index < shape_.MaxNumElements());
+        if (data_index_.find(index) != data_index_.end()) {
+            return false;
+        }
+        data_.push_back(data);
+        //        data_index_.push_back(index);
+        data_index_[index] = data_.size() - 1;
+        shape_.Mark(index);
+        return true;
+    }
 
     int64_t NumElements() const;
 
     const std::vector<std::shared_ptr<void>>& GetData() const;
 
     template <typename T>
-    std::shared_ptr<T> GetData(int16_t index);
+    std::shared_ptr<T> GetData(int16_t index) {
+        MATRIX_ASSERT(index >= 0 && index < shape_.MaxNumElements());
+        auto id     = data_index_[index];
+        auto result = std::static_pointer_cast<T>(data_[id]);
+        return std::move(result);
+    }
 
     std::vector<int16_t> GetDataIndex() const;
 
@@ -149,44 +176,6 @@ private:
     std::vector<std::shared_ptr<void>> data_;
     std::map<int16_t, int16_t> data_index_;
 };
-
-template <typename T>
-bool Package::AddData(const std::vector<uint8_t>& index, std::shared_ptr<T> data) {
-    int16_t indicator = shape_.GetIdFromFullIndex(index);
-    if (data_index_.find(indicator) != data_index_.end()) {
-        return false;
-    }
-    if (shape_.IsMarked(indicator)) {
-        return false;
-    }
-    data_.push_back(data);
-    //        data_index_.push_back(indicator);
-    data_index_[indicator] = data_.size() - 1;
-    shape_.Mark(indicator);
-    return true;
-}
-
-template <typename T>
-bool Package::AddData(const int16_t index, std::shared_ptr<T> data) {
-    MATRIX_ASSERT(index < shape_.MaxNumElements());
-    if (data_index_.find(index) != data_index_.end()) {
-        return false;
-    }
-    data_.push_back(data);
-    //        data_index_.push_back(index);
-    data_index_[index] = data_.size() - 1;
-    shape_.Mark(index);
-    return true;
-}
-
-
-template <typename T>
-std::shared_ptr<T> Package::GetData(int16_t index) {
-    MATRIX_ASSERT(index >= 0 && index < shape_.MaxNumElements());
-    auto id     = data_index_[index];
-    auto result = std::static_pointer_cast<T>(data_[id]);
-    return std::move(result);
-}
 
 } // namespace flow
 

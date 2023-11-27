@@ -3,9 +3,6 @@
 #include <log.h>
 
 namespace flow {
-Elementary::Elementary() : id_(SIZE_MAX) {}
-
-Elementary::~Elementary() {}
 
 Status Elementary::GetContract(ElementaryContract* contract) {
     return Status::OkStatus();

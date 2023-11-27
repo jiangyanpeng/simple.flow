@@ -10,9 +10,9 @@ namespace flow {
  */
 class ElementaryOption {
 public:
-    ElementaryOption()          = default;
-    virtual ~ElementaryOption() = default;
-    virtual bool Parse(std::string& json_str);
+    ElementaryOption() {}
+    ~ElementaryOption() {}
+    bool Parse(std::string& json_str);
 };
 
 } // namespace flow

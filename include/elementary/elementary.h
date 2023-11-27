@@ -18,16 +18,16 @@ class Device;
  */
 class Elementary {
 public:
-    Elementary();
-    virtual ~Elementary();
+    Elementary() : id_(SIZE_MAX) {}
+    ~Elementary() {}
 
-    virtual Status GetContract(ElementaryContract* contract);
+    Status GetContract(ElementaryContract* contract);
 
-    virtual Status Open(ElementaryContext* ctx);
+    Status Open(ElementaryContext* ctx);
 
-    virtual Status Close(ElementaryContext* ctx);
+    Status Close(ElementaryContext* ctx);
 
-    virtual Status Process(ElementaryContext* ctx);
+    Status Process(ElementaryContext* ctx);
 
 
     Status DoProcess(const std::function<Status()>& f);

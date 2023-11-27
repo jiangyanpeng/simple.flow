@@ -48,8 +48,6 @@ std::pair<int16_t, int16_t> PackageShape::GetIdFromIndex(const std::vector<uint8
     return std::make_pair(start, end);
 }
 
-PackageShape::~PackageShape() {}
-
 int64_t PackageShape::NumElements() const {
     return indicator_bitset_.count();
 }

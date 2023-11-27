@@ -86,7 +86,7 @@ Status GraphView::OpenAllNodes() {
 }
 
 Status GraphView::Initialize(std::shared_ptr<GraphSpecView> spec_view,
-                             const std::shared_ptr<ThreadPool>& global_thread_pool) {
+                             const std::shared_ptr<base::PipeManager>& global_thread_pool) {
     srand((unsigned)time(NULL)); //初始化的时候产生随机数种子
 
     spec_view_ = std::move(spec_view);

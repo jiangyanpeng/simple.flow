@@ -2,8 +2,8 @@
 #include "graph.h"
 #include "packet_context.h"
 #include "runtime/executor.h"
-#include "scheduler_async_order_preserving.h"
-#include "waiting_thread.h"
+#include "runtime/scheduler_async_order_preserving.h"
+#include "runtime/waiting_thread.h"
 #include <iostream>
 #include <log.h>
 #include <set>
@@ -81,10 +81,6 @@ private:
 public:
     std::vector<size_t> stay_order_node_ids_;
 };
-
-GraphHelper::GraphHelper(std::shared_ptr<GraphSpec> spec) : graph_spec_(std::move(spec)) {}
-
-GraphHelper::~GraphHelper() {}
 
 // @deprated
 std::shared_ptr<Packet> GraphHelper::CreatePacket() {
@@ -200,7 +196,7 @@ Status Graph::Initialize(std::shared_ptr<GraphSpec> graph_spec,
         return status;
     }
 
-    auto global_thread_pool = std::make_shared<ThreadPool>(4);
+    auto global_thread_pool = std::make_shared<base::PipeManager>(4);
     graph_view_             = std::make_shared<GraphView>(registry, device_registry);
     status                  = graph_view_->Initialize(spec_view, global_thread_pool);
     if (!status.IsOk()) {

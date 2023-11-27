@@ -9,9 +9,9 @@
 namespace flow {
 class InputSourceManager {
 public:
-    InputSourceManager();
+    InputSourceManager() {}
 
-    ~InputSourceManager();
+    ~InputSourceManager() {}
 
     void SetGraphInputCount(size_t count);
 

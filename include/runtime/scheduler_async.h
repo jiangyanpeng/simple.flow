@@ -4,12 +4,12 @@
 #define GRAPHFLOW_FRAMEWORK_SCHEDULER_ASYNC_H
 
 #include "base/status.h"
-#include "executor.h"
 #include "graph_topology.h"
 #include "packet.h"
 #include "packet_context.h"
 #include "packet_per_node_context.h"
-#include "scheduler.h"
+#include "runtime/executor.h"
+#include "runtime/scheduler.h"
 #include <list>
 #include <memory>
 #include <set>

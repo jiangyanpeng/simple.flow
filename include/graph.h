@@ -9,8 +9,8 @@
 #include "matrix_elementary_registry.h"
 #include "node.h"
 #include "packet.h"
-#include "scheduler_async.h"
-#include "scheduler_one_thread.h"
+#include "runtime/scheduler_async.h"
+#include "runtime/scheduler_one_thread.h"
 #include "specs/graph_spec.h"
 #include <functional>
 #include <map>
@@ -48,9 +48,9 @@ enum GRAPH_SCHEDULE_POLICY {
 
 class GraphHelper {
 public:
-    explicit GraphHelper(std::shared_ptr<GraphSpec> spec);
+    explicit GraphHelper(std::shared_ptr<GraphSpec> spec) : graph_spec_(std::move(spec)) {}
 
-    ~GraphHelper();
+    ~GraphHelper() {}
 
     std::shared_ptr<InputSourceContext> CreateInputSourceContext();
 

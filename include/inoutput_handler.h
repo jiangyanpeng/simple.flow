@@ -10,15 +10,13 @@ class PacketPerNodeContext;
 class Node;
 class InOutputHandler {
 public:
-    InOutputHandler()          = default;
-    virtual ~InOutputHandler() = default;
+    InOutputHandler()  = default;
+    ~InOutputHandler() = default;
 
     // deprecated
-    virtual bool IsReady(const std::shared_ptr<PacketPerNodeContext>& ctx);
-
-    virtual bool IsInputReady(const std::shared_ptr<PacketPerNodeContext>& ctx);
-
-    virtual bool IsOutputReady(const std::shared_ptr<PacketPerNodeContext>& ctx);
+    bool IsReady(const std::shared_ptr<PacketPerNodeContext>& ctx);
+    bool IsInputReady(const std::shared_ptr<PacketPerNodeContext>& ctx);
+    bool IsOutputReady(const std::shared_ptr<PacketPerNodeContext>& ctx);
 
     void SetNode(const std::shared_ptr<Node>& node);
 

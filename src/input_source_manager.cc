@@ -2,10 +2,6 @@
 #include "input_source_context_default.h"
 
 namespace flow {
-InputSourceManager::InputSourceManager() = default;
-
-InputSourceManager::~InputSourceManager() = default;
-
 std::shared_ptr<InputSourceContext> InputSourceManager::GenerateSourceContext() {
     int64_t id = source_id_.fetch_add(1);
     auto ctx   = std::make_shared<InputSourceContextDefault>();

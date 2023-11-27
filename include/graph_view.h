@@ -35,7 +35,7 @@ public:
     ~GraphView();
 
     Status Initialize(std::shared_ptr<GraphSpecView> spec_view,
-                      const std::shared_ptr<ThreadPool>& global_thread_pool);
+                      const std::shared_ptr<base::PipeManager>& global_thread_pool);
 
 
     std::shared_ptr<GraphTopology> GetTopology();
