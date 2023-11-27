@@ -3,7 +3,7 @@
 namespace flow {
 
 InoutPort::InoutPort(std::weak_ptr<Node> node, InoutSpec spec)
-    : node_(std::move(node)), spec_(std::move(spec)) {}
+    : spec_(std::move(spec)), node_(std::move(node)) {}
 
 void InoutPort::SetId(size_t id) {
     spec_.id = id;

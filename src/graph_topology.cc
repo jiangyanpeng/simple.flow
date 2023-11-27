@@ -43,9 +43,7 @@ Status GraphTopology::Initialize(const std::shared_ptr<GraphView>& view) {
     std::vector<NodeElemTopology> elems;
     elems.emplace_back(gn, 0);
 
-    int8_t level = 0;
     Topology(view, gn, 0);
-
     for (auto& nl : node_level_) {
         SIMPLE_LOG_INFO("node: {}, level {}", nl.first, nl.second);
         top_[nl.second].push_back(view->GetNodeWithId(nl.first));

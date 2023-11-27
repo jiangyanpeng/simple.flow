@@ -381,7 +381,7 @@ void Graph::AddGraphInput(const std::shared_ptr<PacketContext>& pkt_ctx,
                           const std::shared_ptr<Packet>& pkt) {
     auto& outputs = pkt_ctx->graph_node_ctx_->outputs_;
     MATRIX_ASSERT(outputs.size() == pkt->GetPackageNum());
-    for (int i = 0; i < outputs.size(); ++i) {
+    for (size_t i = 0; i < outputs.size(); ++i) {
         outputs[i].push_back(pkt->GetPackage(i));
     }
 }

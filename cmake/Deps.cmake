@@ -37,7 +37,7 @@ endif()
 
 pipe_download_dependency(
     "https://github.com/jiangyanpeng/simple.base.git"
-    v2.0.3
+    v2.0.4
     ${BASE_NAME}
     ${BASE_WORK_DIR}
     )

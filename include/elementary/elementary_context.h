@@ -63,8 +63,8 @@ public:
     std::vector<std::shared_ptr<Package>>& outputs_data_;
 
 private:
-    const std::shared_ptr<Stream>& stream_;
     std::shared_ptr<Node> node_;
+    const std::shared_ptr<Stream>& stream_;
     std::weak_ptr<PacketPerNodeContext> pernode_ctx_;
 };
 

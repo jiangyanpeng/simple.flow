@@ -143,8 +143,6 @@ bool GraphComplier::GraphInit(const std::string& cur_path) {
     return true;
 }
 int main() {
-    SIMPLE_LOG_INFO("hello simple.pipe");
-
     auto gc_ = std::make_shared<GraphComplier>();
     gc_->Init("cur_path");
 

@@ -134,7 +134,7 @@ bool OrderInformation::GetSmallestUnprocessedPkt(
         pkt_id          = node_id_2_pkt_id_[node_id].top();
         int next_pkt_id = node_id_2_next_pkt_id_[node_id];
 
-        if (pkt_id != next_pkt_id) {
+        if (int(pkt_id) != next_pkt_id) {
             return false;
         }
 

@@ -1,20 +1,23 @@
 #include "elementary/elementary.h"
 #include "base/contract_coding.h"
 #include <log.h>
-
+#include <common.h>
 namespace flow {
 
 Status Elementary::GetContract(ElementaryContract* contract) {
+    UNUSED_WARN(contract);
     return Status::OkStatus();
 }
 
 Status Elementary::Open(ElementaryContext* ctx) {
+    UNUSED_WARN(ctx);
     MATRIX_ASSERT(option_);
     SIMPLE_LOG_TRACE("module-base-elem : [{}] opened.", GetId());
     return Status::OkStatus();
 }
 
 Status Elementary::Close(ElementaryContext* ctx) {
+    UNUSED_WARN(ctx);
     SIMPLE_LOG_TRACE("module-base-elem : [{}] closed.", GetId());
     return Status::OkStatus();
 }
@@ -34,7 +37,7 @@ Status Elementary::Process(ElementaryContext* ctx) {
 
 
         // 简单拷贝
-        for (size_t i = 0; i < input0->NumElements(); ++i) {
+        for (int64_t i = 0; i < input0->NumElements(); ++i) {
             out_pkg0->AddData(input_data_indexes[i], input_datas[i]);
         }
 
@@ -56,7 +59,7 @@ Status Elementary::Process(ElementaryContext* ctx) {
         auto s = DoProcess([&]() { return Status::OkStatus(); });
 
         // 简单拷贝
-        for (size_t i = 0; i < input0->NumElements(); ++i) {
+        for (int64_t i = 0; i < input0->NumElements(); ++i) {
             out_pkg0->AddData(input_data_indexes[i], input_datas[i]);
         }
 

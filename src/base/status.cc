@@ -8,7 +8,7 @@ Status::Status() : code_(StatusCode::kOk), msg_("ok") {}
 
 Status::Status(StatusCode code, std::string msg) : code_(code), msg_(std::move(msg)) {}
 
-Status::~Status() = default;
+Status::~Status() {}
 
 Status::Status(const Status& rhs) = default;
 

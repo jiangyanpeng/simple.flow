@@ -95,6 +95,7 @@ Status GraphSpecView::Optimize() {
 }
 
 Status GraphSpecView::AddSubGraph(std::shared_ptr<GraphSpec> spec) {
+    UNUSED_WARN(spec);
     return Status();
 }
 
@@ -180,7 +181,7 @@ Status GraphSpecView::GenerateEdgeSpec() {
     // 环路校验
 
     for (auto& e : edges_) {
-        SIMPLE_LOG_TRACE("edge [{}] ：[{}, {}, {}, {}], link name: {}",
+        SIMPLE_LOG_TRACE("edge [{}] : [{}, {}, {}, {}], link name: {}",
                          e.second->edge_id,
                          e.second->src_node_spec_->GetName(),
                          e.second->src_port_spec_->name,
