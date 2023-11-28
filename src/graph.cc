@@ -4,11 +4,13 @@
 #include "runtime/executor.h"
 #include "runtime/scheduler_async_order_preserving.h"
 #include "runtime/waiting_thread.h"
+
 #include <iostream>
 #include <log.h>
 #include <set>
 #include <utility>
 #include <vector>
+
 namespace flow {
 
 std::atomic_int_fast64_t GraphHelper::packet_id_{0};
@@ -21,7 +23,7 @@ public:
 
     Status Initialize(std::shared_ptr<GraphSpec> graph_spec,
                       std::shared_ptr<MatrixElementaryRegistry> registry,
-                      std::shared_ptr<MatrixDeviceRegistry> device_registry,
+                      std::shared_ptr<DeviceRegistry> device_registry,
                       GRAPH_SCHEDULE_POLICY policy,
                       std::shared_ptr<ExecutorOption> executor_option);
 
@@ -84,7 +86,7 @@ public:
 
 // @deprated
 std::shared_ptr<Packet> GraphHelper::CreatePacket() {
-    //        MATRIX_ASSERT(0);
+    //        SIMPLE_ASSERT(0);
     std::cout << graph_->GetInputCount() << std::endl;
     return input_source_manager_->DefaultSourceContext()->CreatePacket();
 }
@@ -146,7 +148,7 @@ void GraphHelper::Stop() {
 
 
 void GraphHelper::Initialize(const std::shared_ptr<MatrixElementaryRegistry>& registry,
-                             const std::shared_ptr<MatrixDeviceRegistry>& device_registry,
+                             const std::shared_ptr<DeviceRegistry>& device_registry,
                              GRAPH_SCHEDULE_POLICY policy,
                              std::shared_ptr<ExecutorOption> executor_option) {
     SIMPLE_LOG_DEBUG("GraphHelper::Initialize Start");
@@ -181,7 +183,7 @@ std::shared_ptr<InputSourceContext> GraphHelper::CreateInputSourceContext() {
 
 Status Graph::Initialize(std::shared_ptr<GraphSpec> graph_spec,
                          std::shared_ptr<MatrixElementaryRegistry> registry,
-                         std::shared_ptr<MatrixDeviceRegistry> device_registry,
+                         std::shared_ptr<DeviceRegistry> device_registry,
                          GRAPH_SCHEDULE_POLICY policy,
                          std::shared_ptr<ExecutorOption> executor_option) {
     SIMPLE_LOG_DEBUG("Graph::Initialize Start");
@@ -389,7 +391,7 @@ bool Graph::IsPacketProcessFinished(size_t packet_id) {
 void Graph::AddGraphInput(const std::shared_ptr<PacketContext>& pkt_ctx,
                           const std::shared_ptr<Packet>& pkt) {
     auto& outputs = pkt_ctx->graph_node_ctx_->outputs_;
-    MATRIX_ASSERT(outputs.size() == pkt->GetPackageNum());
+    SIMPLE_ASSERT(outputs.size() == pkt->GetPackageNum());
     for (size_t i = 0; i < outputs.size(); ++i) {
         outputs[i].push_back(pkt->GetPackage(i));
     }

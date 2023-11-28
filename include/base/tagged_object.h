@@ -1,5 +1,5 @@
-#ifndef ARCHITECT_TAGGED_OBJECT_H
-#define ARCHITECT_TAGGED_OBJECT_H
+#ifndef SIMPLE_FLOW_TAGGED_OBJECT_H_
+#define SIMPLE_FLOW_TAGGED_OBJECT_H_
 
 #include <climits>
 #include <cstdint>
@@ -23,6 +23,4 @@ private:
 };
 
 } // namespace flow
-
-
-#endif // ARCHITECT_TAGGED_OBJECT_H
+#endif // SIMPLE_FLOW_TAGGED_OBJECT_H_

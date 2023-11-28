@@ -1,9 +1,10 @@
-#ifndef ARCHITECT_ELEMENTARY_CONTEXT_H
-#define ARCHITECT_ELEMENTARY_CONTEXT_H
+#ifndef SIMPLE_FLOW_ELEMENTARY_CONTEXT_H_
+#define SIMPLE_FLOW_ELEMENTARY_CONTEXT_H_
 
 #include "base/collection.h"
 #include "device/stream.h"
 #include "inout.h"
+
 #include <vector>
 
 namespace flow {
@@ -69,6 +70,4 @@ private:
 };
 
 } // namespace flow
-
-
-#endif // ARCHITECT_ELEMENTARY_CONTEXT_H
+#endif // SIMPLE_FLOW_ELEMENTARY_CONTEXT_H_

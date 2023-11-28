@@ -6,6 +6,7 @@
 #include "packet.h"
 #include "packet_context.h"
 #include "packet_per_node_context.h"
+
 #include <algorithm>
 #include <map>
 #include <memory>
@@ -126,6 +127,4 @@ protected:
 };
 
 } // namespace flow
-
-
 #endif // ARCHITECT_INPUT_SOURCE_CONTEXT_H

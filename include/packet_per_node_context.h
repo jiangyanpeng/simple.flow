@@ -1,10 +1,11 @@
-#ifndef ARCHITECT_PACKET_PER_NODE_CONTEXT_H
-#define ARCHITECT_PACKET_PER_NODE_CONTEXT_H
+#ifndef SIMPLE_FLOW_PACKET_PER_NODE_CONTEXT_H_
+#define SIMPLE_FLOW_PACKET_PER_NODE_CONTEXT_H_
 
 #include "device/stream.h"
 #include "inout.h"
 #include "inoutput_handler.h"
 #include "input_source_context.h"
+
 #include <vector>
 
 namespace flow {
@@ -97,6 +98,4 @@ public:
 using PacketPerNodeContextPtr = std::shared_ptr<PacketPerNodeContext>;
 
 } // namespace flow
-
-
-#endif // ARCHITECT_PACKET_PER_NODE_CONTEXT_H
+#endif // SIMPLE_FLOW_PACKET_PER_NODE_CONTEXT_H_

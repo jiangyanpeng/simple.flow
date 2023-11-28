@@ -37,12 +37,12 @@ std::shared_ptr<Package> ElementaryContext::GetOutputData(const std::string& tag
 }
 
 std::shared_ptr<Package> ElementaryContext::GetInputData(size_t id) {
-    MATRIX_ASSERT(id < inputs_data_.size());
+    SIMPLE_ASSERT(id < inputs_data_.size());
     return inputs_data_[id];
 }
 
 std::shared_ptr<Package> ElementaryContext::GetOutputData(size_t id) {
-    MATRIX_ASSERT(id < outputs_data_.size());
+    SIMPLE_ASSERT(id < outputs_data_.size());
     return outputs_data_[id];
 }
 
@@ -53,7 +53,7 @@ void ElementaryContext::AddOutputData(const std::string& tag, const std::shared_
 }
 
 void ElementaryContext::AddOutputData(size_t id, const std::shared_ptr<Package>& pkg) {
-    MATRIX_ASSERT(id < outputs_data_.size());
+    SIMPLE_ASSERT(id < outputs_data_.size());
     outputs_data_[id] = pkg;
 }
 

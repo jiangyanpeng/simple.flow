@@ -1,8 +1,9 @@
-#ifndef ARCHITECT_SCHEDULER_H
-#define ARCHITECT_SCHEDULER_H
+#ifndef SIMPLE_FLOW_SCHEDULER_H_
+#define SIMPLE_FLOW_SCHEDULER_H_
 
 #include "packet.h"
 #include "packet_context.h"
+
 #include <functional>
 #include <manager/pipe_manager.h>
 
@@ -41,7 +42,6 @@ protected:
 
     GraphPacketFinishedCallback graph_call_back_{nullptr};
 };
+
 } // namespace flow
-
-
-#endif // ARCHITECT_SCHEDULER_H
+#endif // SIMPLE_FLOW_SCHEDULER_H_

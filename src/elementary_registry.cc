@@ -1,4 +1,4 @@
-#include "matrix_elementary_registry.h"
+#include "elementary_registry.h"
 
 namespace flow {
 void MatrixElementaryRegistry::RegisterGetContract(

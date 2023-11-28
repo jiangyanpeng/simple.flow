@@ -1,5 +1,5 @@
-#ifndef ARCHITECT_ELEMENTARY_H
-#define ARCHITECT_ELEMENTARY_H
+#ifndef SIMPLE_FLOW_ELEMENTARY_H_
+#define SIMPLE_FLOW_ELEMENTARY_H_
 
 #include "base/status.h"
 #include "elementary/elementary_option.h"
@@ -48,9 +48,5 @@ protected:
     size_t id_;
 };
 
-//    using Node = Elementary;
-
 } // namespace flow
-
-
-#endif // ARCHITECT_ELEMENTARY_H
+#endif // SIMPLE_FLOW_ELEMENTARY_H_

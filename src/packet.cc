@@ -2,11 +2,10 @@
 #include "packet.h"
 #include "base/contract_coding.h"
 #include "package.h"
+
 #include <utility>
 
 namespace flow {
-
-
 Packet::Packet(std::shared_ptr<InputPktId> id) : id_(id) {
     package_.reserve(1);
     package_.resize(1);
@@ -19,13 +18,13 @@ Packet::Packet(std::shared_ptr<InputPktId> id, size_t package_num) : id_(id) {
 
 
 Status Packet::AddPackage(size_t package_index, std::shared_ptr<Package> package) {
-    MATRIX_ASSERT(package_index < package_.size());
+    SIMPLE_ASSERT(package_index < package_.size());
     package_[package_index] = std::move(package);
     return Status();
 }
 
 std::shared_ptr<Package> Packet::GetPackage(size_t index) {
-    MATRIX_ASSERT(index < package_.size());
+    SIMPLE_ASSERT(index < package_.size());
     return package_[index];
 }
 
@@ -38,7 +37,7 @@ size_t Packet::GetPackageNum() const {
 }
 
 void Packet::SetSourceContext(const std::shared_ptr<InputSourceContext>& ctx) {
-    MATRIX_ASSERT(ctx->GetId() == id_->InputSourceId());
+    SIMPLE_ASSERT(ctx->GetId() == id_->InputSourceId());
     source_ctx_ = ctx;
 }
 

@@ -1,13 +1,11 @@
-#ifndef ARCHITECT_GRAPH_SPEC_H
-#define ARCHITECT_GRAPH_SPEC_H
+#ifndef SIMPLE_FLOW_GRAPH_SPEC_H_
+#define SIMPLE_FLOW_GRAPH_SPEC_H_
 
 #include <memory>
 #include <string>
 #include <vector>
 
-
 namespace flow {
-
 // Node或Elementary的端口方向，输入输出。站在Elementary角度来描述。
 enum Direction { IN = 0, OUT = 1 };
 class NodeSpec;
@@ -181,5 +179,4 @@ private:
 };
 
 } // namespace flow
-
-#endif // ARCHITECT_GRAPH_SPEC_H
+#endif // SIMPLE_FLOW_GRAPH_SPEC_H_

@@ -1,8 +1,9 @@
-#ifndef ARCHITECT_COLLECTION_H
-#define ARCHITECT_COLLECTION_H
+#ifndef SIMPLE_FLOW_COLLECTION_H_
+#define SIMPLE_FLOW_COLLECTION_H_
 
 #include "base/contract_coding.h"
 #include "base/status.h"
+
 #include <map>
 #include <string>
 #include <vector>
@@ -12,8 +13,7 @@ namespace flow {
 template <typename T>
 class Collection {
 public:
-    Collection() = default;
-
+    Collection()  = default;
     ~Collection() = default;
 
     Status Merge(const Collection<T>& collection) {
@@ -105,15 +105,12 @@ public:
     // 支持链式调用，tag必须存在
     T& Get(const std::string& tag) {
         if (!HasTag(tag)) {
-            // log fatal
-            // fixme
-            //                return T();
         }
         return data_types_[tag_map_.at(tag)];
     }
 
     size_t GetNumEntries() const {
-        MATRIX_ASSERT(data_types_.size() == tag_map_.size());
+        SIMPLE_ASSERT(data_types_.size() == tag_map_.size());
         return data_types_.size();
     }
 
@@ -126,4 +123,4 @@ private:
 
 } // namespace flow
 
-#endif // LUCY_COLLECTION_H
+#endif // SIMPLE_FLOW_COLLECTION_H_

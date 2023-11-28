@@ -1,8 +1,7 @@
-#ifndef ARCHITECT_DATA_TYPE_H
-#define ARCHITECT_DATA_TYPE_H
+#ifndef SIMPLE_FLOW_DATA_TYPE_H_
+#define SIMPLE_FLOW_DATA_TYPE_H_
 
 #include <string>
-
 
 namespace flow {
 class DataType {
@@ -20,4 +19,4 @@ private:
 };
 } // namespace flow
 
-#endif // ARCHITECT_DATA_TYPE_H
+#endif // SIMPLE_FLOW_DATA_TYPE_H_

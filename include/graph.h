@@ -1,24 +1,24 @@
-#ifndef ARCHITECT_GRAPH_H
-#define ARCHITECT_GRAPH_H
+#ifndef SIMPLE_FLOW_GRAPH_H_
+#define SIMPLE_FLOW_GRAPH_H_
 
 #include "base/collection.h"
-#include "device/matrix_device_registry.h"
+#include "device/device_registry.h"
 #include "elementary/elementary.h"
 #include "graph_view.h"
 #include "input_source_manager.h"
-#include "matrix_elementary_registry.h"
+#include "elementary_registry.h"
 #include "node.h"
 #include "packet.h"
 #include "runtime/scheduler_async.h"
 #include "runtime/scheduler_one_thread.h"
 #include "specs/graph_spec.h"
+
 #include <functional>
 #include <map>
 #include <memory>
 #include <vector>
 
 namespace flow {
-
 class ExectorOption;
 class Executor;
 
@@ -106,7 +106,7 @@ public:
     void Stop();
 
     void Initialize(const std::shared_ptr<MatrixElementaryRegistry>& registry,
-                    const std::shared_ptr<MatrixDeviceRegistry>& device_registry,
+                    const std::shared_ptr<DeviceRegistry>& device_registry,
                     GRAPH_SCHEDULE_POLICY policy                    = GRAPH_SCH_ASYNC_ONE_THREAD,
                     std::shared_ptr<ExecutorOption> executor_option = nullptr);
 
@@ -125,8 +125,5 @@ private:
     std::mutex mutex_;
 };
 
-
 } // namespace flow
-
-
-#endif // ARCHITECT_GRAPH_H
+#endif // SIMPLE_FLOW_GRAPH_H_

@@ -49,7 +49,7 @@ void SchedulerOneThread::DoSchedule(const PacketContextPtr& ctx,
 }
 
 Status SchedulerOneThread::Initialize() {
-    MATRIX_ASSERT(graph_view_);
+    SIMPLE_ASSERT(graph_view_);
     topology_ = graph_view_->GetTopology();
     return Status::OkStatus();
 }

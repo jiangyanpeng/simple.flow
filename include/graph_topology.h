@@ -1,14 +1,14 @@
-#ifndef GRAPHFLOW_FRAMEWORK_GRAPH_TOPOLOGY_H
-#define GRAPHFLOW_FRAMEWORK_GRAPH_TOPOLOGY_H
+#ifndef SIMPLE_FLOW_GRAPH_TOPOLOGY_H_
+#define SIMPLE_FLOW_GRAPH_TOPOLOGY_H_
 
 #include "base/status.h"
+
 #include <list>
 #include <map>
 #include <memory>
 #include <vector>
 
 namespace flow {
-
 class Node;
 class GraphView;
 class GraphTopology {
@@ -36,6 +36,4 @@ private:
 };
 
 } // namespace flow
-
-
-#endif // GRAPHFLOW_FRAMEWORK_GRAPH_TOPOLOGY_H
+#endif // SIMPLE_FLOW_GRAPH_TOPOLOGY_H_

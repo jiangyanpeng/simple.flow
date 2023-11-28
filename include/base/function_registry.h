@@ -1,7 +1,8 @@
-#ifndef ARCHITECT_MATRIX_FUNCTION_REGISTRY_H
-#define ARCHITECT_MATRIX_FUNCTION_REGISTRY_H
+#ifndef SIMPLE_FLOW_FUNCTION_REGISTRY_H_
+#define SIMPLE_FLOW_FUNCTION_REGISTRY_H_
 
 #include "base/contract_coding.h"
+
 #include <functional>
 #include <log.h>
 #include <memory>
@@ -9,19 +10,17 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-
 namespace flow {
-
 static std::string NormalizeNsName(const std::string& ns, const std::string& name);
 
 template <typename Ret, typename... Args>
-class MatrixFunctionRegistry final {
+class FunctionRegistry final {
 public:
     using Function = std::function<Ret(Args...)>;
 
-    MatrixFunctionRegistry() = default;
+    FunctionRegistry() = default;
 
-    ~MatrixFunctionRegistry() = default;
+    ~FunctionRegistry() = default;
 
     void Register(const std::string& ns, const std::string& name, Function func) {
         std::string norm_name = NormalizeNsName(ns, name);
@@ -57,7 +56,7 @@ public:
     Ret Invoke(const std::string& name, Args&&... args) {
         if (!IsRegistered(name)) {
             SIMPLE_LOG_ERROR("function: {} is not registered.", name);
-            MATRIX_ASSERT(0);
+            SIMPLE_ASSERT(0);
         }
         Function f;
         {
@@ -79,8 +78,6 @@ public:
         return result;
     }
 
-
-
 private:
     std::unordered_map<std::string, Function> functions_;
     // fixme: 读写锁
@@ -96,5 +93,4 @@ public:
 };
 } // namespace flow
 
-
-#endif // ARCHITECT_MATRIX_FUNCTION_REGISTRY_H
+#endif // SIMPLE_FLOW_FUNCTION_REGISTRY_H_

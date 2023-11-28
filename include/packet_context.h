@@ -1,9 +1,10 @@
-#ifndef ARCHITECT_PACKET_CONTEXT_H
-#define ARCHITECT_PACKET_CONTEXT_H
+#ifndef SIMPLE_FLOW_PACKET_CONTEXT_H_
+#define SIMPLE_FLOW_PACKET_CONTEXT_H_
 
 #include "base/status.h"
 #include "input_source_context.h"
 #include "packet_per_node_context.h"
+
 #include <memory>
 #include <vector>
 
@@ -81,6 +82,6 @@ public:
 };
 
 using PacketContextPtr = std::shared_ptr<PacketContext>;
-} // namespace flow
 
-#endif // ARCHITECT_PACKET_CONTEXT_H
+} // namespace flow
+#endif // SIMPLE_FLOW_PACKET_CONTEXT_H_

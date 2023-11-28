@@ -1,7 +1,6 @@
 
-#ifndef GRAPHFLOW_FRAMEWORK_SCHEDULER_ASYNC_ORDER_PRESERVING_H
-#define GRAPHFLOW_FRAMEWORK_SCHEDULER_ASYNC_ORDER_PRESERVING_H
-
+#ifndef SIMPLE_FLOW_SCHEDULER_ASYNC_ORDER_PRESERVING_H_
+#define SIMPLE_FLOW_SCHEDULER_ASYNC_ORDER_PRESERVING_H_
 
 #include "base/status.h"
 #include "executor.h"
@@ -11,13 +10,13 @@
 #include "packet_per_node_context.h"
 #include "scheduler.h"
 #include "scheduler_async.h"
+
 #include <list>
 #include <memory>
 #include <set>
 #include <vector>
 
 namespace flow {
-
 class SchedulerAsyncOrderPreserving : public Scheduler {
 public:
     SchedulerAsyncOrderPreserving() = default;
@@ -59,7 +58,6 @@ protected:
 
     std::shared_ptr<ExecutorOption> executor_option_;
 };
+
 } // namespace flow
-
-
-#endif // GRAPHFLOW_FRAMEWORK_SCHEDULER_ASYNC_ORDER_PRESERVING_H
+#endif // SIMPLE_FLOW_SCHEDULER_ASYNC_ORDER_PRESERVING_H_

@@ -1,13 +1,13 @@
-#ifndef ARCHITECT_CONTRACT_CODING_H
-#define ARCHITECT_CONTRACT_CODING_H
+#ifndef SIMPLE_FLOW_CONTRACT_CODING_H_
+#define SIMPLE_FLOW_CONTRACT_CODING_H_
 
 #include <cassert>
 
 #ifdef DEBUG
-#define MATRIX_ASSERT(cond) assert(cond)
+#define SIMPLE_ASSERT(cond) assert(cond)
 #else
-#define MATRIX_ASSERT(cond)
+#define SIMPLE_ASSERT(cond)
 #endif
 
 
-#endif // ARCHITECT_CONTRACT_CODING_H
+#endif // SIMPLE_FLOW_CONTRACT_CODING_H_

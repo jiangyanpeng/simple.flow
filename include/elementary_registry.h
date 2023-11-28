@@ -1,7 +1,7 @@
-#ifndef ARCHITECT_MATRIX_ELEMENTARY_REGISTRY_H
-#define ARCHITECT_MATRIX_ELEMENTARY_REGISTRY_H
+#ifndef SIMPLE_FLOW_ELEMENTARY_REGISTRY_H_
+#define SIMPLE_FLOW_ELEMENTARY_REGISTRY_H_
 
-#include "base/matrix_function_registry.h"
+#include "base/function_registry.h"
 #include "elementary/elementary.h"
 #include "inoutput_handler.h"
 
@@ -42,11 +42,9 @@ public:
     ResultTuple InvokeCreate(const std::string& name, const std::string& device_type);
 
 private:
-    MatrixFunctionRegistry<Status, ElementaryContract*> get_contract_functions_;
-    MatrixFunctionRegistry<std::shared_ptr<void>> create_functions_;
+    FunctionRegistry<Status, ElementaryContract*> get_contract_functions_;
+    FunctionRegistry<std::shared_ptr<void>> create_functions_;
 };
 
 } // namespace flow
-
-
-#endif // ARCHITECT_MATRIX_ELEMENTARY_REGISTRY_H
+#endif // SIMPLE_FLOW_ELEMENTARY_REGISTRY_H_

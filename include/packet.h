@@ -1,14 +1,13 @@
-#ifndef ARCHITECT_PACKET_H
-#define ARCHITECT_PACKET_H
+#ifndef SIMPLE_FLOW_PACKET_H_
+#define SIMPLE_FLOW_PACKET_H_
 
 #include "base/status.h"
 #include "input_source_context.h"
 #include "package.h"
+
 #include <vector>
 
-
 namespace flow {
-
 class Package;
 
 class InputPktId;
@@ -48,6 +47,6 @@ private:
     std::shared_ptr<InputPktId> id_;
     std::weak_ptr<InputSourceContext> source_ctx_;
 };
-} // namespace flow
 
-#endif // ARCHITECT_PACKET_H
+} // namespace flow
+#endif // SIMPLE_FLOW_PACKET_H_

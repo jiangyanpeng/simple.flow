@@ -1,5 +1,5 @@
-#ifndef GRAPHFLOW_FRAMEWORK_SCHEDULER_ONE_THREAD_H
-#define GRAPHFLOW_FRAMEWORK_SCHEDULER_ONE_THREAD_H
+#ifndef SIMPLE_FLOW_SCHEDULER_ONE_THREAD_H_
+#define SIMPLE_FLOW_SCHEDULER_ONE_THREAD_H_
 
 #include "graph_topology.h"
 #include "packet.h"
@@ -8,7 +8,6 @@
 #include "scheduler.h"
 
 namespace flow {
-
 class SchedulerOneThread : public Scheduler {
 public:
     SchedulerOneThread() = default;
@@ -27,6 +26,4 @@ private:
 };
 
 } // namespace flow
-
-
-#endif // GRAPHFLOW_FRAMEWORK_SCHEDULER_ONE_THREAD_H
+#endif // SIMPLE_FLOW_SCHEDULER_ONE_THREAD_H_

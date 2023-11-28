@@ -1,5 +1,5 @@
-#ifndef ARCHITECT_EXECUTOR_H
-#define ARCHITECT_EXECUTOR_H
+#ifndef SIMPLE_FLOW_EXECUTOR_H_
+#define SIMPLE_FLOW_EXECUTOR_H_
 
 #include <manager/pipe_manager.h>
 #include <memory>
@@ -21,7 +21,6 @@ protected:
     std::string name_{};
 };
 
-
 class Executor {
 public:
     explicit Executor(size_t thread_nums,
@@ -38,6 +37,4 @@ private:
 };
 
 } // namespace flow
-
-
-#endif // ARCHITECT_EXECUTOR_H
+#endif // SIMPLE_FLOW_EXECUTOR_H_

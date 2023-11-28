@@ -1,11 +1,11 @@
 #include <iostream>
 
-#include "device/matrix_device_registry.h"
+#include "device/device_registry.h"
 #include "elementary/elementary.h"
 #include "elementary/elementary_option.h"
 #include "graph.h"
 #include "inout.h"
-#include "matrix_elementary_registry.h"
+#include "elementary_registry.h"
 #include "specs/graph_spec.h"
 
 #include <log.h>
@@ -124,7 +124,7 @@ private:
 
 public:
     std::shared_ptr<MatrixElementaryRegistry> registry;
-    std::shared_ptr<MatrixDeviceRegistry> device_registry;
+    std::shared_ptr<DeviceRegistry> device_registry;
 };
 
 
@@ -140,7 +140,7 @@ void GraphComplier::Init(const std::string& cur_path) {
     helper_ = std::make_shared<GraphHelper>(spec);
 
     registry        = std::make_shared<MatrixElementaryRegistry>();
-    device_registry = std::make_shared<MatrixDeviceRegistry>();
+    device_registry = std::make_shared<DeviceRegistry>();
 
     registry->RegisterElem<Elementary, ElementaryOption, InOutputHandler>("Elementary", "cpu");
 

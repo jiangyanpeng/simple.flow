@@ -11,7 +11,7 @@ Status Elementary::GetContract(ElementaryContract* contract) {
 
 Status Elementary::Open(ElementaryContext* ctx) {
     UNUSED_WARN(ctx);
-    MATRIX_ASSERT(option_);
+    SIMPLE_ASSERT(option_);
     SIMPLE_LOG_TRACE("module-base-elem : [{}] opened.", GetId());
     return Status::OkStatus();
 }
@@ -71,7 +71,7 @@ Status Elementary::Process(ElementaryContext* ctx) {
 
 void Elementary::SetDevice(std::shared_ptr<Device> d) {
     device_ = std::move(d);
-    MATRIX_ASSERT(device_);
+    SIMPLE_ASSERT(device_);
 }
 
 void Elementary::SetElementaryOption(std::shared_ptr<ElementaryOption> option) {

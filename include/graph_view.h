@@ -1,17 +1,17 @@
-#ifndef ARCHITECT_GRAPH_VIEW_H
-#define ARCHITECT_GRAPH_VIEW_H
+#ifndef SIMPLE_FLOW_GRAPH_VIEW_H_
+#define SIMPLE_FLOW_GRAPH_VIEW_H_
 
-#include "device/matrix_device_registry.h"
+#include "device/device_registry.h"
 #include "graph_spec_view.h"
 #include "graph_topology.h"
 #include "node.h"
+
 #include <map>
 #include <memory>
 #include <string>
 #include <vector>
 
 namespace flow {
-
 struct Edge {
     Edge(std::shared_ptr<Node> src_node,
          std::shared_ptr<InoutPort> src_port,
@@ -30,7 +30,7 @@ struct Edge {
 class GraphView : public std::enable_shared_from_this<GraphView> {
 public:
     GraphView(std::shared_ptr<MatrixElementaryRegistry> registry,
-              std::shared_ptr<MatrixDeviceRegistry> device_registry);
+              std::shared_ptr<DeviceRegistry> device_registry);
 
     ~GraphView();
 
@@ -73,7 +73,7 @@ public:
 
     std::shared_ptr<GraphSpecView> spec_view_;
     std::shared_ptr<MatrixElementaryRegistry> registry_;
-    std::shared_ptr<MatrixDeviceRegistry> device_registry_;
+    std::shared_ptr<DeviceRegistry> device_registry_;
 
     std::vector<std::shared_ptr<Node>>
     GetSiblingNode(const std::vector<std::shared_ptr<Edge>>& edges);
@@ -85,6 +85,4 @@ public:
 };
 
 } // namespace flow
-
-
-#endif // ARCHITECT_GRAPH_VIEW_H
+#endif // SIMPLE_FLOW_GRAPH_VIEW_H_

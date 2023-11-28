@@ -14,7 +14,7 @@ ElementaryContract& ElementaryContract::AddInput(const std::string& port_name,
     DataType type;
     type.SetTypeName(data_type_name);
     auto s = inputs_.AddTag(port_name, type);
-    MATRIX_ASSERT(s.first.IsOk());
+    SIMPLE_ASSERT(s.first.IsOk());
     return *this;
 }
 
@@ -23,7 +23,7 @@ ElementaryContract& ElementaryContract::AddOutput(const std::string& port_name,
     DataType type;
     type.SetTypeName(data_type_name);
     auto s = outputs_.AddTag(port_name, type);
-    MATRIX_ASSERT(s.first.IsOk());
+    SIMPLE_ASSERT(s.first.IsOk());
     return *this;
 }
 

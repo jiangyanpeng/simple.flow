@@ -1,11 +1,9 @@
-#ifndef ARCHITECT_INPUT_OUTPUT_HANDLER_H
-#define ARCHITECT_INPUT_OUTPUT_HANDLER_H
+#ifndef SIMPLE_FLOW_INPUT_OUTPUT_HANDLER_H_
+#define SIMPLE_FLOW_INPUT_OUTPUT_HANDLER_H_
 
 #include <memory>
 
 namespace flow {
-
-
 class PacketPerNodeContext;
 class Node;
 class InOutputHandler {
@@ -27,5 +25,4 @@ protected:
 using InputHandler = InOutputHandler;
 
 } // namespace flow
-
-#endif // ARCHITECT_INPUT_OUTPUT_HANDLER_H
+#endif // SIMPLE_FLOW_INPUT_OUTPUT_HANDLER_H_

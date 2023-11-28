@@ -1,15 +1,15 @@
-#ifndef GRAPHFLOW_FRAMEWORK_GRAPH_SPEC_VIEW_H
-#define GRAPHFLOW_FRAMEWORK_GRAPH_SPEC_VIEW_H
+#ifndef SIMPLE_FLOW_GRAPH_SPEC_VIEW_H_
+#define SIMPLE_FLOW_GRAPH_SPEC_VIEW_H_
 
 #include "base/status.h"
 #include "specs/graph_spec.h"
+
 #include <map>
 #include <memory>
 #include <utility>
 #include <vector>
 
 namespace flow {
-
 class EdgeSpec {
 public:
     EdgeSpec(size_t id,
@@ -108,6 +108,4 @@ private:
 };
 
 } // namespace flow
-
-
-#endif // GRAPHFLOW_FRAMEWORK_GRAPH_SPEC_VIEW_H
+#endif // SIMPLE_FLOW_GRAPH_SPEC_VIEW_H_
