@@ -42,7 +42,7 @@ void WaitingThread::Start() {
                 for (auto id : notified_id_) {
                     auto ctx = map_[id];
                     map_.erase(id);
-                    MATRIX_ASSERT(ctx);
+                    SIMPLE_ASSERT(ctx);
                     // add to scheduler
                     f_(ctx);
                 }

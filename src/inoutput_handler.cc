@@ -3,6 +3,7 @@
 #include "node.h"
 #include "packet_context.h"
 #include "packet_per_node_context.h"
+
 #include <log.h>
 
 
@@ -18,7 +19,7 @@ void InOutputHandler::SetNode(const std::shared_ptr<Node>& node) {
 bool InOutputHandler::IsOutputReady(const std::shared_ptr<PacketPerNodeContext>& ctx) {
     auto outputs = ctx->GetOutputs();
     auto node    = node_.lock();
-    MATRIX_ASSERT(node);
+    SIMPLE_ASSERT(node);
     // if (node->GetId() == 3 && ctx->GetPacketContext()->id_) {
     //     std::cout << "wait" << std::endl;
     // }

@@ -1,10 +1,9 @@
-#ifndef GRAPHFLOW_FRAMEWORK_INPUT_SOURCE_CONTEXT_DEFAULT_H
-#define GRAPHFLOW_FRAMEWORK_INPUT_SOURCE_CONTEXT_DEFAULT_H
+#ifndef SIMPLE_FLOW_INPUT_SOURCE_CONTEXT_DEFAULT_H_
+#define SIMPLE_FLOW_INPUT_SOURCE_CONTEXT_DEFAULT_H_
 
 #include "input_source_context.h"
 
 namespace flow {
-
 class InputSourceContextDefault : public InputSourceContext {
 public:
     InputSourceContextDefault() = default;
@@ -27,7 +26,6 @@ public:
 protected:
     Collection<std::shared_ptr<void>> collections_;
 };
+
 } // namespace flow
-
-
-#endif // GRAPHFLOW_FRAMEWORK_INPUT_SOURCE_CONTEXT_DEFAULT_H
+#endif // SIMPLE_FLOW_INPUT_SOURCE_CONTEXT_DEFAULT_H_

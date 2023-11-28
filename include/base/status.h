@@ -1,5 +1,6 @@
-#ifndef ARCHITECT_STATUS_H
-#define ARCHITECT_STATUS_H
+#ifndef SIMPLE_FLOW_STATUS_H_
+#define SIMPLE_FLOW_STATUS_H_
+
 #include <string>
 
 namespace flow {
@@ -44,7 +45,5 @@ private:
     StatusCode code_;
     std::string msg_;
 };
-
-
 } // namespace flow
-#endif // ARCHITECT_STATUS_H
+#endif // SIMPLE_FLOW_STATUS_H_

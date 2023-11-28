@@ -1,6 +1,5 @@
 #include "input_source_context_default.h"
 
-
 namespace flow {
 Status
 InputSourceContextDefault::AddData(const std::string& tag, std::shared_ptr<void> d, size_t& id) {

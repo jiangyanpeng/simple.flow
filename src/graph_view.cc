@@ -1,8 +1,7 @@
-#include "graph_node.h"
-
-#include "graph_node.h"
 #include "graph_view.h"
+#include "graph_node.h"
 #include "packet_context.h"
+
 #include <iostream>
 #include <log.h>
 #include <set>
@@ -10,10 +9,11 @@
 #include <time.h>
 #include <unordered_map>
 #include <utility>
+
 namespace flow {
 
 GraphView::GraphView(std::shared_ptr<MatrixElementaryRegistry> registry,
-                     std::shared_ptr<MatrixDeviceRegistry> device_registry)
+                     std::shared_ptr<DeviceRegistry> device_registry)
     : registry_(std::move(registry)), device_registry_(std::move(device_registry)) {}
 
 GraphView::~GraphView() = default;
@@ -80,7 +80,7 @@ Status GraphView::OpenAllNodes() {
             SIMPLE_LOG_ERROR("open node {} failed.", n.second->GetName());
             std::cerr << "open node " << n.second->GetName() << " failed" << std::endl;
         }
-        MATRIX_ASSERT(s.IsOk());
+        SIMPLE_ASSERT(s.IsOk());
     }
     return Status::OkStatus();
 }

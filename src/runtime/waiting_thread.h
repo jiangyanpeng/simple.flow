@@ -1,9 +1,10 @@
 
 
-#ifndef ACTION_DETECTION_WAITING_THREAD_H
-#define ACTION_DETECTION_WAITING_THREAD_H
+#ifndef SIMPLE_FLOW__WAITING_THREAD_H_
+#define SIMPLE_FLOW__WAITING_THREAD_H_
 
 #include "graph_node.h"
+
 #include <condition_variable>
 #include <manager/pipe_manager.h>
 #include <mutex>
@@ -11,7 +12,6 @@
 #include <vector>
 
 namespace flow {
-
 class Notifier {
 public:
     Notifier() = default;
@@ -47,7 +47,6 @@ private:
     base::PipeManager pool_{1};
     bool stop_{false};
 };
+
 } // namespace flow
-
-
-#endif // ACTION_DETECTION_WAITING_THREAD_H
+#endif // SIMPLE_FLOW__WAITING_THREAD_H_

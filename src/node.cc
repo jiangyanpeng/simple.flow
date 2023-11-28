@@ -4,12 +4,11 @@
 #include "base/contract_coding.h"
 #include "graph.h"
 #include "inoutput_handler.h"
+
 #include <log.h>
 #include <stdlib.h>
 #include <time.h>
 #include <utility>
-
-
 
 namespace flow {
 void Node::Process() {
@@ -84,7 +83,7 @@ void Node::Process() {
 
             // 输出赋值
             for (size_t j = 0; j < node_ctx->outputs_.size(); ++j) {
-                MATRIX_ASSERT(outputs_data[j]);
+                SIMPLE_ASSERT(outputs_data[j]);
                 node_ctx->outputs_[j].push_back(outputs_data[j]);
             }
         }
@@ -185,7 +184,7 @@ Status Node::Initialize(std::shared_ptr<NodeSpec> spec,
                         const std::shared_ptr<MatrixElementaryRegistry>& registry) {
     SIMPLE_LOG_DEBUG("Node::Initialize Start");
     spec_ = std::move(spec);
-    MATRIX_ASSERT(weak_graph_.lock());
+    SIMPLE_ASSERT(weak_graph_.lock());
     id_               = spec_->node_id;
     order_preserving_ = spec_->order_preserving_;
 
@@ -220,7 +219,7 @@ Status Node::Initialize(std::shared_ptr<NodeSpec> spec,
         elem->SetId(v.GetId());
         // set device
         auto d = weak_graph_.lock()->GetDeviceByName(v.GetDeviceName());
-        MATRIX_ASSERT(d);
+        SIMPLE_ASSERT(d);
         elem->SetDevice(d);
         elementarys_.emplace_back(elem);
     }
@@ -233,7 +232,7 @@ Status Node::Initialize(std::shared_ptr<NodeSpec> spec,
             elem->SetId(v.GetId());
             // set device
             auto d = weak_graph_.lock()->GetDeviceByName(v.GetDeviceName());
-            MATRIX_ASSERT(d);
+            SIMPLE_ASSERT(d);
             elem->SetDevice(d);
             elementarys_.emplace_back(elem);
         }
@@ -306,7 +305,7 @@ size_t Node::GetId() const {
 }
 
 bool Node::IsNodeContextReady(const PacketPerNodeContextPtr& ctx) {
-    MATRIX_ASSERT(inout_put_handler_);
+    SIMPLE_ASSERT(inout_put_handler_);
     return inout_put_handler_->IsReady(ctx);
 }
 
@@ -327,12 +326,12 @@ Status Node::Open() {
 }
 
 const std::shared_ptr<InoutPort>& Node::GetInputPortWithId(size_t id) const {
-    MATRIX_ASSERT(id < input_ports_.size());
+    SIMPLE_ASSERT(id < input_ports_.size());
     return input_ports_[id];
 }
 
 const std::shared_ptr<InoutPort>& Node::GetOutputPortWithId(size_t id) const {
-    MATRIX_ASSERT(id < output_ports_.size());
+    SIMPLE_ASSERT(id < output_ports_.size());
     return output_ports_[id];
 }
 
@@ -346,13 +345,13 @@ size_t Node::GetOutputCount() const {
 
 size_t Node::GetInputPortIdWithTag(const std::string& tag) const {
     auto it = input_name_to_id_map_.find(tag);
-    MATRIX_ASSERT(it != input_name_to_id_map_.end());
+    SIMPLE_ASSERT(it != input_name_to_id_map_.end());
     return it->second;
 }
 
 size_t Node::GetOutputPortIdWithTag(const std::string& tag) const {
     auto it = output_name_to_id_map_.find(tag);
-    MATRIX_ASSERT(it != output_name_to_id_map_.end());
+    SIMPLE_ASSERT(it != output_name_to_id_map_.end());
     return it->second;
 }
 

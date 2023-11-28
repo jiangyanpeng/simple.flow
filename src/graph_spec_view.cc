@@ -1,6 +1,7 @@
 #include "graph_spec_view.h"
 #include "base/contract_coding.h"
 #include "graph_view.h"
+
 #include <log.h>
 #include <map>
 #include <set>
@@ -12,7 +13,7 @@ GraphSpecView::GraphSpecView(std::shared_ptr<GraphSpec> spec) : ori_graph_spec_(
 
 Status GraphSpecView::Initialize() {
     SIMPLE_LOG_DEBUG("GraphSpecView::Initialize Start");
-    MATRIX_ASSERT(ori_graph_spec_);
+    SIMPLE_ASSERT(ori_graph_spec_);
 
     // Device信息补齐
     size_t device_id = 0;
@@ -198,7 +199,7 @@ std::vector<std::shared_ptr<NodeSpec>> GraphSpecView::GetEdgeRelatedNode(size_t 
     auto r = edges_.find(id);
     if (r == edges_.end()) {
         // ERROR
-        MATRIX_ASSERT("edge was not found");
+        SIMPLE_ASSERT("edge was not found");
         return std::vector<std::shared_ptr<NodeSpec>>();
     }
     std::vector<std::shared_ptr<NodeSpec>> result;
@@ -227,7 +228,7 @@ const std::map<size_t, std::shared_ptr<EdgeSpec>>& GraphSpecView::GetEdgeSpecs()
 
 std::vector<size_t> GraphSpecView::GetOutputEdgeIdWithNodeId(size_t id) const {
     auto r = node_id_to_output_edge_id_map_.equal_range(id);
-    MATRIX_ASSERT(r.first != r.second);
+    SIMPLE_ASSERT(r.first != r.second);
     std::vector<size_t> result;
     for (auto it = r.first; it != r.second; ++it) {
         result.push_back(it->second);
@@ -237,7 +238,7 @@ std::vector<size_t> GraphSpecView::GetOutputEdgeIdWithNodeId(size_t id) const {
 
 std::vector<size_t> GraphSpecView::GetInputEdgeIdWithNodeId(size_t id) const {
     auto r = node_id_to_input_edge_id_map_.equal_range(id);
-    MATRIX_ASSERT(r.first != r.second);
+    SIMPLE_ASSERT(r.first != r.second);
     std::vector<size_t> result;
     for (auto it = r.first; it != r.second; ++it) {
         result.push_back(it->second);

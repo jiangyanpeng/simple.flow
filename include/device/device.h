@@ -1,13 +1,15 @@
-#ifndef ARCHITECT_DEVICE_H
-#define ARCHITECT_DEVICE_H
+#ifndef SIMPLE_FLOW_DEVICE_H_
+#define SIMPLE_FLOW_DEVICE_H_
 
 #include "base/status.h"
 #include "base/tagged_object.h"
 #include "device/stream.h"
+
 #include <functional>
 #include <manager/pipe_manager.h>
 #include <map>
 #include <memory>
+
 namespace flow {
 using DoneCallback = std::function<void()>;
 using Function     = std::function<void()>;
@@ -98,6 +100,4 @@ protected:
 //        });
 //    }
 } // namespace flow
-
-
-#endif // ARCHITECT_DEVICE_H
+#endif // SIMPLE_FLOW_DEVICE_H_

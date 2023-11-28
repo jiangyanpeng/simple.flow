@@ -1,7 +1,8 @@
-#ifndef ACTION_DETECTION_INPUT_SOURCE_MANAGER_H
-#define ACTION_DETECTION_INPUT_SOURCE_MANAGER_H
+#ifndef SIMPLE_FLOW_INPUT_SOURCE_MANAGER_H_
+#define SIMPLE_FLOW_INPUT_SOURCE_MANAGER_H_
 
 #include "input_source_context.h"
+
 #include <atomic>
 #include <map>
 #include <memory>
@@ -28,5 +29,4 @@ private:
 };
 
 } // namespace flow
-
-#endif // ACTION_DETECTION_INPUT_SOURCE_MANAGER_H
+#endif // SIMPLE_FLOW_INPUT_SOURCE_MANAGER_H_

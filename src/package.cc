@@ -1,8 +1,8 @@
 
 #include "package.h"
 #include "base/contract_coding.h"
-#include <iostream>
 
+#include <iostream>
 #include <utility>
 
 namespace flow {
@@ -14,7 +14,7 @@ void PackageShape::SetShape(std::vector<uint8_t> shape) {
     for (auto v : shape_) {
         max_num_elements_ *= v;
     }
-    MATRIX_ASSERT(max_num_elements_ <= 1024);
+    SIMPLE_ASSERT(max_num_elements_ <= 1024);
 }
 
 std::vector<uint8_t> PackageShape::GetShapeVec() const {
@@ -26,7 +26,7 @@ uint8_t PackageShape::Dims() const {
 }
 
 int16_t PackageShape::GetIdFromFullIndex(const std::vector<uint8_t>& index) const {
-    MATRIX_ASSERT(index.size() == shape_.size());
+    SIMPLE_ASSERT(index.size() == shape_.size());
     int id     = 0;
     int stride = 1;
     for (int i = int(shape_.size() - 1); i >= 0; --i) {
@@ -37,7 +37,7 @@ int16_t PackageShape::GetIdFromFullIndex(const std::vector<uint8_t>& index) cons
 }
 
 std::pair<int16_t, int16_t> PackageShape::GetIdFromIndex(const std::vector<uint8_t>& index) const {
-    MATRIX_ASSERT(index.size() <= shape_.size());
+    SIMPLE_ASSERT(index.size() <= shape_.size());
     auto index_t = index;
     index_t.resize(shape_.size());
     int16_t start = GetIdFromFullIndex(index_t);
@@ -90,7 +90,7 @@ std::vector<uint8_t> PackageShape::GetSub1ShapeVec() const {
 }
 
 bool PackageShape::IsIndexEmpty(const std::vector<uint8_t>& index) const {
-    MATRIX_ASSERT(index.size() <= shape_.size());
+    SIMPLE_ASSERT(index.size() <= shape_.size());
     size_t start_pos  = 0;
     size_t end_pos    = 0;
     auto index_append = index;
@@ -109,12 +109,12 @@ bool PackageShape::IsIndexEmpty(const std::vector<uint8_t>& index) const {
 }
 
 uint8_t PackageShape::NthDimShape(size_t n) const {
-    MATRIX_ASSERT(n < shape_.size());
+    SIMPLE_ASSERT(n < shape_.size());
     return shape_[n];
 }
 
 std::vector<uint8_t> PackageShape::GetIndexFromId(int16_t id) const {
-    MATRIX_ASSERT(id < MaxNumElements());
+    SIMPLE_ASSERT(id < MaxNumElements());
     std::vector<uint8_t> index(shape_.size(), 0);
 
     int16_t x      = 0;
@@ -139,7 +139,7 @@ uint8_t PackageShape::GetLastDimShape() const {
 }
 
 std::shared_ptr<PackageShape> PackageShape::IsNthDimEmpty(size_t n) const {
-    MATRIX_ASSERT(n <= shape_.size() && n >= 1);
+    SIMPLE_ASSERT(n <= shape_.size() && n >= 1);
     if (n == shape_.size()) {
         return std::make_shared<PackageShape>(*this);
     }
@@ -186,14 +186,14 @@ void PackageShape::Walk(const std::function<void(const std::vector<uint8_t>&)>& 
 }
 
 std::shared_ptr<PackageShape> PackageShape::IsLast2DimEmpty() const {
-    MATRIX_ASSERT(Dims() >= 1);
+    SIMPLE_ASSERT(Dims() >= 1);
     return IsNthDimEmpty(Dims() - 1);
 }
 
 void PackageShape::WalkNthDim(
     uint8_t n,
     const std::function<void(const std::vector<uint8_t>& sub_shape, int16_t s, int16_t e)>& f) {
-    MATRIX_ASSERT(n <= shape_.size() && n >= 0);
+    SIMPLE_ASSERT(n <= shape_.size() && n >= 0);
     std::vector<uint8_t> index(n);
     Walk(shape_, index, 0, Dims() - n, f);
 }

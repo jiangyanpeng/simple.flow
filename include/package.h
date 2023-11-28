@@ -1,7 +1,8 @@
-#ifndef ARCHITECT_PACKAGE_H
-#define ARCHITECT_PACKAGE_H
+#ifndef SIMPLE_FLOW_PACKAGE_H_
+#define SIMPLE_FLOW_PACKAGE_H_
 
 #include "base/contract_coding.h"
+
 #include <bitset>
 #include <functional>
 #include <log.h>
@@ -146,7 +147,7 @@ public:
 
     template <class T>
     bool AddData(int16_t index, std::shared_ptr<T> data) {
-        MATRIX_ASSERT(index < shape_.MaxNumElements());
+        SIMPLE_ASSERT(index < shape_.MaxNumElements());
         if (data_index_.find(index) != data_index_.end()) {
             return false;
         }
@@ -163,7 +164,7 @@ public:
 
     template <typename T>
     std::shared_ptr<T> GetData(int16_t index) {
-        MATRIX_ASSERT(index >= 0 && index < shape_.MaxNumElements());
+        SIMPLE_ASSERT(index >= 0 && index < shape_.MaxNumElements());
         auto id     = data_index_[index];
         auto result = std::static_pointer_cast<T>(data_[id]);
         return std::move(result);
@@ -178,6 +179,4 @@ private:
 };
 
 } // namespace flow
-
-
-#endif // ARCHITECT_PACKAGE_H
+#endif // SIMPLE_FLOW_PACKAGE_H_

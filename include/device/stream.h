@@ -1,6 +1,5 @@
-#ifndef ARCHITECT_STREAM_H
-#define ARCHITECT_STREAM_H
-
+#ifndef SIMPLE_FLOW_STREAM_H_
+#define SIMPLE_FLOW_STREAM_H_
 
 namespace flow {
 class Stream {
@@ -14,6 +13,4 @@ public:
 };
 
 } // namespace flow
-
-
-#endif // ARCHITECT_STREAM_H
+#endif // SIMPLE_FLOW_STREAM_H_

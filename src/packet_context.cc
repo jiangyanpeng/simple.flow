@@ -2,6 +2,7 @@
 
 #include "packet_context.h"
 #include "graph.h"
+
 #include <log.h>
 
 namespace flow {
@@ -43,7 +44,7 @@ void PacketContext::DoDebug() {
 }
 
 std::shared_ptr<PacketPerNodeContext> PacketContext::GetNodeContextById(size_t id) {
-    MATRIX_ASSERT(id < node_ctxes_.size());
+    SIMPLE_ASSERT(id < node_ctxes_.size());
     return node_ctxes_[id];
 }
 

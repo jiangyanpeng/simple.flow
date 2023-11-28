@@ -1,12 +1,12 @@
-#ifndef ARCHITECT_NODE_H
-#define ARCHITECT_NODE_H
+#ifndef SIMPLE_FLOW_NODE_H_
+#define SIMPLE_FLOW_NODE_H_
 
 #include "base/collection.h"
 #include "base/status.h"
 #include "device/device.h"
 #include "elementary/elementary.h"
+#include "elementary_registry.h"
 #include "inout_port.h"
-#include "matrix_elementary_registry.h"
 #include "packet_per_node_context.h"
 #include "runtime/scheduler.h"
 #include "specs/graph_spec.h"
@@ -14,7 +14,6 @@
 #include <mutex>
 
 namespace flow {
-
 class Graph;
 
 class GraphView;
@@ -108,6 +107,4 @@ public:
 };
 
 } // namespace flow
-
-
-#endif // ARCHITECT_NODE_H
+#endif // SIMPLE_FLOW_NODE_H_

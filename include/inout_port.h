@@ -1,10 +1,9 @@
-#ifndef ARCHITECT_INOUT_PORT_H
-#define ARCHITECT_INOUT_PORT_H
+#ifndef SIMPLE_FLOW_INOUT_PORT_H_
+#define SIMPLE_FLOW_INOUT_PORT_H_
 
 #include "specs/graph_spec.h"
 
 namespace flow {
-
 class Node;
 
 class InoutPort {
@@ -33,6 +32,4 @@ private:
 };
 
 } // namespace flow
-
-
-#endif // ARCHITECT_INOUT_PORT_H
+#endif // SIMPLE_FLOW_INOUT_PORT_H_

@@ -1,4 +1,4 @@
-#include "base/matrix_function_registry.h"
+#include "base/function_registry.h"
 
 namespace flow {
 
@@ -6,7 +6,7 @@ constexpr const char kNsNameSep = '.';
 std::string NormalizeNsName(const std::string& ns, const std::string& name) {
     if (std::string::npos != ns.find('.')) {
         SIMPLE_LOG_ERROR("namespace should not contain {}", kNsNameSep);
-        MATRIX_ASSERT(0);
+        SIMPLE_ASSERT(0);
     }
     std::string norm_name(ns);
     norm_name.append(1, kNsNameSep);

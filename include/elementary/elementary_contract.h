@@ -1,11 +1,12 @@
-#ifndef ARCHITECT_ELEMENTARY_CONTRACT_H
-#define ARCHITECT_ELEMENTARY_CONTRACT_H
+#ifndef SIMPLE_FLOW_ELEMENTARY_CONTRACT_H_
+#define SIMPLE_FLOW_ELEMENTARY_CONTRACT_H_
 
 #include "base/collection.h"
 #include "base/data_type.h"
 #include "base/status.h"
 #include "elementary_option.h"
 #include "specs/graph_spec.h"
+
 #include <memory>
 #include <set>
 
@@ -43,6 +44,4 @@ private:
 };
 
 } // namespace flow
-
-
-#endif // ARCHITECT_ELEMENTARY_CONTRACT_H
+#endif // SIMPLE_FLOW_ELEMENTARY_CONTRACT_H_

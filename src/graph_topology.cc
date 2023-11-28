@@ -64,7 +64,7 @@ size_t GraphTopology::GetTopologyDepth() const {
 }
 
 std::list<std::shared_ptr<Node>> GraphTopology::GetNodesOnLevelN(int8_t level) {
-    MATRIX_ASSERT(level >= 0 && level <= GetTopologyDepth() - 1);
+    SIMPLE_ASSERT(level >= 0 && level <= GetTopologyDepth() - 1);
     return top_[level];
 }
 

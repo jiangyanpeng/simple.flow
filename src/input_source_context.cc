@@ -1,6 +1,7 @@
 
 #include "input_source_context.h"
 #include "packet.h"
+
 #include <log.h>
 
 namespace flow {
@@ -22,7 +23,7 @@ bool InputSourceContext::AddSkipPktId(std::vector<size_t> node_ids, uint64_t pkt
 }
 
 std::shared_ptr<Packet> InputSourceContext::CreatePacket() {
-    MATRIX_ASSERT(input_count_ != 0);
+    SIMPLE_ASSERT(input_count_ != 0);
     auto id = std::make_shared<InputPktId>(source_id_, packet_id_.fetch_add(1));
     std::shared_ptr<Packet> packet = std::make_shared<Packet>(id, input_count_);
     packet->SetSourceContext(shared_from_this());
@@ -34,8 +35,8 @@ void InputSourceContext::SetInputCount(size_t count) {
 }
 
 InputPktId::InputPktId(uint8_t src_id, uint64_t pkt_id) {
-    MATRIX_ASSERT(src_id != kInvInputSourceId);
-    MATRIX_ASSERT(pkt_id < kInvPktId);
+    SIMPLE_ASSERT(src_id != kInvInputSourceId);
+    SIMPLE_ASSERT(pkt_id < kInvPktId);
     id_ = src_id;
     id_ <<= kShift;
     id_ += pkt_id;

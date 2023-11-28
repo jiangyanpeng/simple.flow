@@ -1,7 +1,7 @@
 
 
-#ifndef GRAPHFLOW_FRAMEWORK_SCHEDULER_ASYNC_H
-#define GRAPHFLOW_FRAMEWORK_SCHEDULER_ASYNC_H
+#ifndef SIMPLE_FLOW_SCHEDULER_ASYNC_H_
+#define SIMPLE_FLOW_SCHEDULER_ASYNC_H_
 
 #include "base/status.h"
 #include "graph_topology.h"
@@ -10,14 +10,13 @@
 #include "packet_per_node_context.h"
 #include "runtime/executor.h"
 #include "runtime/scheduler.h"
+
 #include <list>
 #include <memory>
 #include <set>
 #include <vector>
 
 namespace flow {
-
-
 class ReadyTask : public std::enable_shared_from_this<ReadyTask> {
 public:
     int8_t GetPriority(const std::shared_ptr<GraphTopology>& top) const;
@@ -98,7 +97,6 @@ protected:
 
     size_t executor_thread_num_{1};
 };
+
 } // namespace flow
-
-
-#endif // GRAPHFLOW_FRAMEWORK_SCHEDULER_ASYNC_H
+#endif // SIMPLE_FLOW_SCHEDULER_ASYNC_H_

@@ -1,5 +1,5 @@
-#ifndef GRAPHFLOW_FRAMEWORK_GRAPH_NODE_H
-#define GRAPHFLOW_FRAMEWORK_GRAPH_NODE_H
+#ifndef SIMPLE_FLOW_GRAPH_NODE_H_
+#define SIMPLE_FLOW_GRAPH_NODE_H_
 
 #include "node.h"
 
@@ -16,7 +16,6 @@ public:
 
     size_t GetOutputCount() const override;
 };
+
 } // namespace flow
-
-
-#endif // GRAPHFLOW_FRAMEWORK_GRAPH_NODE_H
+#endif // SIMPLE_FLOW_GRAPH_NODE_H_
