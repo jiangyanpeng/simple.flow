@@ -11,6 +11,7 @@ namespace flow {
 GraphSpecView::GraphSpecView(std::shared_ptr<GraphSpec> spec) : ori_graph_spec_(std::move(spec)) {}
 
 Status GraphSpecView::Initialize() {
+    SIMPLE_LOG_DEBUG("GraphSpecView::Initialize Start");
     MATRIX_ASSERT(ori_graph_spec_);
 
     // Device信息补齐
@@ -50,7 +51,7 @@ Status GraphSpecView::Initialize() {
         SIMPLE_LOG_INFO(
             "need_keep_order_node, ori_node_name: {}, node id: {}", it->first, it->second);
     }
-
+    SIMPLE_LOG_DEBUG("GraphSpecView::Initialize Start");
     return GenerateEdgeSpec();
 }
 

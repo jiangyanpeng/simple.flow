@@ -1,11 +1,112 @@
 #include <iostream>
 
 #include "device/matrix_device_registry.h"
+#include "elementary/elementary.h"
+#include "elementary/elementary_option.h"
 #include "graph.h"
 #include "inout.h"
 #include "matrix_elementary_registry.h"
 #include "specs/graph_spec.h"
+
 #include <log.h>
+
+namespace flow {
+class ElemFakeGraphComplierOption : public ElementaryOption {
+public:
+    ~ElemFakeGraphComplierOption() override = default;
+    std::vector<std::string> models_path_;
+    virtual bool Parse(std::string& json_str);
+};
+
+bool ElemFakeGraphComplierOption::Parse(std::string& json_str) {
+    // do somthing
+    return true;
+}
+
+class ElemFakeGraphComplier : public Elementary {
+public:
+    ElemFakeGraphComplier();
+    static constexpr const char* kElemName    = "ElemFakeGraphComplier";
+    static constexpr const char* kInput       = "IN_IMAGE_VECTOR";
+    static constexpr const char* kOutput      = "OUT_ACTION_DETECTION_RESULT";
+    virtual ~ElemFakeGraphComplier() override = default;
+    Status GetContract(ElementaryContract* contract) override;
+    Status Open(ElementaryContext* ctx) override;
+    Status Close(ElementaryContext* ctx) override;
+    Status Process(ElementaryContext* ctx) override;
+
+private:
+    size_t input_image_index_{0};
+    size_t reconginze_result_index{0};
+    std::shared_ptr<ElemFakeGraphComplierOption> nn_option_;
+};
+
+
+
+ElemFakeGraphComplier::ElemFakeGraphComplier() {}
+
+Status ElemFakeGraphComplier::GetContract(ElementaryContract* contract) {
+    if (!contract) {
+        return Status::InvalidArgument("elementary contract is null");
+    }
+
+    contract->AddInput(kInput, "::STImage")
+        .AddOutput(kOutput, "action_result_t")
+        .SetElementaryName(kElemName)
+        .SetElemOptionName("ElemFakeGraphComplierOption")
+        .AddSupportedDevice("CPU")
+        .AddSupportedDevice("GPU_CUDA");
+
+    return Status::OkStatus();
+}
+
+Status ElemFakeGraphComplier::Open(ElementaryContext* ctx) {
+    SIMPLE_LOG_INFO("ElemFakeGraphComplier Open Start");
+    if (!ctx) {
+        return Status::InvalidArgument("elementary context is null");
+    }
+
+    input_image_index_ = ctx->GetInputIdWithTag(kInput);
+    if (input_image_index_ < 0) {
+        return Status(StatusCode::kNotFound, "input image of nn base not found");
+    }
+
+    reconginze_result_index = ctx->GetOutputIdWithTag(kOutput);
+    if (reconginze_result_index < 0) {
+        return Status(StatusCode::kNotFound, "output detection result of nn base not found");
+    }
+    nn_option_ = std::dynamic_pointer_cast<ElemFakeGraphComplierOption>(option_);
+
+    SIMPLE_LOG_INFO("ElemFakeGraphComplier Open End");
+    return Status::OkStatus();
+}
+
+Status ElemFakeGraphComplier::Close(ElementaryContext* ctx) {
+    return Elementary::Close(ctx);
+}
+
+Status ElemFakeGraphComplier::Process(ElementaryContext* ctx) {
+    SIMPLE_LOG_DEBUG("ElemFakeGraphComplier::Process Start");
+    auto input_images_pkg   = ctx->GetInputData(input_image_index_);
+    auto input_images_index = input_images_pkg->GetDataIndex();
+    if (!input_images_pkg) {
+        return Status(StatusCode::kNotFound, "get input tensor failed");
+    }
+
+    auto output_pkg = std::make_shared<Package>();
+    output_pkg->SetShape(input_images_pkg->GetShape());
+
+    SIMPLE_LOG_INFO("ElemFakeGraphComplier::Process Success ...");
+    for (auto index : input_images_index) {
+        SIMPLE_LOG_INFO("************ Hello simple.flow *************");
+        auto result = std::make_shared<bool>(true);
+        output_pkg->AddData(index, std::move(result));
+    }
+    ctx->AddOutputData(reconginze_result_index, output_pkg);
+    SIMPLE_LOG_DEBUG("ElemFakeGraphComplier::Process End");
+    return Status::OkStatus();
+}
+} // namespace flow
 
 using namespace flow;
 class GraphComplier {
@@ -41,16 +142,14 @@ void GraphComplier::Init(const std::string& cur_path) {
     registry        = std::make_shared<MatrixElementaryRegistry>();
     device_registry = std::make_shared<MatrixDeviceRegistry>();
 
-    registry->RegisterElem<Elementary, ElementaryOption, InOutputHandler>("matrix.Elementary",
-                                                                          "cpu");
+    registry->RegisterElem<Elementary, ElementaryOption, InOutputHandler>("Elementary", "cpu");
 
 
-    // registry->RegisterElem<ElemFakeGraphComplier, ElemFakeGraphComplierOption, InputHandler>(
-    //     "matrix::ElemFakeGraphComplier", "cpu");
+    registry->RegisterElem<flow::ElemFakeGraphComplier,
+                           flow::ElemFakeGraphComplierOption,
+                           InputHandler>("ElemFakeGraphComplier", "cpu");
 
-
-
-    // device_registry->RegisterDevice<DeviceCPU>("CPU");
+    device_registry->RegisterDevice<DeviceCPU>("CPU");
 }
 
 bool GraphComplier::GraphInit(const std::string& cur_path) {
@@ -59,7 +158,6 @@ bool GraphComplier::GraphInit(const std::string& cur_path) {
     spec->option = nullptr;
 
     // graph input
-
     {
         InoutSpec in;
         in.name           = "graph_in_image";
@@ -71,7 +169,6 @@ bool GraphComplier::GraphInit(const std::string& cur_path) {
 
 
     // graph output
-
     {
         InoutSpec o;
         o.name           = "graph_out_track_result";
@@ -84,7 +181,6 @@ bool GraphComplier::GraphInit(const std::string& cur_path) {
 
 
     // graph device
-
     {
         DeviceSpec device;
         device.SetType("CPU").SetName("CPU0");
@@ -94,7 +190,6 @@ bool GraphComplier::GraphInit(const std::string& cur_path) {
 
 
     // graph nodes
-
     {
         auto node_spec1 = std::make_shared<NodeSpec>();
         node_spec1->SetName("fakeGraphComplier")
@@ -108,7 +203,6 @@ bool GraphComplier::GraphInit(const std::string& cur_path) {
 
 
         // input
-
         {
             InoutSpec in;
             in.name           = "IN_IMAGE_VECTOR";
@@ -120,7 +214,6 @@ bool GraphComplier::GraphInit(const std::string& cur_path) {
 
 
         // output
-
         {
             InoutSpec out;
             out.name           = "OUT_ACTION_DETECTION_RESULT";
@@ -164,7 +257,6 @@ int main() {
         img_pkg->AddData(0, cv_img);
         packet->AddPackage(0, img_pkg);
 
-        SIMPLE_LOG_INFO("add packet");
         helper->AddPacketAsync(packet);
     }
 

@@ -87,6 +87,7 @@ Status GraphView::OpenAllNodes() {
 
 Status GraphView::Initialize(std::shared_ptr<GraphSpecView> spec_view,
                              const std::shared_ptr<base::PipeManager>& global_thread_pool) {
+    SIMPLE_LOG_DEBUG("GraphView::Initialize Start");
     srand((unsigned)time(NULL)); //初始化的时候产生随机数种子
 
     spec_view_ = std::move(spec_view);
@@ -145,7 +146,7 @@ Status GraphView::Initialize(std::shared_ptr<GraphSpecView> spec_view,
         auto edge = GenerateEdgeWithSpec(e.second);
         edges_map_.insert({e.first, edge});
     }
-
+    SIMPLE_LOG_DEBUG("GraphView::Initialize End");
     return Status::OkStatus();
 }
 

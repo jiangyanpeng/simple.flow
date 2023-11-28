@@ -42,6 +42,61 @@ public:
 private:
     // device 包含了计算资源和内存资源
 };
+
+class DeviceCPU : public Device {
+public:
+    DeviceCPU() = default;
+
+    ~DeviceCPU() override = default;
+
+public:
+    void SetThreadPool(const std::shared_ptr<base::PipeManager>& pool) override;
+
+    void ComputeSync(Function f) override;
+
+    void ComputeAsync(Function f, DoneCallback done) override;
+
+    void ComputeAsync(Function f) override;
+
+    void Sync(std::shared_ptr<Stream> stream) override;
+
+    void Sync() override;
+
+    Status Initialize() override;
+
+    // F 为函数，参数为Args
+    // F(Args...)
+    //        template<class F, class... Args>
+    //        void ComputeSync(F &&f, Args &&... args);
+    //
+    //        template<class F, class... Args>
+    //        void ComputeAsync(F &&f, Args &&... args, const DoneCallback& done);
+
+
+    // std::shared_ptr<DataMgrBase> GetAllocator() const override;
+
+
+protected:
+    // 计算资源：线程池
+    std::shared_ptr<base::PipeManager> thread_pool_;
+
+    // 内存资源：分配器
+    //        std::shared_ptr<Allocator> allocator_;
+};
+
+//    template<class F, class... Args>
+//    void DeviceCPU::ComputeSync(F &&f, Args &&... args) {
+//        auto result = thread_pool_->enqueue(std::forward<F>(f), std::forward<Args>(args)...);
+//        result.wait();
+//    }
+//
+//    template<class F, class... Args>
+//    void DeviceCPU::ComputeAsync(F &&f, Args &&... args, const DoneCallback& done) {
+//        thread_pool_->enqueue([=](){
+//            f(args...);
+//            done();
+//        });
+//    }
 } // namespace flow
 
 

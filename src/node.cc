@@ -183,6 +183,7 @@ void Node::ProcessCtx(const std::shared_ptr<PacketPerNodeContext>& ctx) {
 
 Status Node::Initialize(std::shared_ptr<NodeSpec> spec,
                         const std::shared_ptr<MatrixElementaryRegistry>& registry) {
+    SIMPLE_LOG_DEBUG("Node::Initialize Start");
     spec_ = std::move(spec);
     MATRIX_ASSERT(weak_graph_.lock());
     id_               = spec_->node_id;
@@ -190,7 +191,8 @@ Status Node::Initialize(std::shared_ptr<NodeSpec> spec,
 
     skip_pkt_node_ = spec_->GetSkipPacketNode();
 
-    std::string elem_type = "matrix.Elementary";
+    // todo
+    std::string elem_type = "Elementary";
     if (!spec_->elementary_type.empty()) {
         elem_type = spec_->elementary_type;
     }
@@ -257,6 +259,7 @@ Status Node::Initialize(std::shared_ptr<NodeSpec> spec,
     inout_put_handler_ = std::get<2>(elem_objects);
     inout_put_handler_->SetNode(shared_from_this());
 
+    SIMPLE_LOG_DEBUG("Node::Initialize End");
     return Status();
 }
 

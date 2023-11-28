@@ -23,6 +23,8 @@ struct InoutSpec {
     std::string data_type_name{};
     // 内部使用，不配置
     std::weak_ptr<NodeSpec> belonged_to_;
+
+    std::string to_string();
 };
 
 class ElementaryOption;
@@ -123,6 +125,8 @@ public:
     std::string GetName() const;
     size_t GetId() const;
     std::string GetElemType() const;
+
+    std::string to_string() const;
 
 public:
     std::string node_name;
