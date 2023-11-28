@@ -1,8 +1,18 @@
 #include "specs/graph_spec.h"
 
+#include <log.h>
+#include <sstream>
 #include <utility>
 
 namespace flow {
+
+std::string InoutSpec::to_string() {
+    std::stringstream ss;
+    ss << "name[" << name << "], link_name[" << link_name << "], id[" << id << "], direction["
+       << static_cast<int>(direction) << "], optional[" << optional << "], data_type_name["
+       << data_type_name << "]";
+    return ss.str();
+}
 ElemSpec& ElemSpec::SetDeviceName(std::string device_name) {
     device_name_ = std::move(device_name);
     return *this;
@@ -29,6 +39,7 @@ size_t ElemSpec::GetId() const {
 
 GraphSpec::GraphSpec() {
     is_graph = true;
+    SIMPLE_LOG_DEBUG("Creat GraphSpec: is_grapg[{}]", is_graph);
 }
 
 GraphSpec::~GraphSpec() {}
@@ -38,6 +49,7 @@ void GraphSpec::LoadFromFile(std::string file_name) {
 }
 
 void GraphSpec::AddNodeSpec(const std::shared_ptr<NodeSpec>& node) {
+    SIMPLE_LOG_DEBUG("AddNodeSpec: {}", node->to_string());
     nodes_.emplace_back(node);
 }
 
@@ -54,11 +66,13 @@ std::vector<DeviceSpec>& GraphSpec::GetDevices() {
 }
 
 NodeSpec& GraphSpec::AddGraphInputSpec(InoutSpec spec) {
+    SIMPLE_LOG_DEBUG("AddGraphInputSpec: {}", spec.to_string());
     outputs.emplace_back(spec);
     return *this;
 }
 
 NodeSpec& GraphSpec::AddGraphOutputSpec(InoutSpec spec) {
+    SIMPLE_LOG_DEBUG("AddGraphOutputSpec: {}", spec.to_string());
     inputs.emplace_back(spec);
     return *this;
 }
@@ -161,6 +175,16 @@ std::string NodeSpec::GetElemType() const {
 
 size_t NodeSpec::GetId() const {
     return node_id;
+}
+
+std::string NodeSpec::to_string() const {
+    std::stringstream ss;
+    ss << "node_name[" << node_name << "], node_id[" << node_id << "], elementary_type["
+       << elementary_type << "], elementary_option_type[" << elementary_option_type
+       << "], elementary_option_json_value[" << elementary_option_json_value << "], input_handler["
+       << input_handler << "], output_handler[" << output_handler << "], inputs[" << inputs.size()
+       << "], outputs[" << outputs.size() << "]";
+    return ss.str();
 }
 
 //    InoutSpec &NodeSpec::AddInputSpec() {

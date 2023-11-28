@@ -11,7 +11,7 @@ namespace flow {
 class ElementaryOption {
 public:
     ElementaryOption() {}
-    ~ElementaryOption() {}
+    virtual ~ElementaryOption() {}
     bool Parse(std::string& json_str);
 };
 

@@ -149,11 +149,13 @@ void GraphHelper::Initialize(const std::shared_ptr<MatrixElementaryRegistry>& re
                              const std::shared_ptr<MatrixDeviceRegistry>& device_registry,
                              GRAPH_SCHEDULE_POLICY policy,
                              std::shared_ptr<ExecutorOption> executor_option) {
+    SIMPLE_LOG_DEBUG("GraphHelper::Initialize Start");
     graph_ = std::make_shared<Graph>();
     graph_->Initialize(graph_spec_, registry, device_registry, policy, executor_option);
     graph_->OpenAllNodes();
     input_source_manager_ = std::make_shared<InputSourceManager>();
     input_source_manager_->SetGraphInputCount(graph_->GetInputCount());
+    SIMPLE_LOG_DEBUG("GraphHelper::Initialize End");
 }
 
 std::shared_ptr<PacketContext>
@@ -182,7 +184,7 @@ Status Graph::Initialize(std::shared_ptr<GraphSpec> graph_spec,
                          std::shared_ptr<MatrixDeviceRegistry> device_registry,
                          GRAPH_SCHEDULE_POLICY policy,
                          std::shared_ptr<ExecutorOption> executor_option) {
-
+    SIMPLE_LOG_DEBUG("Graph::Initialize Start");
     auto spec_view = std::make_shared<GraphSpecView>(graph_spec);
     auto status    = spec_view->Initialize();
     if (!status.IsOk()) {
@@ -197,8 +199,9 @@ Status Graph::Initialize(std::shared_ptr<GraphSpec> graph_spec,
     }
 
     auto global_thread_pool = std::make_shared<base::PipeManager>(4);
-    graph_view_             = std::make_shared<GraphView>(registry, device_registry);
-    status                  = graph_view_->Initialize(spec_view, global_thread_pool);
+    SIMPLE_LOG_DEBUG("create global_thread_pool: {}", static_cast<void*>(global_thread_pool.get()));
+    graph_view_ = std::make_shared<GraphView>(registry, device_registry);
+    status      = graph_view_->Initialize(spec_view, global_thread_pool);
     if (!status.IsOk()) {
         SIMPLE_LOG_ERROR("Spec view init failed. Err msg: {}", status.Msg());
         return status;
@@ -211,21 +214,27 @@ Status Graph::Initialize(std::shared_ptr<GraphSpec> graph_spec,
     }
 
     GraphPacketFinishedCallback callback = [=](const PacketContextPtr& ctx) {
+        SIMPLE_LOG_DEBUG("GraphPacketFinishedCallback[RemovePacketContextIfFinished] Start");
         RemovePacketContextIfFinished(ctx);
+        SIMPLE_LOG_DEBUG("GraphPacketFinishedCallback[RemovePacketContextIfFinished] End");
     };
 
     // FIXME: 根据配置选择使用的Scheduler
     switch (policy) {
         case GRAPH_SCH_ASYNC_ONE_THREAD:
             scheduler_ = std::make_shared<SchedulerOneThread>();
+            SIMPLE_LOG_DEBUG("policy: GRAPH_SCH_ASYNC_ONE_THREAD");
             break;
         case GRAPH_SCH_ASYNC_ORDER_PRESERVING:
             scheduler_ = std::make_shared<SchedulerAsyncOrderPreserving>(3, executor_option);
+            SIMPLE_LOG_DEBUG("policy: GRAPH_SCH_ASYNC_ORDER_PRESERVING");
             break;
         case GRAPH_SCH_ASYNC_NON_ORDER_PRESERVING:
             scheduler_ = std::make_shared<SchedulerAsync>(3);
+            SIMPLE_LOG_DEBUG("policy: GRAPH_SCH_ASYNC_NON_ORDER_PRESERVING");
             break;
         case GRAPH_SCH_ASYNC_ONE_THREAD_PER_INPUT_SOURCE:
+            SIMPLE_LOG_DEBUG("policy: GRAPH_SCH_ASYNC_ONE_THREAD_PER_INPUT_SOURCE");
             break;
     }
 
@@ -234,7 +243,7 @@ Status Graph::Initialize(std::shared_ptr<GraphSpec> graph_spec,
     scheduler_->Initialize();
 
     scheduler_->Start();
-
+    SIMPLE_LOG_DEBUG("Graph::Initialize End");
     return Status::OkStatus();
 }
 
