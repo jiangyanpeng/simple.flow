@@ -23,13 +23,16 @@ SchedulerAsync::SchedulerAsync(size_t executor_thread_num)
     : executor_thread_num_(executor_thread_num) {}
 
 Status SchedulerAsync::Initialize() {
+    SIMPLE_LOG_DEBUG("SchedulerAsync::Initialize Start");
     executor_         = std::make_shared<Executor>(executor_thread_num_);
     ready_task_queue_ = std::make_shared<ReadyTaskQueue>();
     topology_         = graph_view_->GetTopology();
+    SIMPLE_LOG_DEBUG("SchedulerAsync::Initialize End");
     return ready_task_queue_->Initialize();
 }
 
 void SchedulerAsync::DoSchedule() {
+    SIMPLE_LOG_DEBUG("SchedulerAsync::DoSchedule Start");
     pool_.Commit([&]() -> bool {
         while (!stop_) {
             auto t = ready_task_queue_->Top();
@@ -81,12 +84,14 @@ void SchedulerAsync::DoSchedule() {
         stopped_cd_.notify_one();
         return true;
     });
+    SIMPLE_LOG_DEBUG("SchedulerAsync::DoSchedule End");
 }
 
 std::set<size_t> SchedulerAsync::DoPropagate(const PacketPerNodeContextPtr& per_node_ctx,
                                              const std::shared_ptr<Node>& node) {
 
-
+    SIMPLE_LOG_DEBUG("SchedulerAsync::DoPropagate Start, per_node_ctx: {}",
+                     per_node_ctx->GetUniqueId());
     auto edges          = graph_view_->GetOutputEdges(node);
     auto packet_context = per_node_ctx->GetPacketContext();
     std::set<size_t> dst_ids;
@@ -113,11 +118,14 @@ std::set<size_t> SchedulerAsync::DoPropagate(const PacketPerNodeContextPtr& per_
     for (auto& v : per_node_ctx->outputs_) {
         v.clear();
     }
+    SIMPLE_LOG_DEBUG("SchedulerAsync::DoPropagate End");
     return dst_ids;
 }
 
 void SchedulerAsync::Start() {
+    SIMPLE_LOG_DEBUG("SchedulerAsync::Start Start");
     DoSchedule();
+    SIMPLE_LOG_DEBUG("SchedulerAsync::Start End");
 }
 
 void SchedulerAsync::Stop() {

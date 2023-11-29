@@ -12,7 +12,7 @@
 
 namespace flow {
 
-GraphView::GraphView(std::shared_ptr<MatrixElementaryRegistry> registry,
+GraphView::GraphView(std::shared_ptr<ElementaryRegistry> registry,
                      std::shared_ptr<DeviceRegistry> device_registry)
     : registry_(std::move(registry)), device_registry_(std::move(device_registry)) {}
 

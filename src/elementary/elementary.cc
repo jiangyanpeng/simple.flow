@@ -12,13 +12,11 @@ Status Elementary::GetContract(ElementaryContract* contract) {
 Status Elementary::Open(ElementaryContext* ctx) {
     UNUSED_WARN(ctx);
     SIMPLE_ASSERT(option_);
-    SIMPLE_LOG_TRACE("module-base-elem : [{}] opened.", GetId());
     return Status::OkStatus();
 }
 
 Status Elementary::Close(ElementaryContext* ctx) {
     UNUSED_WARN(ctx);
-    SIMPLE_LOG_TRACE("module-base-elem : [{}] closed.", GetId());
     return Status::OkStatus();
 }
 

@@ -123,7 +123,7 @@ private:
     std::shared_ptr<GraphSpec> spec;
 
 public:
-    std::shared_ptr<MatrixElementaryRegistry> registry;
+    std::shared_ptr<ElementaryRegistry> registry;
     std::shared_ptr<DeviceRegistry> device_registry;
 };
 
@@ -139,7 +139,7 @@ void GraphComplier::Init(const std::string& cur_path) {
 
     helper_ = std::make_shared<GraphHelper>(spec);
 
-    registry        = std::make_shared<MatrixElementaryRegistry>();
+    registry        = std::make_shared<ElementaryRegistry>();
     device_registry = std::make_shared<DeviceRegistry>();
 
     registry->RegisterElem<Elementary, ElementaryOption, InOutputHandler>("Elementary", "cpu");
@@ -240,7 +240,7 @@ int main() {
     gc_->Init("cur_path");
 
     auto helper = gc_->GetGraph();
-    helper->Initialize(gc_->registry, gc_->device_registry, GRAPH_SCH_ASYNC_ORDER_PRESERVING);
+    helper->Initialize(gc_->registry, gc_->device_registry, GRAPH_SCH_ASYNC_ONE_THREAD);
     helper->Start();
 
     {

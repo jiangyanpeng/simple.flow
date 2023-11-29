@@ -29,6 +29,7 @@ void DeviceCPU::SetThreadPool(const std::shared_ptr<base::PipeManager>& pool) {
 }
 
 void DeviceCPU::ComputeSync(Function f) {
+    SIMPLE_LOG_DEBUG("DeviceCPU::ComputeSync Commit function...");
     auto result = thread_pool_->Commit(f);
     result.wait();
 }

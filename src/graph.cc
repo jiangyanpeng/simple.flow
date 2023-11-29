@@ -22,7 +22,7 @@ public:
     ~Graph();
 
     Status Initialize(std::shared_ptr<GraphSpec> graph_spec,
-                      std::shared_ptr<MatrixElementaryRegistry> registry,
+                      std::shared_ptr<ElementaryRegistry> registry,
                       std::shared_ptr<DeviceRegistry> device_registry,
                       GRAPH_SCHEDULE_POLICY policy,
                       std::shared_ptr<ExecutorOption> executor_option);
@@ -147,7 +147,7 @@ void GraphHelper::Stop() {
 }
 
 
-void GraphHelper::Initialize(const std::shared_ptr<MatrixElementaryRegistry>& registry,
+void GraphHelper::Initialize(const std::shared_ptr<ElementaryRegistry>& registry,
                              const std::shared_ptr<DeviceRegistry>& device_registry,
                              GRAPH_SCHEDULE_POLICY policy,
                              std::shared_ptr<ExecutorOption> executor_option) {
@@ -182,7 +182,7 @@ std::shared_ptr<InputSourceContext> GraphHelper::CreateInputSourceContext() {
 }
 
 Status Graph::Initialize(std::shared_ptr<GraphSpec> graph_spec,
-                         std::shared_ptr<MatrixElementaryRegistry> registry,
+                         std::shared_ptr<ElementaryRegistry> registry,
                          std::shared_ptr<DeviceRegistry> device_registry,
                          GRAPH_SCHEDULE_POLICY policy,
                          std::shared_ptr<ExecutorOption> executor_option) {
