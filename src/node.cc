@@ -13,22 +13,22 @@
 namespace flow {
 void Node::Process() {
     do {
-        SIMPLE_LOG_TRACE("node process: node_id [{}], node name [{}]", GetId(), GetName());
+        SIMPLE_LOG_DEBUG("Node::Process: node_id [{}], node name [{}]", GetId(), GetName());
         PacketPerNodeContextPtr node_ctx = nullptr;
         node_ctx                         = nullptr;
         {
             std::unique_lock<std::mutex> lk(mtx_);
             if (inouts_queue_.empty()) {
-                SIMPLE_LOG_TRACE("node [{}], inout_queue empty", GetName());
+                SIMPLE_LOG_DEBUG("node [{}], inout_queue empty", GetName());
                 break;
             }
-            SIMPLE_LOG_TRACE("node [{}], inout_queue size: {}", GetName(), inouts_queue_.size());
+            SIMPLE_LOG_DEBUG("node [{}], inout_queue size: {}", GetName(), inouts_queue_.size());
 
             node_ctx = inouts_queue_.front();
             inouts_queue_.pop();
         }
-        SIMPLE_LOG_TRACE(
-            "node process: node_id [{}], node name [{}], ctx unique_id: {}, thread id: {}",
+        SIMPLE_LOG_DEBUG(
+            "Node::Process: node_id [{}], node name [{}], ctx unique_id: {}, thread id: {}",
             GetId(),
             GetName(),
             node_ctx->GetUniqueId(),
@@ -48,7 +48,7 @@ void Node::Process() {
             for (size_t j = 0; j < node_ctx->inputs_.size(); ++j) {
                 auto port = input_ports_[j];
                 if (!port->IsOptional()) {
-                    SIMPLE_LOG_TRACE("node [{}], node_ctx->inputs_[{}].size: {}",
+                    SIMPLE_LOG_DEBUG("node [{}], node_ctx->inputs_[{}].size: {}",
                                      GetName(),
                                      j,
                                      node_ctx->inputs_[j].size());
@@ -98,17 +98,18 @@ void Node::Process() {
 }
 
 void Node::ProcessCtx(const std::shared_ptr<PacketPerNodeContext>& ctx) {
-    SIMPLE_LOG_TRACE("node process ctx: node_id [{}], node name [{}]", GetId(), GetName());
+    SIMPLE_LOG_DEBUG("Node::ProcessCtx Start: node_id [{}], node name [{}]", GetId(), GetName());
     PacketPerNodeContextPtr node_ctx = nullptr;
     node_ctx                         = ctx;
 
-    SIMPLE_LOG_TRACE("node process: node_id [{}], node name [{}], ctx unique_id: {}, thread id: {}",
-                     GetId(),
-                     GetName(),
-                     node_ctx->GetUniqueId(),
-                     std::hash<std::thread::id>{}(std::this_thread::get_id()));
+    SIMPLE_LOG_DEBUG(
+        "Node::ProcessCtx: node_id [{}], node name [{}], ctx unique_id: {}, thread id: {}",
+        GetId(),
+        GetName(),
+        node_ctx->GetUniqueId(),
+        std::hash<std::thread::id>{}(std::this_thread::get_id()));
     if (GetId() == 8) {
-        SIMPLE_LOG_TRACE("node process ctx: node_id [{}], node name [{}]", GetId(), GetName());
+        SIMPLE_LOG_DEBUG("Node::ProcessCtx: node_id [{}], node name [{}]", GetId(), GetName());
     }
 
     auto package_cnt = 0;
@@ -124,7 +125,7 @@ void Node::ProcessCtx(const std::shared_ptr<PacketPerNodeContext>& ctx) {
         for (size_t j = 0; j < node_ctx->inputs_.size(); ++j) {
             auto port = input_ports_[j];
             if (!port->IsOptional()) {
-                SIMPLE_LOG_TRACE("node [{}], node_ctx->inputs_[{}].size: {}",
+                SIMPLE_LOG_DEBUG("node [{}], node_ctx->inputs_[{}].size: {}",
                                  GetName(),
                                  j,
                                  node_ctx->inputs_[j].size());
@@ -146,12 +147,12 @@ void Node::ProcessCtx(const std::shared_ptr<PacketPerNodeContext>& ctx) {
         int index = 0;
         if (elementarys_.size() > 1) {
             index = rand() % elementarys_.size();
-            SIMPLE_LOG_TRACE("elementary index: {}", index);
+            SIMPLE_LOG_DEBUG("elementary index: {}", index);
         }
         elementarys_[index]->GetDevice()->ComputeSync([&]() {
             auto s = elementarys_[index]->Process(&ctx);
             if (!s.IsOk()) {
-                SIMPLE_LOG_ERROR("Elementary process failed. Node name: [{}], Node: [{}], ElemId: "
+                SIMPLE_LOG_ERROR("Node::ProcessCtx failed. Node name: [{}], Node: [{}], ElemId: "
                                  "[{}]. ErrCode: {}, ErrMsg: {}",
                                  GetName(),
                                  GetId(),
@@ -181,8 +182,8 @@ void Node::ProcessCtx(const std::shared_ptr<PacketPerNodeContext>& ctx) {
 }
 
 Status Node::Initialize(std::shared_ptr<NodeSpec> spec,
-                        const std::shared_ptr<MatrixElementaryRegistry>& registry) {
-    SIMPLE_LOG_DEBUG("Node::Initialize Start");
+                        const std::shared_ptr<ElementaryRegistry>& registry) {
+    SIMPLE_LOG_DEBUG("Node::Initialize Start. NodeSpec: {}", spec->to_string());
     spec_ = std::move(spec);
     SIMPLE_ASSERT(weak_graph_.lock());
     id_               = spec_->node_id;
@@ -196,6 +197,7 @@ Status Node::Initialize(std::shared_ptr<NodeSpec> spec,
         elem_type = spec_->elementary_type;
     }
 
+    SIMPLE_LOG_DEBUG("Node::Initialize elem_type: {}", elem_type.c_str());
     auto elem_objects = registry->InvokeCreate(elem_type, "CPU");
 
     // 创建ElementaryOption
@@ -310,6 +312,7 @@ bool Node::IsNodeContextReady(const PacketPerNodeContextPtr& ctx) {
 }
 
 Status Node::Open() {
+    SIMPLE_LOG_DEBUG("Node::Open Start");
     std::vector<std::shared_ptr<Package>> inputs_data;
     std::vector<std::shared_ptr<Package>> outputs_data;
     std::shared_ptr<Stream> stream(nullptr);
@@ -322,6 +325,7 @@ Status Node::Open() {
             return s;
         }
     }
+    SIMPLE_LOG_DEBUG("Node::Open End");
     return Status::OkStatus();
 }
 

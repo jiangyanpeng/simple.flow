@@ -105,7 +105,7 @@ public:
 
     void Stop();
 
-    void Initialize(const std::shared_ptr<MatrixElementaryRegistry>& registry,
+    void Initialize(const std::shared_ptr<ElementaryRegistry>& registry,
                     const std::shared_ptr<DeviceRegistry>& device_registry,
                     GRAPH_SCHEDULE_POLICY policy                    = GRAPH_SCH_ASYNC_ONE_THREAD,
                     std::shared_ptr<ExecutorOption> executor_option = nullptr);

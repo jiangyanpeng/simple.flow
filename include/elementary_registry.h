@@ -14,16 +14,16 @@ public:
     CreateFunction<InOutputHandlerName> handler_create{};
 };
 
-class MatrixElementaryRegistry {
+class ElementaryRegistry {
 public:
     using ResultTuple         = std::tuple<std::shared_ptr<Elementary>,
                                    std::shared_ptr<ElementaryOption>,
                                    std::shared_ptr<InOutputHandler>>;
     using GetContractFunction = std::function<Status(ElementaryContract*)>;
 
-    MatrixElementaryRegistry() = default;
+    ElementaryRegistry() = default;
 
-    ~MatrixElementaryRegistry() = default;
+    ~ElementaryRegistry() = default;
 
     void RegisterGetContract(const std::string& name, GetContractFunction func);
 

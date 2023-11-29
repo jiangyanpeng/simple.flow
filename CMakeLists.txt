@@ -11,7 +11,7 @@ OPTION(BUILD_USE_AVX           "Use AVX"                    OFF)
 OPTION(BUILD_TEST              "Build GooleTest"            OFF)
 OPTION(BUILD_LOG               "Build spdlog"               OFF)
 
-SET(SIMPLE_FLOW_VERSION "1.0.0")
+SET(SIMPLE_FLOW_VERSION "1.0.1")
 IF(BUILD_LOG)
     # SET(CONFIG_SIMPLE_BASE_ENABLE_SPDLOG 1)
     ADD_DEFINITIONS(-DCONFIG_SIMPLE_BASE_ENABLE_SPDLOG)

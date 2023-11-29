@@ -31,7 +31,7 @@ public:
     virtual Status Open();
 
     virtual Status Initialize(std::shared_ptr<NodeSpec> spec,
-                              const std::shared_ptr<MatrixElementaryRegistry>& registry);
+                              const std::shared_ptr<ElementaryRegistry>& registry);
 
     virtual void Process();
 

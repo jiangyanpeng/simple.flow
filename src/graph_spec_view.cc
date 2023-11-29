@@ -52,7 +52,7 @@ Status GraphSpecView::Initialize() {
         SIMPLE_LOG_INFO(
             "need_keep_order_node, ori_node_name: {}, node id: {}", it->first, it->second);
     }
-    SIMPLE_LOG_DEBUG("GraphSpecView::Initialize Start");
+    SIMPLE_LOG_DEBUG("GraphSpecView::Initialize End");
     return GenerateEdgeSpec();
 }
 

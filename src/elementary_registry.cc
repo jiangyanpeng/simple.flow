@@ -1,20 +1,20 @@
 #include "elementary_registry.h"
 
 namespace flow {
-void MatrixElementaryRegistry::RegisterGetContract(
+void ElementaryRegistry::RegisterGetContract(
     const std::string& name,
-    MatrixElementaryRegistry::GetContractFunction func) {
+    ElementaryRegistry::GetContractFunction func) {
 
     get_contract_functions_.Register(name, std::move(func));
 }
 
-Status MatrixElementaryRegistry::InvokeGetContract(const std::string& name,
+Status ElementaryRegistry::InvokeGetContract(const std::string& name,
                                                    ElementaryContract* contract) {
     return get_contract_functions_.Invoke(name, std::forward<ElementaryContract*>(contract));
 }
 
-MatrixElementaryRegistry::ResultTuple
-MatrixElementaryRegistry::InvokeCreate(const std::string& name, const std::string& device_type) {
+ElementaryRegistry::ResultTuple
+ElementaryRegistry::InvokeCreate(const std::string& name, const std::string& device_type) {
     auto h_elem   = create_functions_.Invoke(name + "_elem");
     auto h_option = create_functions_.Invoke(name + "_option");
     auto h_input  = create_functions_.Invoke(name + "_inout_put");
