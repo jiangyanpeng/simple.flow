@@ -1,6 +1,6 @@
 # Overview
 
-![avatar]()
+![avatar](docs/simple.flow.jpg)
 
 ## 框架简介
 
@@ -49,4 +49,4 @@
 * `<subject>`：提交的主题信息，**必填**.
 * `<scope>`：提交涉及的范围，可选（不填时要连同括号一起省略）
 
-reference: 
+reference: (https://github.com/google/mediapipe)
