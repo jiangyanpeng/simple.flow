@@ -3,7 +3,7 @@
 #include "node.h"
 #include "core/contract_coding.h"
 #include "graph.h"
-#include "inoutput_handler.h"
+#include "inout_handler.h"
 
 #include <log.h>
 #include <stdlib.h>
@@ -315,8 +315,8 @@ Status Node::Open() {
     SIMPLE_LOG_DEBUG("Node::Open Start");
     std::vector<std::shared_ptr<Package>> inputs_data;
     std::vector<std::shared_ptr<Package>> outputs_data;
-    std::shared_ptr<Stream> stream(nullptr);
-    CalculatorContext ctx(inputs_data, outputs_data, shared_from_this(), stream);
+    std::shared_ptr<Host> host(nullptr);
+    CalculatorContext ctx(inputs_data, outputs_data, shared_from_this(), host);
     for (auto& e : calculators_) {
         e->SetCalculatorOption(calculator_option_);
         auto s = e->Open(&ctx);

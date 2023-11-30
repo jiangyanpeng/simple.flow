@@ -34,7 +34,7 @@ class CalculatorOption;
  * id在Graph中全局唯一，自动生成，描述文件中不配置
  */
 class DeviceSpec final {
-    friend class GraphSpecView;
+    friend class GraphViewSpec;
 
 public:
     DeviceSpec()  = default;
@@ -66,7 +66,7 @@ public:
  */
 class ElemSpec final {
     friend class NodeSpec;
-    friend class GraphSpecView;
+    friend class GraphViewSpec;
 
 public:
     ElemSpec()  = default;

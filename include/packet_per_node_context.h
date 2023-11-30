@@ -1,15 +1,15 @@
 #ifndef SIMPLE_FLOW_PACKET_PER_NODE_CONTEXT_H_
 #define SIMPLE_FLOW_PACKET_PER_NODE_CONTEXT_H_
 
-#include "device/stream.h"
+#include "device/host.h"
 #include "inout.h"
-#include "inoutput_handler.h"
-#include "input_source_context.h"
+#include "inout_handler.h"
+#include "stream/input_stream_context.h"
 
 #include <vector>
 
 namespace flow {
-class InputSourceContext;
+class InputStreamContext;
 class PacketContext;
 
 class Notifier;
@@ -34,7 +34,7 @@ public:
 
     void SetPacketContext(std::shared_ptr<PacketContext> pkt_ctx);
 
-    void SetInOutputHandler(const std::shared_ptr<InOutputHandler>& input_handler);
+    void SetInOutputHandler(const std::shared_ptr<InOutHandler>& input_handler);
 
     std::shared_ptr<PacketContext> GetPacketContext() const;
 
@@ -58,13 +58,13 @@ public:
 
     const std::vector<PackageGroup>& GetOutputs() const;
 
-    void SetStream(std::shared_ptr<Stream> stream);
+    void SetStream(std::shared_ptr<Host> host);
 
-    const std::shared_ptr<Stream>& GetStream() const;
+    const std::shared_ptr<Host>& GetStream() const;
 
     void SetRefPackageShape(const std::shared_ptr<PackageShape>& shape);
 
-    std::shared_ptr<InputSourceContext> GetInputSourceContext() const;
+    std::shared_ptr<InputStreamContext> GetInputSourceContext() const;
 
     void SetNotifier(std::shared_ptr<Notifier> notifier);
 
@@ -86,8 +86,8 @@ public:
 
     std::weak_ptr<PacketContext> packet_ctx_;
     std::weak_ptr<Node> node_;
-    std::weak_ptr<InOutputHandler> inoutput_handler_;
-    std::shared_ptr<Stream> stream_;
+    std::weak_ptr<InOutHandler> inoutput_handler_;
+    std::shared_ptr<Host> host_;
 
     std::shared_ptr<PackageShape> ref_shape_;
     int64_t unique_id_{0};

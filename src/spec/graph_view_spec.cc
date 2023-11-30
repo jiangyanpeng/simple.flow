@@ -1,4 +1,4 @@
-#include "graph_spec_view.h"
+#include "spec/graph_view_spec.h"
 #include "core/contract_coding.h"
 #include "graph_view.h"
 
@@ -9,10 +9,10 @@
 
 namespace flow {
 
-GraphSpecView::GraphSpecView(std::shared_ptr<GraphSpec> spec) : ori_graph_spec_(std::move(spec)) {}
+GraphViewSpec::GraphViewSpec(std::shared_ptr<GraphSpec> spec) : ori_graph_spec_(std::move(spec)) {}
 
-Status GraphSpecView::Initialize() {
-    SIMPLE_LOG_DEBUG("GraphSpecView::Initialize Start");
+Status GraphViewSpec::Initialize() {
+    SIMPLE_LOG_DEBUG("GraphViewSpec::Initialize Start");
     SIMPLE_ASSERT(ori_graph_spec_);
 
     // Device信息补齐
@@ -52,11 +52,11 @@ Status GraphSpecView::Initialize() {
         SIMPLE_LOG_INFO(
             "need_keep_order_node, ori_node_name: {}, node id: {}", it->first, it->second);
     }
-    SIMPLE_LOG_DEBUG("GraphSpecView::Initialize End");
+    SIMPLE_LOG_DEBUG("GraphViewSpec::Initialize End");
     return GenerateEdgeSpec();
 }
 
-Status GraphSpecView::AttachNodeNameAndId(std::string name, size_t id) {
+Status GraphViewSpec::AttachNodeNameAndId(std::string name, size_t id) {
     if (node_name_to_node_id_.end() == node_name_to_node_id_.find(name)) {
         node_name_to_node_id_[name] = id;
         return Status::OkStatus();
@@ -68,7 +68,7 @@ Status GraphSpecView::AttachNodeNameAndId(std::string name, size_t id) {
     }
 }
 
-Status GraphSpecView::AddNodeSpec(std::shared_ptr<NodeSpec> spec) {
+Status GraphViewSpec::AddNodeSpec(std::shared_ptr<NodeSpec> spec) {
     if (nodes_.end() == nodes_.find(spec->GetName())) {
         nodes_[spec->GetName()] = std::move(spec);
         return Status::OkStatus();
@@ -80,7 +80,7 @@ Status GraphSpecView::AddNodeSpec(std::shared_ptr<NodeSpec> spec) {
     }
 }
 
-Status GraphSpecView::AddDeviceSpec(std::shared_ptr<DeviceSpec> spec) {
+Status GraphViewSpec::AddDeviceSpec(std::shared_ptr<DeviceSpec> spec) {
     if (devices_.end() == devices_.find(spec->Name())) {
         devices_[spec->Name()] = std::move(spec);
         return Status::OkStatus();
@@ -92,11 +92,11 @@ Status GraphSpecView::AddDeviceSpec(std::shared_ptr<DeviceSpec> spec) {
     }
 }
 
-Status GraphSpecView::Optimize() {
+Status GraphViewSpec::Optimize() {
     return Status();
 }
 
-Status GraphSpecView::AddSubGraph(std::shared_ptr<GraphSpec> spec) {
+Status GraphViewSpec::AddSubGraph(std::shared_ptr<GraphSpec> spec) {
     UNUSED_WARN(spec);
     return Status();
 }
@@ -110,7 +110,7 @@ Status GraphSpecView::AddSubGraph(std::shared_ptr<GraphSpec> spec) {
  *  4. Node的至少一个OutputPort有link
  * @return
  */
-Status GraphSpecView::GenerateEdgeSpec() {
+Status GraphViewSpec::GenerateEdgeSpec() {
     // 遍历获取所有的link(InoutSpec->link)
     // 保存所有input spec 和 output spec
     // FIXME: node_spec使用shared_ptr，减少不必要的拷贝
@@ -195,7 +195,7 @@ Status GraphSpecView::GenerateEdgeSpec() {
     return Status::OkStatus();
 }
 
-std::vector<std::shared_ptr<NodeSpec>> GraphSpecView::GetEdgeRelatedNode(size_t id) const {
+std::vector<std::shared_ptr<NodeSpec>> GraphViewSpec::GetEdgeRelatedNode(size_t id) const {
     auto r = edges_.find(id);
     if (r == edges_.end()) {
         // ERROR
@@ -208,25 +208,25 @@ std::vector<std::shared_ptr<NodeSpec>> GraphSpecView::GetEdgeRelatedNode(size_t 
     return std::move(result);
 }
 
-const std::map<GraphSpecView::SpecName, std::shared_ptr<NodeSpec>>&
-GraphSpecView::GetNodeSpecs() const {
+const std::map<GraphViewSpec::SpecName, std::shared_ptr<NodeSpec>>&
+GraphViewSpec::GetNodeSpecs() const {
     return nodes_;
 }
 
-const std::map<std::string, size_t> GraphSpecView::GetNodeSpecNameAndId() const {
+const std::map<std::string, size_t> GraphViewSpec::GetNodeSpecNameAndId() const {
     return node_name_to_node_id_;
 }
 
-const std::map<GraphSpecView::SpecName, std::shared_ptr<DeviceSpec>>&
-GraphSpecView::GetDeviceSpecs() const {
+const std::map<GraphViewSpec::SpecName, std::shared_ptr<DeviceSpec>>&
+GraphViewSpec::GetDeviceSpecs() const {
     return devices_;
 }
 
-const std::map<size_t, std::shared_ptr<EdgeSpec>>& GraphSpecView::GetEdgeSpecs() const {
+const std::map<size_t, std::shared_ptr<EdgeSpec>>& GraphViewSpec::GetEdgeSpecs() const {
     return edges_;
 }
 
-std::vector<size_t> GraphSpecView::GetOutputEdgeIdWithNodeId(size_t id) const {
+std::vector<size_t> GraphViewSpec::GetOutputEdgeIdWithNodeId(size_t id) const {
     auto r = node_id_to_output_edge_id_map_.equal_range(id);
     SIMPLE_ASSERT(r.first != r.second);
     std::vector<size_t> result;
@@ -236,7 +236,7 @@ std::vector<size_t> GraphSpecView::GetOutputEdgeIdWithNodeId(size_t id) const {
     return std::move(result);
 }
 
-std::vector<size_t> GraphSpecView::GetInputEdgeIdWithNodeId(size_t id) const {
+std::vector<size_t> GraphViewSpec::GetInputEdgeIdWithNodeId(size_t id) const {
     auto r = node_id_to_input_edge_id_map_.equal_range(id);
     SIMPLE_ASSERT(r.first != r.second);
     std::vector<size_t> result;
@@ -246,7 +246,7 @@ std::vector<size_t> GraphSpecView::GetInputEdgeIdWithNodeId(size_t id) const {
     return std::move(result);
 }
 
-Status GraphSpecView::ParsingNodeSpec(const std::shared_ptr<NodeSpec>& spec,
+Status GraphViewSpec::ParsingNodeSpec(const std::shared_ptr<NodeSpec>& spec,
                                       size_t index,
                                       const std::string& prefix_name) {
     spec->SetId(index);
@@ -281,7 +281,7 @@ Status GraphSpecView::ParsingNodeSpec(const std::shared_ptr<NodeSpec>& spec,
     return Status::OkStatus();
 }
 
-std::shared_ptr<GraphSpec> GraphSpecView::GetGraphSpe() const {
+std::shared_ptr<GraphSpec> GraphViewSpec::GetGraphSpe() const {
     return graph_spec_;
 }
 } // namespace flow

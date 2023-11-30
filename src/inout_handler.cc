@@ -1,5 +1,5 @@
 
-#include "inoutput_handler.h"
+#include "inout_handler.h"
 #include "node.h"
 #include "packet_context.h"
 #include "packet_per_node_context.h"
@@ -8,15 +8,15 @@
 
 
 namespace flow {
-bool InOutputHandler::IsReady(const std::shared_ptr<PacketPerNodeContext>& ctx) {
+bool InOutHandler::IsReady(const std::shared_ptr<PacketPerNodeContext>& ctx) {
     return IsInputReady(ctx);
 }
 
-void InOutputHandler::SetNode(const std::shared_ptr<Node>& node) {
+void InOutHandler::SetNode(const std::shared_ptr<Node>& node) {
     node_ = node;
 }
 
-bool InOutputHandler::IsOutputReady(const std::shared_ptr<PacketPerNodeContext>& ctx) {
+bool InOutHandler::IsOutputReady(const std::shared_ptr<PacketPerNodeContext>& ctx) {
     auto outputs = ctx->GetOutputs();
     auto node    = node_.lock();
     SIMPLE_ASSERT(node);
@@ -60,7 +60,7 @@ bool InOutputHandler::IsOutputReady(const std::shared_ptr<PacketPerNodeContext>&
     return false;
 }
 
-bool InOutputHandler::IsInputReady(const std::shared_ptr<PacketPerNodeContext>& ctx) {
+bool InOutHandler::IsInputReady(const std::shared_ptr<PacketPerNodeContext>& ctx) {
     auto inputs = ctx->GetInputs();
     bool ready  = true;
     auto node   = node_.lock();

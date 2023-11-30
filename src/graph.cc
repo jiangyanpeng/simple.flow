@@ -120,7 +120,7 @@ void GraphHelper::AddCallFunct(const AsyncResultFullFunc& funct) {
     graph_->AddFullCallFunct(funct);
 }
 
-void GraphHelper::AddSkipPacket(std::shared_ptr<InputSourceContext>& source,
+void GraphHelper::AddSkipPacket(std::shared_ptr<InputStreamContext>& source,
                                 const std::shared_ptr<Packet>& pkt) {
     source->AddSkipPktId(graph_->stay_order_node_ids_, pkt->GetId());
 }
@@ -155,7 +155,7 @@ void GraphHelper::Initialize(const std::shared_ptr<CalculatorRegistry>& registry
     graph_ = std::make_shared<Graph>();
     graph_->Initialize(graph_spec_, registry, device_registry, policy, executor_option);
     graph_->OpenAllNodes();
-    input_source_manager_ = std::make_shared<InputSourceManager>();
+    input_source_manager_ = std::make_shared<InputStreamManager>();
     input_source_manager_->SetGraphInputCount(graph_->GetInputCount());
     SIMPLE_LOG_DEBUG("GraphHelper::Initialize End");
 }
@@ -177,7 +177,7 @@ std::vector<PackageGroup> GraphHelper::GetResult(size_t pkt_id) {
     return graph_->GetResult(pkt_id);
 }
 
-std::shared_ptr<InputSourceContext> GraphHelper::CreateInputSourceContext() {
+std::shared_ptr<InputStreamContext> GraphHelper::CreateInputSourceContext() {
     return input_source_manager_->GenerateSourceContext();
 }
 
@@ -187,14 +187,14 @@ Status Graph::Initialize(std::shared_ptr<GraphSpec> graph_spec,
                          GRAPH_SCHEDULE_POLICY policy,
                          std::shared_ptr<ExecutorOption> executor_option) {
     SIMPLE_LOG_DEBUG("Graph::Initialize Start");
-    auto spec_view = std::make_shared<GraphSpecView>(graph_spec);
-    auto status    = spec_view->Initialize();
+    auto view_spec = std::make_shared<GraphViewSpec>(graph_spec);
+    auto status    = view_spec->Initialize();
     if (!status.IsOk()) {
         SIMPLE_LOG_ERROR("Spec view init failed. Err msg: {}", status.Msg());
         return status;
     }
 
-    status = spec_view->Optimize();
+    status = view_spec->Optimize();
     if (!status.IsOk()) {
         SIMPLE_LOG_ERROR("Spec view optimize failed. Err msg: {}", status.Msg());
         return status;
@@ -203,7 +203,7 @@ Status Graph::Initialize(std::shared_ptr<GraphSpec> graph_spec,
     auto global_thread_pool = std::make_shared<base::PipeManager>(4);
     SIMPLE_LOG_DEBUG("create global_thread_pool: {}", static_cast<void*>(global_thread_pool.get()));
     graph_view_ = std::make_shared<GraphView>(registry, device_registry);
-    status      = graph_view_->Initialize(spec_view, global_thread_pool);
+    status      = graph_view_->Initialize(view_spec, global_thread_pool);
     if (!status.IsOk()) {
         SIMPLE_LOG_ERROR("Spec view init failed. Err msg: {}", status.Msg());
         return status;

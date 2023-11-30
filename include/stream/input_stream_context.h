@@ -1,5 +1,5 @@
-#ifndef ARCHITECT_INPUT_SOURCE_CONTEXT_H
-#define ARCHITECT_INPUT_SOURCE_CONTEXT_H
+#ifndef SIMPLE_FLOW_INPUT_STREAM_CONTEXT_H_
+#define SIMPLE_FLOW_INPUT_STREAM_CONTEXT_H_
 
 #include "core/collection.h"
 #include "core/status.h"
@@ -8,6 +8,7 @@
 #include "packet_per_node_context.h"
 
 #include <algorithm>
+#include <atomic>
 #include <map>
 #include <memory>
 #include <mutex>
@@ -89,11 +90,11 @@ private:
 
 class Packet;
 
-class InputSourceContext : public std::enable_shared_from_this<InputSourceContext> {
+class InputStreamContext : public std::enable_shared_from_this<InputStreamContext> {
 public:
-    InputSourceContext();
+    InputStreamContext();
 
-    virtual ~InputSourceContext() = default;
+    virtual ~InputStreamContext() = default;
 
     virtual std::shared_ptr<Packet> CreatePacket();
 
@@ -127,4 +128,4 @@ protected:
 };
 
 } // namespace flow
-#endif // ARCHITECT_INPUT_SOURCE_CONTEXT_H
+#endif // SIMPLE_FLOW_INPUT_STREAM_CONTEXT_H_

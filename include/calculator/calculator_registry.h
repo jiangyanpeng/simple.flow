@@ -3,7 +3,7 @@
 
 #include "core/function_registry.h"
 #include "calculator/calculator.h"
-#include "inoutput_handler.h"
+#include "inout_handler.h"
 
 namespace flow {
 template <typename ElemName, typename OptionName, typename InOutputHandlerName>
@@ -18,7 +18,7 @@ class CalculatorRegistry {
 public:
     using ResultTuple         = std::tuple<std::shared_ptr<Calculator>,
                                    std::shared_ptr<CalculatorOption>,
-                                   std::shared_ptr<InOutputHandler>>;
+                                   std::shared_ptr<InOutHandler>>;
     using GetContractFunction = std::function<Status(CalculatorContract*)>;
 
     CalculatorRegistry() = default;

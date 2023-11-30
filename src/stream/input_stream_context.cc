@@ -1,28 +1,28 @@
 
-#include "input_source_context.h"
+#include "stream/input_stream_context.h"
 #include "packet.h"
 
 #include <log.h>
 
 namespace flow {
 
-InputSourceContext::InputSourceContext() = default;
+InputStreamContext::InputStreamContext() = default;
 
 
-uint8_t InputSourceContext::GetId() const {
+uint8_t InputStreamContext::GetId() const {
     return source_id_;
 }
 
-void InputSourceContext::SetId(uint8_t id) {
+void InputStreamContext::SetId(uint8_t id) {
     source_id_ = id;
 }
 
-bool InputSourceContext::AddSkipPktId(std::vector<size_t> node_ids, uint64_t pkt_id) {
+bool InputStreamContext::AddSkipPktId(std::vector<size_t> node_ids, uint64_t pkt_id) {
     order_information_.AddSkipPktId(node_ids, pkt_id);
     return true;
 }
 
-std::shared_ptr<Packet> InputSourceContext::CreatePacket() {
+std::shared_ptr<Packet> InputStreamContext::CreatePacket() {
     SIMPLE_ASSERT(input_count_ != 0);
     auto id = std::make_shared<InputPktId>(source_id_, packet_id_.fetch_add(1));
     std::shared_ptr<Packet> packet = std::make_shared<Packet>(id, input_count_);
@@ -30,7 +30,7 @@ std::shared_ptr<Packet> InputSourceContext::CreatePacket() {
     return packet;
 }
 
-void InputSourceContext::SetInputCount(size_t count) {
+void InputStreamContext::SetInputCount(size_t count) {
     input_count_ = count;
 }
 

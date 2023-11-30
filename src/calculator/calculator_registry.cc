@@ -20,9 +20,9 @@ CalculatorRegistry::InvokeCreate(const std::string& name, const std::string& dev
     auto h_input  = create_functions_.Invoke(name + "_inout_put");
     return std::make_tuple<std::shared_ptr<Calculator>,
                            std::shared_ptr<CalculatorOption>,
-                           std::shared_ptr<InOutputHandler>>(
+                           std::shared_ptr<InOutHandler>>(
         std::static_pointer_cast<Calculator>(h_elem),
         std::static_pointer_cast<CalculatorOption>(h_option),
-        std::static_pointer_cast<InOutputHandler>(h_input));
+        std::static_pointer_cast<InOutHandler>(h_input));
 }
 } // namespace flow

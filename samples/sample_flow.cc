@@ -142,7 +142,7 @@ void GraphComplier::Init(const std::string& cur_path) {
     registry        = std::make_shared<CalculatorRegistry>();
     device_registry = std::make_shared<DeviceRegistry>();
 
-    registry->Register<Calculator, CalculatorOption, InOutputHandler>("Calculator", "cpu");
+    registry->Register<Calculator, CalculatorOption, InOutHandler>("Calculator", "cpu");
 
 
     registry

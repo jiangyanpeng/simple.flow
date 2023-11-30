@@ -3,7 +3,7 @@
 
 #include "core/status.h"
 #include "core/tagged_object.h"
-#include "device/stream.h"
+#include "device/host.h"
 
 #include <functional>
 #include <manager/pipe_manager.h>
@@ -33,13 +33,13 @@ public:
 
     virtual void ComputeAsync(Function f) = 0;
 
-    virtual void Sync(std::shared_ptr<Stream> stream) = 0;
+    virtual void Sync(std::shared_ptr<Host> host) = 0;
 
     virtual void Sync() = 0;
 
     // virtual std::shared_ptr<DataMgrBase> GetAllocator() const;
 
-    virtual std::shared_ptr<Stream> GetStream() const;
+    virtual std::shared_ptr<Host> GetStream() const;
 
 private:
     // device 包含了计算资源和内存资源
@@ -60,7 +60,7 @@ public:
 
     void ComputeAsync(Function f) override;
 
-    void Sync(std::shared_ptr<Stream> stream) override;
+    void Sync(std::shared_ptr<Host> host) override;
 
     void Sync() override;
 

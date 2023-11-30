@@ -12,11 +12,11 @@ CalculatorContext::~CalculatorContext() {}
 CalculatorContext::CalculatorContext(std::vector<std::shared_ptr<Package>>& inputs_data,
                                      std::vector<std::shared_ptr<Package>>& outputs_data,
                                      std::shared_ptr<Node> node,
-                                     const std::shared_ptr<Stream>& stream)
+                                     const std::shared_ptr<Host>& host)
     : inputs_data_(inputs_data),
       outputs_data_(outputs_data),
       node_(std::move(node)),
-      stream_(stream) {}
+      host_(host) {}
 
 size_t CalculatorContext::GetInputIdWithTag(const std::string& tag) {
     return node_->GetInputPortIdWithTag(tag);
@@ -66,8 +66,8 @@ void CalculatorContext::AddSkipNode() {
     }
 }
 
-std::shared_ptr<Stream> CalculatorContext::GetStream() const {
-    return stream_;
+std::shared_ptr<Host> CalculatorContext::GetStream() const {
+    return host_;
 }
 
 bool CalculatorContext::IsInputOptional(const std::string& tag) {
@@ -92,7 +92,7 @@ std::shared_ptr<PacketPerNodeContext> CalculatorContext::GetPacketPerNodeContext
     return pernode_ctx_.lock();
 }
 
-std::shared_ptr<InputSourceContext> CalculatorContext::GetInputSourceContext() const {
+std::shared_ptr<InputStreamContext> CalculatorContext::GetInputSourceContext() const {
     return pernode_ctx_.lock()->GetInputSourceContext();
 }
 

@@ -2,10 +2,10 @@
 #define SIMPLE_FLOW_STREAM_H_
 
 namespace flow {
-class Stream {
+class Host {
 public:
-    Stream()          = default;
-    virtual ~Stream() = default;
+    Host()          = default;
+    virtual ~Host() = default;
 
     virtual bool Sync() = 0;
 

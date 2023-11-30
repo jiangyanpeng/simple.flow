@@ -2,7 +2,7 @@
 #define SIMPLE_FLOW_CALCULATOR_CONTEXT_H_
 
 #include "core/collection.h"
-#include "device/stream.h"
+#include "device/host.h"
 #include "inout.h"
 
 #include <vector>
@@ -15,14 +15,14 @@ class Node;
 
 class PacketPerNodeContext;
 
-class InputSourceContext;
+class InputStreamContext;
 
 class CalculatorContext {
 public:
     CalculatorContext(std::vector<std::shared_ptr<Package>>& inputs_data,
                       std::vector<std::shared_ptr<Package>>& outputs_data,
                       std::shared_ptr<Node> node,
-                      const std::shared_ptr<Stream>& stream);
+                      const std::shared_ptr<Host>& host);
 
     ~CalculatorContext();
 
@@ -46,7 +46,7 @@ public:
 
     void AddOutputData(size_t id, const std::shared_ptr<Package>& pkg);
 
-    std::shared_ptr<Stream> GetStream() const;
+    std::shared_ptr<Host> GetStream() const;
 
     void SetPacketPerNodeContext(const std::shared_ptr<PacketPerNodeContext>& ctx);
 
@@ -54,7 +54,7 @@ public:
 
     void SetPacketPerNodeRefShape(const std::shared_ptr<PackageShape>& shape);
 
-    std::shared_ptr<InputSourceContext> GetInputSourceContext() const;
+    std::shared_ptr<InputStreamContext> GetInputSourceContext() const;
 
     void AddSkipNode();
 
@@ -65,7 +65,7 @@ public:
 
 private:
     std::shared_ptr<Node> node_;
-    const std::shared_ptr<Stream>& stream_;
+    const std::shared_ptr<Host>& host_;
     std::weak_ptr<PacketPerNodeContext> pernode_ctx_;
 };
 

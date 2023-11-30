@@ -37,7 +37,7 @@ private:
     // outputs
     Collection<DataType> outputs_;
 
-    std::string input_handler_name_{"matrix::InOutputHandler"};
+    std::string input_handler_name_{"matrix::InOutHandler"};
     std::string elementary_name_{""};
     std::string elementary_option_name_{"matrix::CalculatorOption"};
     std::set<std::string> supported_device_;

@@ -1,5 +1,5 @@
-#ifndef SIMPLE_FLOW_GRAPH_SPEC_VIEW_H_
-#define SIMPLE_FLOW_GRAPH_SPEC_VIEW_H_
+#ifndef SIMPLE_FLOW_GRAPH_VIEW_SPEC_H_
+#define SIMPLE_FLOW_GRAPH_VIEW_SPEC_H_
 
 #include "core/status.h"
 #include "spec/graph_spec.h"
@@ -44,12 +44,12 @@ public:
  */
 class GraphView;
 
-class GraphSpecView {
+class GraphViewSpec {
 public:
     using SpecName = std::string;
-    explicit GraphSpecView(std::shared_ptr<GraphSpec> spec);
+    explicit GraphViewSpec(std::shared_ptr<GraphSpec> spec);
 
-    ~GraphSpecView() = default;
+    ~GraphViewSpec() = default;
 
     /**
      * 将外部配置生成的GraphSpec进行处理
@@ -108,4 +108,4 @@ private:
 };
 
 } // namespace flow
-#endif // SIMPLE_FLOW_GRAPH_SPEC_VIEW_H_
+#endif // SIMPLE_FLOW_GRAPH_VIEW_SPEC_H_

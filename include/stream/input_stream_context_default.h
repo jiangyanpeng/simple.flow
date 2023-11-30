@@ -1,14 +1,14 @@
-#ifndef SIMPLE_FLOW_INPUT_SOURCE_CONTEXT_DEFAULT_H_
-#define SIMPLE_FLOW_INPUT_SOURCE_CONTEXT_DEFAULT_H_
+#ifndef SIMPLE_FLOW_INPUT_STREAM_CONTEXT_DEFAULT_H_
+#define SIMPLE_FLOW_INPUT_STREAM_CONTEXT_DEFAULT_H_
 
-#include "input_source_context.h"
+#include "stream/input_stream_context.h"
 
 namespace flow {
-class InputSourceContextDefault : public InputSourceContext {
+class InputStreamContextDefault : public InputStreamContext {
 public:
-    InputSourceContextDefault() = default;
+    InputStreamContextDefault() = default;
 
-    ~InputSourceContextDefault() override = default;
+    ~InputStreamContextDefault() override = default;
 
 
     Status AddData(const std::string& tag, std::shared_ptr<void> d, size_t& id) override;
@@ -28,4 +28,4 @@ protected:
 };
 
 } // namespace flow
-#endif // SIMPLE_FLOW_INPUT_SOURCE_CONTEXT_DEFAULT_H_
+#endif // SIMPLE_FLOW_INPUT_STREAM_CONTEXT_DEFAULT_H_

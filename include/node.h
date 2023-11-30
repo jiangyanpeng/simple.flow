@@ -87,7 +87,7 @@ public:
     std::vector<std::shared_ptr<Calculator>> calculators_;
 
     std::shared_ptr<CalculatorOption> calculator_option_;
-    std::shared_ptr<InOutputHandler> inout_put_handler_;
+    std::shared_ptr<InOutHandler> inout_put_handler_;
 
     // 此处为队列，隔离Packet粒度的调度与Node的执行
     // FIXME: 此处应采用无锁队列

@@ -6,10 +6,10 @@
 namespace flow {
 class PacketPerNodeContext;
 class Node;
-class InOutputHandler {
+class InOutHandler {
 public:
-    InOutputHandler()  = default;
-    ~InOutputHandler() = default;
+    InOutHandler()  = default;
+    ~InOutHandler() = default;
 
     // deprecated
     bool IsReady(const std::shared_ptr<PacketPerNodeContext>& ctx);
@@ -22,7 +22,7 @@ protected:
     std::weak_ptr<Node> node_;
 };
 
-using InputHandler = InOutputHandler;
+using InputHandler = InOutHandler;
 
 } // namespace flow
 #endif // SIMPLE_FLOW_INPUT_OUTPUT_HANDLER_H_
