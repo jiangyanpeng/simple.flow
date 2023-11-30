@@ -86,7 +86,6 @@ public:
     CalculatorSpec()  = default;
     ~CalculatorSpec() = default;
 
-
     CalculatorSpec& SetDeviceName(std::string device_name);
     std::string GetDeviceName() const;
     size_t GetId() const;
@@ -122,15 +121,14 @@ public:
 
     NodeSpec& SetName(std::string name);
     NodeSpec& SetId(size_t id);
-    NodeSpec& SetElementaryType(std::string type);
-    NodeSpec& SetElementaryOptionType(std::string type);
-    NodeSpec& SetElementaryOptionJsonValue(std::string type);
+    NodeSpec& SetCalculatorType(std::string type);
+    NodeSpec& SetCalculatorOptionType(std::string type);
+    NodeSpec& SetCalculatorOptionJsonValue(std::string type);
     NodeSpec& SetInputHandler(std::string h);
     NodeSpec& SetOutputHandler(std::string h);
     NodeSpec& SetCalculatorOption(std::shared_ptr<CalculatorOption> o);
     NodeSpec& SetOrderPreserving(bool preserving);
     NodeSpec& AddInputSpec(InoutSpec spec);
-    //        InoutSpec& AddInputSpec();
     NodeSpec& AddOutputSpec(InoutSpec spec);
     NodeSpec& SetElementaryNum(size_t n);
     NodeSpec& AddElemSpec(const CalculatorSpec& spec);
@@ -189,9 +187,7 @@ public:
 
     std::vector<DeviceSpec>& GetDevices();
 
-    // 图的输入，体现到GraphNode为输出
     NodeSpec& AddGraphInputSpec(InoutSpec spec);
-    //        InoutSpec& AddInputSpec();
     NodeSpec& AddGraphOutputSpec(InoutSpec spec);
 
 private:

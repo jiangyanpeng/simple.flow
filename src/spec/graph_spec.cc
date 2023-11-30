@@ -89,17 +89,17 @@ NodeSpec& NodeSpec::SetId(size_t id) {
     return *this;
 }
 
-NodeSpec& NodeSpec::SetElementaryType(std::string type) {
+NodeSpec& NodeSpec::SetCalculatorType(std::string type) {
     calculator_type = std::move(type);
     return *this;
 }
 
-NodeSpec& NodeSpec::SetElementaryOptionType(std::string type) {
+NodeSpec& NodeSpec::SetCalculatorOptionType(std::string type) {
     calculator_option_type = std::move(type);
     return *this;
 }
 
-NodeSpec& NodeSpec::SetElementaryOptionJsonValue(std::string value) {
+NodeSpec& NodeSpec::SetCalculatorOptionJsonValue(std::string value) {
     calculator_option_json_value = std::move(value);
     return *this;
 }

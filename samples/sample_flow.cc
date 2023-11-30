@@ -154,7 +154,7 @@ void GraphComplier::Init(const std::string& cur_path) {
 
 bool GraphComplier::GraphInit(const std::string& cur_path) {
     spec = std::make_shared<GraphSpec>();
-    spec->SetName("Complier").SetElementaryType("").SetElementaryOptionType("");
+    spec->SetName("Complier").SetCalculatorType("").SetCalculatorOptionType("");
     spec->option = nullptr;
 
     // graph input
@@ -193,10 +193,10 @@ bool GraphComplier::GraphInit(const std::string& cur_path) {
     {
         auto node_spec1 = std::make_shared<NodeSpec>();
         node_spec1->SetName("fakeGraphComplier")
-            .SetElementaryType("ElemFakeGraphComplier")
-            .SetElementaryOptionType("ElemFakeGraphComplierOption");
+            .SetCalculatorType("ElemFakeGraphComplier")
+            .SetCalculatorOptionType("ElemFakeGraphComplierOption");
 
-        node_spec1->SetElementaryOptionJsonValue("");
+        node_spec1->SetCalculatorOptionJsonValue("");
         node_spec1->SetOrderPreserving(true);
 
         node_spec1->AddSkipPacketNode("crop");
