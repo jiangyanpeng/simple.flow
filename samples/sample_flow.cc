@@ -11,25 +11,25 @@
 #include <log.h>
 
 namespace flow {
-class ElemFakeGraphComplierOption : public CalculatorOption {
+class GraphComplierOption : public CalculatorOption {
 public:
-    ~ElemFakeGraphComplierOption() override = default;
+    ~GraphComplierOption() override = default;
     std::vector<std::string> models_path_;
     virtual bool Parse(std::string& json_str);
 };
 
-bool ElemFakeGraphComplierOption::Parse(std::string& json_str) {
+bool GraphComplierOption::Parse(std::string& json_str) {
     // do somthing
     return true;
 }
 
-class ElemFakeGraphComplier : public Calculator {
+class GraphComplier : public Calculator {
 public:
-    ElemFakeGraphComplier();
-    static constexpr const char* kElemName    = "ElemFakeGraphComplier";
-    static constexpr const char* kInput       = "IN_IMAGE_VECTOR";
-    static constexpr const char* kOutput      = "OUT_ACTION_DETECTION_RESULT";
-    virtual ~ElemFakeGraphComplier() override = default;
+    GraphComplier();
+    static constexpr const char* kElemName = "GraphComplier";
+    static constexpr const char* kInput    = "IN_IMAGE_VECTOR";
+    static constexpr const char* kOutput   = "OUT_ACTION_DETECTION_RESULT";
+    virtual ~GraphComplier() override      = default;
     Status GetContract(CalculatorContract* contract) override;
     Status Open(CalculatorContext* ctx) override;
     Status Close(CalculatorContext* ctx) override;
@@ -38,32 +38,32 @@ public:
 private:
     size_t input_image_index_{0};
     size_t reconginze_result_index{0};
-    std::shared_ptr<ElemFakeGraphComplierOption> nn_option_;
+    std::shared_ptr<GraphComplierOption> nn_option_;
 };
 
 
 
-ElemFakeGraphComplier::ElemFakeGraphComplier() {}
+GraphComplier::GraphComplier() {}
 
-Status ElemFakeGraphComplier::GetContract(CalculatorContract* contract) {
+Status GraphComplier::GetContract(CalculatorContract* contract) {
     if (!contract) {
-        return Status::InvalidArgument("elementary contract is null");
+        return Status::InvalidArgument("calculator contract is null");
     }
 
-    contract->AddInput(kInput, "::STImage")
+    contract->AddInput(kInput, "Image")
         .AddOutput(kOutput, "action_result_t")
         .SetCalculatorName(kElemName)
-        .SetCalculatorOptionName("ElemFakeGraphComplierOption")
+        .SetCalculatorOptionName("GraphComplierOption")
         .AddSupportedDevice("CPU")
         .AddSupportedDevice("GPU_CUDA");
 
     return Status::OkStatus();
 }
 
-Status ElemFakeGraphComplier::Open(CalculatorContext* ctx) {
-    SIMPLE_LOG_INFO("ElemFakeGraphComplier Open Start");
+Status GraphComplier::Open(CalculatorContext* ctx) {
+    SIMPLE_LOG_INFO("GraphComplier Open Start");
     if (!ctx) {
-        return Status::InvalidArgument("elementary context is null");
+        return Status::InvalidArgument("calculator context is null");
     }
 
     input_image_index_ = ctx->GetInputIdWithTag(kInput);
@@ -75,18 +75,18 @@ Status ElemFakeGraphComplier::Open(CalculatorContext* ctx) {
     if (reconginze_result_index < 0) {
         return Status(StatusCode::kNotFound, "output detection result of nn base not found");
     }
-    nn_option_ = std::dynamic_pointer_cast<ElemFakeGraphComplierOption>(option_);
+    nn_option_ = std::dynamic_pointer_cast<GraphComplierOption>(option_);
 
-    SIMPLE_LOG_INFO("ElemFakeGraphComplier Open End");
+    SIMPLE_LOG_INFO("GraphComplier Open End");
     return Status::OkStatus();
 }
 
-Status ElemFakeGraphComplier::Close(CalculatorContext* ctx) {
+Status GraphComplier::Close(CalculatorContext* ctx) {
     return Calculator::Close(ctx);
 }
 
-Status ElemFakeGraphComplier::Process(CalculatorContext* ctx) {
-    SIMPLE_LOG_DEBUG("ElemFakeGraphComplier::Process Start");
+Status GraphComplier::Process(CalculatorContext* ctx) {
+    SIMPLE_LOG_DEBUG("GraphComplier::Process Start");
     auto input_images_pkg   = ctx->GetInputData(input_image_index_);
     auto input_images_index = input_images_pkg->GetDataIndex();
     if (!input_images_pkg) {
@@ -96,23 +96,23 @@ Status ElemFakeGraphComplier::Process(CalculatorContext* ctx) {
     auto output_pkg = std::make_shared<Package>();
     output_pkg->SetShape(input_images_pkg->GetShape());
 
-    SIMPLE_LOG_INFO("ElemFakeGraphComplier::Process Success ...");
+    SIMPLE_LOG_INFO("GraphComplier::Process Success ...");
     for (auto index : input_images_index) {
         SIMPLE_LOG_INFO("************ Hello simple.flow *************");
         auto result = std::make_shared<bool>(true);
         output_pkg->AddData(index, std::move(result));
     }
     ctx->AddOutputData(reconginze_result_index, output_pkg);
-    SIMPLE_LOG_DEBUG("ElemFakeGraphComplier::Process End");
+    SIMPLE_LOG_DEBUG("GraphComplier::Process End");
     return Status::OkStatus();
 }
 } // namespace flow
 
 using namespace flow;
-class GraphComplier {
+class GraphComplierTest {
 public:
-    GraphComplier() {}
-    ~GraphComplier() {}
+    GraphComplierTest() {}
+    ~GraphComplierTest() {}
 
     void Init(const std::string& cur_path);
     std::shared_ptr<GraphHelper> GetGraph() const;
@@ -129,11 +129,11 @@ public:
 
 
 
-std::shared_ptr<GraphHelper> GraphComplier::GetGraph() const {
+std::shared_ptr<GraphHelper> GraphComplierTest::GetGraph() const {
     return helper_;
 }
 
-void GraphComplier::Init(const std::string& cur_path) {
+void GraphComplierTest::Init(const std::string& cur_path) {
 
     GraphInit(cur_path);
 
@@ -145,14 +145,13 @@ void GraphComplier::Init(const std::string& cur_path) {
     registry->Register<Calculator, CalculatorOption, InOutHandler>("Calculator", "cpu");
 
 
-    registry
-        ->Register<flow::ElemFakeGraphComplier, flow::ElemFakeGraphComplierOption, InputHandler>(
-            "ElemFakeGraphComplier", "cpu");
+    registry->Register<flow::GraphComplier, flow::GraphComplierOption, InputHandler>(
+        "GraphComplier", "cpu");
 
     device_registry->RegisterDevice<DeviceCPU>("CPU");
 }
 
-bool GraphComplier::GraphInit(const std::string& cur_path) {
+bool GraphComplierTest::GraphInit(const std::string& cur_path) {
     spec = std::make_shared<GraphSpec>();
     spec->SetName("Complier").SetCalculatorType("").SetCalculatorOptionType("");
     spec->option = nullptr;
@@ -193,8 +192,8 @@ bool GraphComplier::GraphInit(const std::string& cur_path) {
     {
         auto node_spec1 = std::make_shared<NodeSpec>();
         node_spec1->SetName("fakeGraphComplier")
-            .SetCalculatorType("ElemFakeGraphComplier")
-            .SetCalculatorOptionType("ElemFakeGraphComplierOption");
+            .SetCalculatorType("GraphComplier")
+            .SetCalculatorOptionType("GraphComplierOption");
 
         node_spec1->SetCalculatorOptionJsonValue("");
         node_spec1->SetOrderPreserving(true);
@@ -236,7 +235,7 @@ bool GraphComplier::GraphInit(const std::string& cur_path) {
     return true;
 }
 int main() {
-    auto gc_ = std::make_shared<GraphComplier>();
+    auto gc_ = std::make_shared<GraphComplierTest>();
     gc_->Init("cur_path");
 
     auto helper = gc_->GetGraph();
