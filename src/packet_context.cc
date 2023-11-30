@@ -57,11 +57,11 @@ bool PacketContext::IsFinished() const {
     return finished_;
 }
 
-std::shared_ptr<InputSourceContext> PacketContext::GetInputSourceContext() const {
+std::shared_ptr<InputStreamContext> PacketContext::GetInputSourceContext() const {
     return input_source_ctx_.lock();
 }
 
-void PacketContext::SetInputSourceContext(const std::shared_ptr<InputSourceContext>& ctx) {
+void PacketContext::SetInputSourceContext(const std::shared_ptr<InputStreamContext>& ctx) {
     input_source_ctx_ = ctx;
 }
 

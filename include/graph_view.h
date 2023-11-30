@@ -2,8 +2,8 @@
 #define SIMPLE_FLOW_GRAPH_VIEW_H_
 
 #include "device/device_registry.h"
-#include "graph_spec_view.h"
 #include "graph_topology.h"
+#include "spec/graph_view_spec.h"
 #include "node.h"
 
 #include <map>
@@ -29,12 +29,12 @@ struct Edge {
  */
 class GraphView : public std::enable_shared_from_this<GraphView> {
 public:
-    GraphView(std::shared_ptr<ElementaryRegistry> registry,
+    GraphView(std::shared_ptr<CalculatorRegistry> registry,
               std::shared_ptr<DeviceRegistry> device_registry);
 
     ~GraphView();
 
-    Status Initialize(std::shared_ptr<GraphSpecView> spec_view,
+    Status Initialize(std::shared_ptr<GraphViewSpec> view_spec,
                       const std::shared_ptr<base::PipeManager>& global_thread_pool);
 
 
@@ -71,8 +71,8 @@ public:
 
     std::map<size_t, std::shared_ptr<Edge>> edges_map_;
 
-    std::shared_ptr<GraphSpecView> spec_view_;
-    std::shared_ptr<ElementaryRegistry> registry_;
+    std::shared_ptr<GraphViewSpec> view_spec_;
+    std::shared_ptr<CalculatorRegistry> registry_;
     std::shared_ptr<DeviceRegistry> device_registry_;
 
     std::vector<std::shared_ptr<Node>>

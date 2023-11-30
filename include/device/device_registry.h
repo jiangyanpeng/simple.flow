@@ -1,7 +1,7 @@
 #ifndef SIMPLE_FLOW_DEVICE_REGISTRY_H_
 #define SIMPLE_FLOW_DEVICE_REGISTRY_H_
 
-#include "base/function_registry.h"
+#include "core/function_registry.h"
 #include "device/device.h"
 
 #include <memory>

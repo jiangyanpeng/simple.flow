@@ -11,11 +11,11 @@ void GraphNode::Process() {
             if (inouts_queue_.empty()) {
                 break;
             }
-            SIMPLE_LOG_TRACE("inout_queue size: {}", inouts_queue_.size());
+            SIMPLE_LOG_DEBUG("inout_queue size: {}", inouts_queue_.size());
             node_ctx = inouts_queue_.front();
             inouts_queue_.pop();
         }
-        SIMPLE_LOG_TRACE("graph node process: node_id [{}], pkt_id: {}",
+        SIMPLE_LOG_DEBUG("graph node process: node_id [{}], pkt_id: {}",
                          GetId(),
                          node_ctx->GetPacketContext()->GetId());
         // 已经处理完成
@@ -35,7 +35,7 @@ size_t GraphNode::GetOutputCount() const {
 void GraphNode::ProcessCtx(const std::shared_ptr<PacketPerNodeContext>& ctx) {
     PacketPerNodeContextPtr node_ctx = ctx;
 
-    SIMPLE_LOG_TRACE("graph node processctx: node_id [{}], pkt_id: {}",
+    SIMPLE_LOG_DEBUG("graph node processctx: node_id [{}], pkt_id: {}",
                      GetId(),
                      node_ctx->GetPacketContext()->GetId());
     // 已经处理完成

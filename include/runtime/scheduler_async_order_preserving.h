@@ -2,7 +2,7 @@
 #ifndef SIMPLE_FLOW_SCHEDULER_ASYNC_ORDER_PRESERVING_H_
 #define SIMPLE_FLOW_SCHEDULER_ASYNC_ORDER_PRESERVING_H_
 
-#include "base/status.h"
+#include "core/status.h"
 #include "executor.h"
 #include "graph_topology.h"
 #include "packet.h"

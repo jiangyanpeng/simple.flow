@@ -12,7 +12,7 @@
 
 namespace flow {
 
-GraphView::GraphView(std::shared_ptr<ElementaryRegistry> registry,
+GraphView::GraphView(std::shared_ptr<CalculatorRegistry> registry,
                      std::shared_ptr<DeviceRegistry> device_registry)
     : registry_(std::move(registry)), device_registry_(std::move(device_registry)) {}
 
@@ -41,7 +41,7 @@ std::vector<std::shared_ptr<Node>> GraphView::GetSiblingNode(const std::shared_p
 }
 
 std::vector<size_t> GraphView::GetOutputEdgeId(const std::shared_ptr<Node>& node) {
-    return spec_view_->GetOutputEdgeIdWithNodeId(node->GetId());
+    return view_spec_->GetOutputEdgeIdWithNodeId(node->GetId());
 }
 
 std::shared_ptr<Node> GraphView::GetNodeWithId(size_t id) {
@@ -85,14 +85,14 @@ Status GraphView::OpenAllNodes() {
     return Status::OkStatus();
 }
 
-Status GraphView::Initialize(std::shared_ptr<GraphSpecView> spec_view,
+Status GraphView::Initialize(std::shared_ptr<GraphViewSpec> view_spec,
                              const std::shared_ptr<base::PipeManager>& global_thread_pool) {
     SIMPLE_LOG_DEBUG("GraphView::Initialize Start");
     srand((unsigned)time(NULL)); //初始化的时候产生随机数种子
 
-    spec_view_ = std::move(spec_view);
+    view_spec_ = std::move(view_spec);
     // Devices
-    auto& devices = spec_view_->GetDeviceSpecs();
+    auto& devices = view_spec_->GetDeviceSpecs();
     for (auto& d : devices) {
         auto de = device_registry_->InvokeCreate(d.second->Type());
         //            std::shared_ptr<Device> de = std::make_shared<DeviceCPU>();
@@ -109,16 +109,16 @@ Status GraphView::Initialize(std::shared_ptr<GraphSpecView> spec_view,
     }
 
     // GraphNode
-    auto graph_spec = spec_view_->GetGraphSpe();
+    auto graph_spec = view_spec_->GetGraphSpe();
     auto node       = std::make_shared<GraphNode>();
     node->SetGraphViewWeakPtr(shared_from_this());
     node->Initialize(graph_spec, registry_);
 
     nodes_map_.insert({node->GetId(), node});
-    node_name_to_node_id_ = spec_view_->GetNodeSpecNameAndId();
+    node_name_to_node_id_ = view_spec_->GetNodeSpecNameAndId();
 
     // Nodes
-    auto& node_specs = spec_view_->GetNodeSpecs();
+    auto& node_specs = view_spec_->GetNodeSpecs();
     for (auto& ns : node_specs) {
         // GraphNode已经配置初始化
         if (ns.second->GetId() == 0) {
@@ -137,11 +137,11 @@ Status GraphView::Initialize(std::shared_ptr<GraphSpecView> spec_view,
     }
 
     for (auto& node : nodes_map_) {
-        SIMPLE_LOG_TRACE("node: id = {}, name = {}", node.second->GetId(), node.second->GetName());
+        SIMPLE_LOG_DEBUG("node: id = {}, name = {}", node.second->GetId(), node.second->GetName());
     }
 
     //  Edges
-    auto& edge_specs = spec_view_->GetEdgeSpecs();
+    auto& edge_specs = view_spec_->GetEdgeSpecs();
     for (auto& e : edge_specs) {
         auto edge = GenerateEdgeWithSpec(e.second);
         edges_map_.insert({e.first, edge});
@@ -189,8 +189,10 @@ std::vector<size_t> GraphView::GetNodeIdsByName(const std::vector<std::string>& 
     return node_ids;
 }
 std::shared_ptr<GraphTopology> GraphView::GetTopology() {
+    SIMPLE_LOG_DEBUG("GraphView::GetTopology Start");
     auto topology = std::make_shared<GraphTopology>();
     topology->Initialize(shared_from_this());
+    SIMPLE_LOG_DEBUG("GraphView::GetTopology End");
     return topology;
 }
 

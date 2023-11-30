@@ -1,5 +1,5 @@
 #include "device/device.h"
-#include "base/status.h"
+#include "core/status.h"
 
 namespace flow {
 // std::shared_ptr<DataMgrBase> Device::GetAllocator() const {
@@ -10,7 +10,7 @@ Status Device::Initialize() {
     return Status::OkStatus();
 }
 
-std::shared_ptr<Stream> Device::GetStream() const {
+std::shared_ptr<Host> Device::GetStream() const {
     return nullptr;
 }
 
@@ -45,7 +45,7 @@ void DeviceCPU::ComputeAsync(Function f) {
     thread_pool_->Commit([&]() { f(); });
 }
 
-void DeviceCPU::Sync(std::shared_ptr<Stream> stream) {
+void DeviceCPU::Sync(std::shared_ptr<Host> host) {
     // do nothing
 }
 

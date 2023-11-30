@@ -71,16 +71,16 @@ const std::vector<PackageGroup>& PacketPerNodeContext::GetInputs() const {
 }
 
 void PacketPerNodeContext::SetInOutputHandler(
-    const std::shared_ptr<InOutputHandler>& input_handler) {
+    const std::shared_ptr<InOutHandler>& input_handler) {
     inoutput_handler_ = input_handler;
 }
 
-void PacketPerNodeContext::SetStream(std::shared_ptr<Stream> stream) {
-    stream_ = std::move(stream);
+void PacketPerNodeContext::SetStream(std::shared_ptr<Host> host) {
+    host_ = std::move(host);
 }
 
-const std::shared_ptr<Stream>& PacketPerNodeContext::GetStream() const {
-    return stream_;
+const std::shared_ptr<Host>& PacketPerNodeContext::GetStream() const {
+    return host_;
 }
 
 const std::vector<PackageGroup>& PacketPerNodeContext::GetOutputs() const {
@@ -91,7 +91,7 @@ void PacketPerNodeContext::SetRefPackageShape(const std::shared_ptr<PackageShape
     ref_shape_ = shape;
 }
 
-std::shared_ptr<InputSourceContext> PacketPerNodeContext::GetInputSourceContext() const {
+std::shared_ptr<InputStreamContext> PacketPerNodeContext::GetInputSourceContext() const {
     if (!packet_ctx_.lock()) {
         SIMPLE_LOG_ERROR("lock packet context failed");
     }

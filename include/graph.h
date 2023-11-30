@@ -1,17 +1,17 @@
 #ifndef SIMPLE_FLOW_GRAPH_H_
 #define SIMPLE_FLOW_GRAPH_H_
 
-#include "base/collection.h"
+#include "core/collection.h"
+#include "calculator/calculator.h"
+#include "calculator/calculator_registry.h"
 #include "device/device_registry.h"
-#include "elementary/elementary.h"
 #include "graph_view.h"
-#include "input_source_manager.h"
-#include "elementary_registry.h"
+#include "stream/input_stream_manager.h"
 #include "node.h"
 #include "packet.h"
 #include "runtime/scheduler_async.h"
 #include "runtime/scheduler_one_thread.h"
-#include "specs/graph_spec.h"
+#include "spec/graph_spec.h"
 
 #include <functional>
 #include <map>
@@ -26,7 +26,7 @@ class WaitingThread;
 
 using AsyncResultFunc =
     std::function<void(uint8_t source_ctx, uint64_t pkt_id, std::vector<PackageGroup>& result)>;
-using AsyncResultFullFunc = std::function<void(std::shared_ptr<InputSourceContext>& src_ctx,
+using AsyncResultFullFunc = std::function<void(std::shared_ptr<InputStreamContext>& src_ctx,
                                                std::shared_ptr<InputPktId> pkt_id,
                                                std::vector<PackageGroup>& result)>;
 
@@ -52,7 +52,7 @@ public:
 
     ~GraphHelper() {}
 
-    std::shared_ptr<InputSourceContext> CreateInputSourceContext();
+    std::shared_ptr<InputStreamContext> CreateInputSourceContext();
 
     /**
      * @deprecated 废弃
@@ -105,13 +105,13 @@ public:
 
     void Stop();
 
-    void Initialize(const std::shared_ptr<ElementaryRegistry>& registry,
+    void Initialize(const std::shared_ptr<CalculatorRegistry>& registry,
                     const std::shared_ptr<DeviceRegistry>& device_registry,
                     GRAPH_SCHEDULE_POLICY policy                    = GRAPH_SCH_ASYNC_ONE_THREAD,
                     std::shared_ptr<ExecutorOption> executor_option = nullptr);
 
 
-    void AddSkipPacket(std::shared_ptr<InputSourceContext>& source,
+    void AddSkipPacket(std::shared_ptr<InputStreamContext>& source,
                        const std::shared_ptr<Packet>& pkt);
 
 private:
@@ -121,7 +121,7 @@ private:
     std::shared_ptr<GraphSpec> graph_spec_;
     std::shared_ptr<Graph> graph_;
     static std::atomic_int_fast64_t packet_id_;
-    std::shared_ptr<InputSourceManager> input_source_manager_;
+    std::shared_ptr<InputStreamManager> input_source_manager_;
     std::mutex mutex_;
 };
 

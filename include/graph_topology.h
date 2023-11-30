@@ -1,7 +1,7 @@
 #ifndef SIMPLE_FLOW_GRAPH_TOPOLOGY_H_
 #define SIMPLE_FLOW_GRAPH_TOPOLOGY_H_
 
-#include "base/status.h"
+#include "core/status.h"
 
 #include <list>
 #include <map>

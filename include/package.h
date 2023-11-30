@@ -1,7 +1,7 @@
 #ifndef SIMPLE_FLOW_PACKAGE_H_
 #define SIMPLE_FLOW_PACKAGE_H_
 
-#include "base/contract_coding.h"
+#include "core/contract_coding.h"
 
 #include <bitset>
 #include <functional>

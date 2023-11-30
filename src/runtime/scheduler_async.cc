@@ -92,6 +92,7 @@ std::set<size_t> SchedulerAsync::DoPropagate(const PacketPerNodeContextPtr& per_
 
     SIMPLE_LOG_DEBUG("SchedulerAsync::DoPropagate Start, per_node_ctx: {}",
                      per_node_ctx->GetUniqueId());
+
     auto edges          = graph_view_->GetOutputEdges(node);
     auto packet_context = per_node_ctx->GetPacketContext();
     std::set<size_t> dst_ids;
@@ -103,7 +104,7 @@ std::set<size_t> SchedulerAsync::DoPropagate(const PacketPerNodeContextPtr& per_
 
         dst_ids.insert(dst_node_id);
 
-        SIMPLE_LOG_TRACE("Propagate: src node {}, port {}, dst node {}, port {}",
+        SIMPLE_LOG_DEBUG("Propagate: src node {}, port {}, dst node {}, port {}",
                          src_node_id,
                          src_port_id,
                          dst_node_id,

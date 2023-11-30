@@ -1,6 +1,6 @@
 
 #include "packet.h"
-#include "base/contract_coding.h"
+#include "core/contract_coding.h"
 #include "package.h"
 
 #include <utility>
@@ -36,12 +36,12 @@ size_t Packet::GetPackageNum() const {
     return package_.size();
 }
 
-void Packet::SetSourceContext(const std::shared_ptr<InputSourceContext>& ctx) {
+void Packet::SetSourceContext(const std::shared_ptr<InputStreamContext>& ctx) {
     SIMPLE_ASSERT(ctx->GetId() == id_->InputSourceId());
     source_ctx_ = ctx;
 }
 
-std::shared_ptr<InputSourceContext> Packet::GetSourceContext() const {
+std::shared_ptr<InputStreamContext> Packet::GetSourceContext() const {
     return source_ctx_.lock();
 }
 

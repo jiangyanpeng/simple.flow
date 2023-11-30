@@ -1,9 +1,9 @@
 
 
 #include "node.h"
-#include "base/contract_coding.h"
+#include "core/contract_coding.h"
 #include "graph.h"
-#include "inoutput_handler.h"
+#include "inout_handler.h"
 
 #include <log.h>
 #include <stdlib.h>
@@ -64,17 +64,17 @@ void Node::Process() {
             }
             outputs_data.resize(node_ctx->outputs_.size());
 
-            ElementaryContext ctx(
+            CalculatorContext ctx(
                 inputs_data, outputs_data, shared_from_this(), node_ctx->GetStream());
             ctx.SetPacketPerNodeContext(node_ctx);
-            elementarys_[0]->GetDevice()->ComputeSync([&]() {
-                auto s = elementarys_[0]->Process(&ctx);
+            calculators_[0]->GetDevice()->ComputeSync([&]() {
+                auto s = calculators_[0]->Process(&ctx);
                 if (!s.IsOk()) {
-                    SIMPLE_LOG_ERROR("Elementary process failed. Node name: [{}], Node: [{}], "
+                    SIMPLE_LOG_ERROR("Calculator process failed. Node name: [{}], Node: [{}], "
                                      "ElemId: [{}]. ErrCode: {}, ErrMsg: {}",
                                      GetName(),
                                      GetId(),
-                                     elementarys_[0]->GetId(),
+                                     calculators_[0]->GetId(),
                                      GetStatusCodeValue(s.Code()),
                                      s.Msg());
                     exit(0);
@@ -141,22 +141,22 @@ void Node::ProcessCtx(const std::shared_ptr<PacketPerNodeContext>& ctx) {
         }
         outputs_data.resize(node_ctx->outputs_.size());
 
-        ElementaryContext ctx(inputs_data, outputs_data, shared_from_this(), node_ctx->GetStream());
+        CalculatorContext ctx(inputs_data, outputs_data, shared_from_this(), node_ctx->GetStream());
         ctx.SetPacketPerNodeContext(node_ctx);
 
         int index = 0;
-        if (elementarys_.size() > 1) {
-            index = rand() % elementarys_.size();
+        if (calculators_.size() > 1) {
+            index = rand() % calculators_.size();
             SIMPLE_LOG_DEBUG("elementary index: {}", index);
         }
-        elementarys_[index]->GetDevice()->ComputeSync([&]() {
-            auto s = elementarys_[index]->Process(&ctx);
+        calculators_[index]->GetDevice()->ComputeSync([&]() {
+            auto s = calculators_[index]->Process(&ctx);
             if (!s.IsOk()) {
                 SIMPLE_LOG_ERROR("Node::ProcessCtx failed. Node name: [{}], Node: [{}], ElemId: "
                                  "[{}]. ErrCode: {}, ErrMsg: {}",
                                  GetName(),
                                  GetId(),
-                                 elementarys_[index]->GetId(),
+                                 calculators_[index]->GetId(),
                                  GetStatusCodeValue(s.Code()),
                                  s.Msg());
                 exit(0);
@@ -182,7 +182,7 @@ void Node::ProcessCtx(const std::shared_ptr<PacketPerNodeContext>& ctx) {
 }
 
 Status Node::Initialize(std::shared_ptr<NodeSpec> spec,
-                        const std::shared_ptr<ElementaryRegistry>& registry) {
+                        const std::shared_ptr<CalculatorRegistry>& registry) {
     SIMPLE_LOG_DEBUG("Node::Initialize Start. NodeSpec: {}", spec->to_string());
     spec_ = std::move(spec);
     SIMPLE_ASSERT(weak_graph_.lock());
@@ -192,7 +192,7 @@ Status Node::Initialize(std::shared_ptr<NodeSpec> spec,
     skip_pkt_node_ = spec_->GetSkipPacketNode();
 
     // todo
-    std::string elem_type = "Elementary";
+    std::string elem_type = "Calculator";
     if (!spec_->elementary_type.empty()) {
         elem_type = spec_->elementary_type;
     }
@@ -202,13 +202,13 @@ Status Node::Initialize(std::shared_ptr<NodeSpec> spec,
 
     // 创建ElementaryOption
     // FIXME: ElementaryOption的解析是在NodeSpec阶段做？还是如何？
-    //        elementary_option_ = spec_->option;
-    //        elementary_option_ = std::make_shared<ElementaryOption>();
+    //        calculator_option_ = spec_->option;
+    //        calculator_option_ = std::make_shared<CalculatorOption>();
 
-    elementary_option_ = spec_->option;
-    if (!elementary_option_) {
-        elementary_option_ = std::get<1>(elem_objects);
-        if (!elementary_option_->Parse(spec_->elementary_option_json_value)) {
+    calculator_option_ = spec_->option;
+    if (!calculator_option_) {
+        calculator_option_ = std::get<1>(elem_objects);
+        if (!calculator_option_->Parse(spec_->elementary_option_json_value)) {
             return Status(StatusCode::kInvalidArgument, "option Parse err");
         }
     }
@@ -223,7 +223,7 @@ Status Node::Initialize(std::shared_ptr<NodeSpec> spec,
         auto d = weak_graph_.lock()->GetDeviceByName(v.GetDeviceName());
         SIMPLE_ASSERT(d);
         elem->SetDevice(d);
-        elementarys_.emplace_back(elem);
+        calculators_.emplace_back(elem);
     }
 
     if (spec_->elemes.size() > 1) {
@@ -236,7 +236,7 @@ Status Node::Initialize(std::shared_ptr<NodeSpec> spec,
             auto d = weak_graph_.lock()->GetDeviceByName(v.GetDeviceName());
             SIMPLE_ASSERT(d);
             elem->SetDevice(d);
-            elementarys_.emplace_back(elem);
+            calculators_.emplace_back(elem);
         }
     }
 
@@ -315,13 +315,13 @@ Status Node::Open() {
     SIMPLE_LOG_DEBUG("Node::Open Start");
     std::vector<std::shared_ptr<Package>> inputs_data;
     std::vector<std::shared_ptr<Package>> outputs_data;
-    std::shared_ptr<Stream> stream(nullptr);
-    ElementaryContext ctx(inputs_data, outputs_data, shared_from_this(), stream);
-    for (auto& e : elementarys_) {
-        e->SetElementaryOption(elementary_option_);
+    std::shared_ptr<Host> host(nullptr);
+    CalculatorContext ctx(inputs_data, outputs_data, shared_from_this(), host);
+    for (auto& e : calculators_) {
+        e->SetCalculatorOption(calculator_option_);
         auto s = e->Open(&ctx);
         if (!s.IsOk()) {
-            SIMPLE_LOG_ERROR("Elementary: {} Open failed. ", e->GetId());
+            SIMPLE_LOG_ERROR("Calculator: {} Open failed. ", e->GetId());
             return s;
         }
     }
