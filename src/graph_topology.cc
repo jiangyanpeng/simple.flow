@@ -50,9 +50,9 @@ Status GraphTopology::Initialize(const std::shared_ptr<GraphView>& view) {
     }
 
     for (auto& t : top_) {
-        SIMPLE_LOG_INFO("topology, level {}:", t.first);
+        SIMPLE_LOG_INFO("topology_level {}:", t.first);
         for (auto& n : t.second) {
-            SIMPLE_LOG_INFO("   node: id {}, name {}", n->GetId(), n->GetName());
+            SIMPLE_LOG_INFO("   node_id: [{}], node_name: [{}]", n->GetId(), n->GetName());
         }
     }
 

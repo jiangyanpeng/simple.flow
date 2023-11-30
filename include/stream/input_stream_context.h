@@ -25,9 +25,9 @@ namespace flow {
  */
 class InputPktId final {
 private:
-    static constexpr uint8_t kInvInputSourceId = 255;
-    static constexpr uint64_t kInvPktId        = ((uint64_t)1 << 56) - 1;
-    static constexpr uint8_t kShift            = 56;
+    static constexpr uint8_t kInputStreamId = 255;
+    static constexpr uint64_t kPktId        = ((uint64_t)1 << 56) - 1;
+    static constexpr uint8_t kShift         = 56;
 
 public:
     explicit InputPktId(uint8_t src_id, uint64_t pkt_id);
@@ -36,9 +36,9 @@ public:
 
     bool IsValid() const;
 
-    inline uint8_t InputSourceId() const { return id_ >> kShift; }
+    inline uint8_t InputStreamId() const { return id_ >> kShift; }
 
-    inline uint64_t PacketId() const { return id_ & kInvPktId; }
+    inline uint64_t PacketId() const { return id_ & kPktId; }
 
 private:
     uint64_t id_{UINT64_MAX};
@@ -122,7 +122,7 @@ public:
     OrderInformation order_information_;
 
 protected:
-    uint8_t source_id_{0};
+    uint8_t stream_id_{0};
     size_t input_count_{0};
     std::atomic_int_fast64_t packet_id_{0};
 };

@@ -52,7 +52,7 @@ public:
 
     ~GraphHelper() {}
 
-    std::shared_ptr<InputStreamContext> CreateInputSourceContext();
+    std::shared_ptr<InputStreamContext> CreateInputStreamContext();
 
     /**
      * @deprecated 废弃
@@ -121,7 +121,7 @@ private:
     std::shared_ptr<GraphSpec> graph_spec_;
     std::shared_ptr<Graph> graph_;
     static std::atomic_int_fast64_t packet_id_;
-    std::shared_ptr<InputStreamManager> input_source_manager_;
+    std::shared_ptr<InputStreamManager> input_stream_manager_;
     std::mutex mutex_;
 };
 

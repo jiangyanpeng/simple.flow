@@ -2,8 +2,8 @@
 #define SIMPLE_FLOW_PACKET_CONTEXT_H_
 
 #include "core/status.h"
-#include "stream/input_stream_context.h"
 #include "packet_per_node_context.h"
+#include "stream/input_stream_context.h"
 
 #include <memory>
 #include <vector>
@@ -41,7 +41,7 @@ public:
 
     std::shared_ptr<InputStreamContext> GetInputSourceContext() const;
 
-    void SetInputSourceContext(const std::shared_ptr<InputStreamContext>& ctx);
+    void SetInputStreamContext(const std::shared_ptr<InputStreamContext>& ctx);
 
     void DoDebug();
 
@@ -53,7 +53,7 @@ public:
 
     uint64_t GetPacketId() const;
 
-    uint8_t GetSourceId() const;
+    uint8_t GetStreamId() const;
 
     std::shared_ptr<Packet> GetPacket() const;
 
@@ -63,7 +63,7 @@ public:
     // key: node_id, value: ctxptr
     std::map<size_t, PacketPerNodeContextPtr> node_ctxes_;
     // not owned
-    std::weak_ptr<InputStreamContext> input_source_ctx_;
+    std::weak_ptr<InputStreamContext> input_stream_ctx_;
 
     // not owned
     std::shared_ptr<GraphView> graph_view_;

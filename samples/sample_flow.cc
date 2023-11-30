@@ -163,7 +163,7 @@ bool GraphComplier::GraphInit(const std::string& cur_path) {
         in.name           = "graph_in_image";
         in.link_name      = "1";
         in.direction      = IN;
-        in.data_type_name = "::STImage";
+        in.data_type_name = "Image";
         spec->AddGraphInputSpec(in);
     }
 
@@ -208,7 +208,7 @@ bool GraphComplier::GraphInit(const std::string& cur_path) {
             in.name           = "IN_IMAGE_VECTOR";
             in.link_name      = "1";
             in.direction      = IN;
-            in.data_type_name = "::STImage";
+            in.data_type_name = "Image";
             node_spec1->AddInputSpec(in);
         }
 
@@ -225,7 +225,7 @@ bool GraphComplier::GraphInit(const std::string& cur_path) {
 
 
         node_spec1->SetElementaryNum(1);
-        ElemSpec elem_spec;
+        CalculatorSpec elem_spec;
         elem_spec.SetDeviceName("CPU0");
         node_spec1->AddElemSpec(elem_spec);
 
@@ -244,7 +244,7 @@ int main() {
     helper->Start();
 
     {
-        auto src_ctx = helper->CreateInputSourceContext();
+        auto src_ctx = helper->CreateInputStreamContext();
         auto packet  = src_ctx->CreatePacket();
 
         auto cv_img = std::make_shared<std::vector<int>>();

@@ -8,8 +8,7 @@ class InputStreamContextDefault : public InputStreamContext {
 public:
     InputStreamContextDefault() = default;
 
-    ~InputStreamContextDefault() override = default;
-
+    ~InputStreamContextDefault() override {}
 
     Status AddData(const std::string& tag, std::shared_ptr<void> d, size_t& id) override;
 

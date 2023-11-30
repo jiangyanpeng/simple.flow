@@ -13,28 +13,28 @@ std::string InoutSpec::to_string() {
        << data_type_name << "]";
     return ss.str();
 }
-ElemSpec& ElemSpec::SetDeviceName(std::string device_name) {
+CalculatorSpec& CalculatorSpec::SetDeviceName(std::string device_name) {
     device_name_ = std::move(device_name);
     return *this;
 }
 
 
-ElemSpec& ElemSpec::SetName(std::string name) {
-    elem_name_ = std::move(name);
+CalculatorSpec& CalculatorSpec::SetName(std::string name) {
+    calculator_name_ = std::move(name);
     return *this;
 }
 
-ElemSpec& ElemSpec::SetId(size_t id) {
-    elem_id_ = id;
+CalculatorSpec& CalculatorSpec::SetId(size_t id) {
+    calculator_id_ = id;
     return *this;
 }
 
-std::string ElemSpec::GetDeviceName() const {
+std::string CalculatorSpec::GetDeviceName() const {
     return device_name_;
 }
 
-size_t ElemSpec::GetId() const {
-    return elem_id_;
+size_t CalculatorSpec::GetId() const {
+    return calculator_id_;
 }
 
 GraphSpec::GraphSpec() {
@@ -49,7 +49,7 @@ void GraphSpec::LoadFromFile(std::string file_name) {
 }
 
 void GraphSpec::AddNodeSpec(const std::shared_ptr<NodeSpec>& node) {
-    SIMPLE_LOG_DEBUG("AddNodeSpec: {}", node->to_string());
+    SIMPLE_LOG_INFO("   AddNodeSpec: {}", node->to_string());
     nodes_.emplace_back(node);
 }
 
@@ -66,13 +66,13 @@ std::vector<DeviceSpec>& GraphSpec::GetDevices() {
 }
 
 NodeSpec& GraphSpec::AddGraphInputSpec(InoutSpec spec) {
-    SIMPLE_LOG_DEBUG("AddGraphInputSpec: {}", spec.to_string());
+    SIMPLE_LOG_INFO("   AddGraphInputSpec: {}", spec.to_string());
     outputs.emplace_back(spec);
     return *this;
 }
 
 NodeSpec& GraphSpec::AddGraphOutputSpec(InoutSpec spec) {
-    SIMPLE_LOG_DEBUG("AddGraphOutputSpec: {}", spec.to_string());
+    SIMPLE_LOG_INFO("   AddGraphOutputSpec: {}", spec.to_string());
     inputs.emplace_back(spec);
     return *this;
 }
@@ -90,17 +90,17 @@ NodeSpec& NodeSpec::SetId(size_t id) {
 }
 
 NodeSpec& NodeSpec::SetElementaryType(std::string type) {
-    elementary_type = std::move(type);
+    calculator_type = std::move(type);
     return *this;
 }
 
 NodeSpec& NodeSpec::SetElementaryOptionType(std::string type) {
-    elementary_option_type = std::move(type);
+    calculator_option_type = std::move(type);
     return *this;
 }
 
 NodeSpec& NodeSpec::SetElementaryOptionJsonValue(std::string value) {
-    elementary_option_json_value = std::move(value);
+    calculator_option_json_value = std::move(value);
     return *this;
 }
 
@@ -135,12 +135,12 @@ NodeSpec& NodeSpec::AddOutputSpec(InoutSpec spec) {
 }
 
 NodeSpec& NodeSpec::SetElementaryNum(size_t n) {
-    elem_num = n;
+    calculator_num = n;
     return *this;
 }
 
-NodeSpec& NodeSpec::AddElemSpec(const ElemSpec& spec) {
-    elemes.emplace_back(spec);
+NodeSpec& NodeSpec::AddElemSpec(const CalculatorSpec& spec) {
+    calculators.emplace_back(spec);
     return *this;
 }
 
@@ -165,12 +165,12 @@ std::string NodeSpec::GetName() const {
     return node_name;
 }
 
-std::vector<ElemSpec>& NodeSpec::GetElemSpecs() {
-    return elemes;
+std::vector<CalculatorSpec>& NodeSpec::GetElemSpecs() {
+    return calculators;
 }
 
 std::string NodeSpec::GetElemType() const {
-    return elementary_type;
+    return calculator_type;
 }
 
 size_t NodeSpec::GetId() const {
@@ -179,9 +179,9 @@ size_t NodeSpec::GetId() const {
 
 std::string NodeSpec::to_string() const {
     std::stringstream ss;
-    ss << "node_name[" << node_name << "], node_id[" << node_id << "], elementary_type["
-       << elementary_type << "], elementary_option_type[" << elementary_option_type
-       << "], elementary_option_json_value[" << elementary_option_json_value << "], input_handler["
+    ss << "node_name[" << node_name << "], node_id[" << node_id << "], calculator_type["
+       << calculator_type << "], calculator_option_type[" << calculator_option_type
+       << "], calculator_option_json_value[" << calculator_option_json_value << "], input_handler["
        << input_handler << "], output_handler[" << output_handler << "], inputs[" << inputs.size()
        << "], outputs[" << outputs.size() << "]";
     return ss.str();

@@ -6,15 +6,14 @@
 
 namespace flow {
 
-InputStreamContext::InputStreamContext() = default;
-
+InputStreamContext::InputStreamContext() {}
 
 uint8_t InputStreamContext::GetId() const {
-    return source_id_;
+    return stream_id_;
 }
 
 void InputStreamContext::SetId(uint8_t id) {
-    source_id_ = id;
+    stream_id_ = id;
 }
 
 bool InputStreamContext::AddSkipPktId(std::vector<size_t> node_ids, uint64_t pkt_id) {
@@ -24,9 +23,9 @@ bool InputStreamContext::AddSkipPktId(std::vector<size_t> node_ids, uint64_t pkt
 
 std::shared_ptr<Packet> InputStreamContext::CreatePacket() {
     SIMPLE_ASSERT(input_count_ != 0);
-    auto id = std::make_shared<InputPktId>(source_id_, packet_id_.fetch_add(1));
+    auto id = std::make_shared<InputPktId>(stream_id_, packet_id_.fetch_add(1));
     std::shared_ptr<Packet> packet = std::make_shared<Packet>(id, input_count_);
-    packet->SetSourceContext(shared_from_this());
+    packet->SetStreamContext(shared_from_this());
     return packet;
 }
 
@@ -35,18 +34,18 @@ void InputStreamContext::SetInputCount(size_t count) {
 }
 
 InputPktId::InputPktId(uint8_t src_id, uint64_t pkt_id) {
-    SIMPLE_ASSERT(src_id != kInvInputSourceId);
-    SIMPLE_ASSERT(pkt_id < kInvPktId);
+    SIMPLE_ASSERT(src_id != kInputStreamId);
+    SIMPLE_ASSERT(pkt_id < kPktId);
     id_ = src_id;
     id_ <<= kShift;
     id_ += pkt_id;
 }
 
 bool InputPktId::IsValid() const {
-    if (InputSourceId() == kInvInputSourceId) {
+    if (InputStreamId() == kInputStreamId) {
         return false;
     }
-    if (PacketId() == kInvPktId) {
+    if (PacketId() == kPktId) {
         return false;
     }
     return true;

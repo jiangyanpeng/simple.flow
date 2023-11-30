@@ -6,20 +6,36 @@
 #include <vector>
 
 namespace flow {
-// Node或Elementary的端口方向，输入输出。站在Elementary角度来描述。
-enum Direction { IN = 0, OUT = 1 };
+// The direction of stream flow
+// IN is input stream
+// OUT is output stream
+enum Direction {
+    IN  = 0,
+    OUT = 1,
+};
+
 class NodeSpec;
+
+// InoutPort Spec
+//
+// name is port name, can repeatable
+// link_name is used to represent how multiple nodes are linked
+// direction
+// option
+// data_type_name is port input/output data type
+//
+// id, Internally generated and unique ID, increasing from 0
+// belonged_to_ is this port on where node
+//
+// id and belong_to_ is automatically generated
 struct InoutSpec {
-    // port名称，是Node中的特定Port的名称
     std::string name{};
-    // link_name, 链接名称。用来表征多个Port如何链接
     std::string link_name{};
-    // 图编排时不设置
-    size_t id{};
     Direction direction{IN};
     bool optional{false};
     std::string data_type_name{};
-    // 内部使用，不配置
+
+    size_t id{};
     std::weak_ptr<NodeSpec> belonged_to_;
 
     std::string to_string();
@@ -27,12 +43,14 @@ struct InoutSpec {
 
 class CalculatorOption;
 
-/**
- * Device描述信息
- * Device管理采用平铺管理的方式
- * name在Graph中全局唯一，Node中的Device 通过name来进行对应
- * id在Graph中全局唯一，自动生成，描述文件中不配置
- */
+
+// Device spec information
+//
+// Name is globally unique in the Graph, Device in Node corresponds to it through name,
+// ID is globally unique in the Graph, automatically generated,
+// and not configured in the description file
+//
+// id is automatically generated
 class DeviceSpec final {
     friend class GraphViewSpec;
 
@@ -55,40 +73,46 @@ public:
     size_t id_{0};
     std::string name_{};
 };
-/**
- * Node描述
- * Node描述的是一组用于完成特定能力的单元。从图的角度来看，Node是图调度的基本单元。数据传递都是从Node到Node。
- * 一个Node中可以维护多个Elementary对象，用于提升性能。多Elementary间的差异在于Device
- * 包含三部分信息：
- * 1. 基本信息：name, id，包含elem个数
- * 2. 计算相关：Elementary名称，Option名称，输入输出
- * 3. Elem单元相关：elem_name，elem_id，device信息
- */
-class ElemSpec final {
+
+// CalculatorSpec
+// The most basic computing unit describes
+//
+// calculator_name_ and  calculator_id_ is automatically generated
+class CalculatorSpec final {
     friend class NodeSpec;
     friend class GraphViewSpec;
 
 public:
-    ElemSpec()  = default;
-    ~ElemSpec() = default;
+    CalculatorSpec()  = default;
+    ~CalculatorSpec() = default;
 
 
-    ElemSpec& SetDeviceName(std::string device_name);
+    CalculatorSpec& SetDeviceName(std::string device_name);
     std::string GetDeviceName() const;
     size_t GetId() const;
 
 protected:
-    ElemSpec& SetName(std::string name);
-    ElemSpec& SetId(size_t id);
+    CalculatorSpec& SetName(std::string name);
+    CalculatorSpec& SetId(size_t id);
 
 private:
-    // 自动生成
-    std::string elem_name_{};
-    // 自动生成
-    size_t elem_id_{};
+    std::string calculator_name_{};
+    size_t calculator_id_{};
     std::string device_name_{};
 };
 
+
+// NodeSpec
+// Node describes a set of units used to accomplish specific abilities. From a graph perspective,
+// Node is the fundamental unit of graph scheduling. Data transmission is from node to node.
+// Multiple calculator objects can be maintained within a node to improve performance. The
+// difference between multiple elements lies in the device
+//
+// Contains three parts of information:
+// (1) name, id, numbers of calculator...
+// (2) calculator name, opeion name, input/output [InoutSpec]
+// (3) device information
+//
 class NodeSpec {
 public:
     NodeSpec()          = default;
@@ -109,14 +133,13 @@ public:
     //        InoutSpec& AddInputSpec();
     NodeSpec& AddOutputSpec(InoutSpec spec);
     NodeSpec& SetElementaryNum(size_t n);
-    NodeSpec& AddElemSpec(const ElemSpec& spec);
+    NodeSpec& AddElemSpec(const CalculatorSpec& spec);
 
-    //添加需要跳过packet的节点的名字
     NodeSpec& AddSkipPacketNode(std::string name);
 
     std::vector<InoutSpec>& GetInputSpecs();
     std::vector<InoutSpec>& GetOutputSpecs();
-    std::vector<ElemSpec>& GetElemSpecs();
+    std::vector<CalculatorSpec>& GetElemSpecs();
 
     std::vector<std::string>& GetSkipPacketNode();
 
@@ -129,23 +152,21 @@ public:
 public:
     std::string node_name;
     size_t node_id{0};
-    std::string elementary_type{};
-    std::string elementary_option_type{};
-    std::string elementary_option_json_value{};
+    std::string calculator_type{};
+    std::string calculator_option_type{};
+    std::string calculator_option_json_value{};
     std::shared_ptr<CalculatorOption> option;
     std::string input_handler{};
     std::string output_handler{};
     std::vector<InoutSpec> inputs{};
     std::vector<InoutSpec> outputs{};
 
-    // 跳过packet节点集合
     std::vector<std::string> skip_pkt_node{};
 
-    // Node处理保序
     bool order_preserving_{false};
 
-    size_t elem_num{1};
-    std::vector<ElemSpec> elemes{};
+    size_t calculator_num{1};
+    std::vector<CalculatorSpec> calculators{};
 
 protected:
     bool is_graph{false};

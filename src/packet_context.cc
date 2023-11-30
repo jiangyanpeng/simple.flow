@@ -10,7 +10,7 @@ PacketContext::PacketContext(const std::shared_ptr<Packet>& pkt)
     : pkt_(pkt),
       id_(pkt->GetInputPktId()->Id()),
       pkt_id_(pkt->GetInputPktId()->PacketId()),
-      source_id_(pkt->GetInputPktId()->InputSourceId()) {}
+      source_id_(pkt->GetInputPktId()->InputStreamId()) {}
 
 PacketContext::~PacketContext() = default;
 
@@ -58,11 +58,11 @@ bool PacketContext::IsFinished() const {
 }
 
 std::shared_ptr<InputStreamContext> PacketContext::GetInputSourceContext() const {
-    return input_source_ctx_.lock();
+    return input_stream_ctx_.lock();
 }
 
-void PacketContext::SetInputSourceContext(const std::shared_ptr<InputStreamContext>& ctx) {
-    input_source_ctx_ = ctx;
+void PacketContext::SetInputStreamContext(const std::shared_ptr<InputStreamContext>& ctx) {
+    input_stream_ctx_ = ctx;
 }
 
 uint64_t PacketContext::GetId() const {
@@ -73,7 +73,7 @@ uint64_t PacketContext::GetPacketId() const {
     return pkt_id_;
 }
 
-uint8_t PacketContext::GetSourceId() const {
+uint8_t PacketContext::GetStreamId() const {
     return source_id_;
 }
 

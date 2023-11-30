@@ -193,8 +193,8 @@ Status Node::Initialize(std::shared_ptr<NodeSpec> spec,
 
     // todo
     std::string elem_type = "Calculator";
-    if (!spec_->elementary_type.empty()) {
-        elem_type = spec_->elementary_type;
+    if (!spec_->calculator_type.empty()) {
+        elem_type = spec_->calculator_type;
     }
 
     SIMPLE_LOG_DEBUG("Node::Initialize elem_type: {}", elem_type.c_str());
@@ -208,14 +208,14 @@ Status Node::Initialize(std::shared_ptr<NodeSpec> spec,
     calculator_option_ = spec_->option;
     if (!calculator_option_) {
         calculator_option_ = std::get<1>(elem_objects);
-        if (!calculator_option_->Parse(spec_->elementary_option_json_value)) {
+        if (!calculator_option_->Parse(spec_->calculator_option_json_value)) {
             return Status(StatusCode::kInvalidArgument, "option Parse err");
         }
     }
 
     // 处理第1个elementary
-    if (spec_->elemes.size() > 0) {
-        auto& v = spec_->elemes[0];
+    if (spec_->calculators.size() > 0) {
+        auto& v = spec_->calculators[0];
 
         auto elem = std::get<0>(elem_objects);
         elem->SetId(v.GetId());
@@ -226,11 +226,11 @@ Status Node::Initialize(std::shared_ptr<NodeSpec> spec,
         calculators_.emplace_back(elem);
     }
 
-    if (spec_->elemes.size() > 1) {
-        for (int i = 1; i < spec_->elemes.size(); i++) {
+    if (spec_->calculators.size() > 1) {
+        for (int i = 1; i < spec_->calculators.size(); i++) {
             auto elem_objects = registry->InvokeCreate(elem_type, "CPU");
             auto elem         = std::get<0>(elem_objects);
-            auto& v           = spec_->elemes[i];
+            auto& v           = spec_->calculators[i];
             elem->SetId(v.GetId());
             // set device
             auto d = weak_graph_.lock()->GetDeviceByName(v.GetDeviceName());

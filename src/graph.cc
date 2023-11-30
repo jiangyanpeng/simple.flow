@@ -84,11 +84,8 @@ public:
     std::vector<size_t> stay_order_node_ids_;
 };
 
-// @deprated
 std::shared_ptr<Packet> GraphHelper::CreatePacket() {
-    //        SIMPLE_ASSERT(0);
-    std::cout << graph_->GetInputCount() << std::endl;
-    return input_source_manager_->DefaultSourceContext()->CreatePacket();
+    return input_stream_manager_->DefaultStreamContext()->CreatePacket();
 }
 
 Status GraphHelper::AddPacket(const std::shared_ptr<Packet>& pkt) {
@@ -132,9 +129,9 @@ Status GraphHelper::AddPacketAsync(const std::shared_ptr<Packet>& pkt) {
     if (!s.IsOk()) {
         return s;
     }
-    SIMPLE_LOG_DEBUG("ADD PACKET OK. Packet id: {}, Source id {} ",
+    SIMPLE_LOG_DEBUG("GraphHelper::AddPacketAsync. Packet id: {}, Stream id {} ",
                      pkt_context->GetPacketId(),
-                     pkt->GetSourceId());
+                     pkt->GetStreamId());
     graph_->Schedule(pkt_context, pkt);
 
     return Status::OkStatus();
@@ -155,15 +152,15 @@ void GraphHelper::Initialize(const std::shared_ptr<CalculatorRegistry>& registry
     graph_ = std::make_shared<Graph>();
     graph_->Initialize(graph_spec_, registry, device_registry, policy, executor_option);
     graph_->OpenAllNodes();
-    input_source_manager_ = std::make_shared<InputStreamManager>();
-    input_source_manager_->SetGraphInputCount(graph_->GetInputCount());
+    input_stream_manager_ = std::make_shared<InputStreamManager>();
+    input_stream_manager_->SetGraphInputCount(graph_->GetInputCount());
     SIMPLE_LOG_DEBUG("GraphHelper::Initialize End");
 }
 
 std::shared_ptr<PacketContext>
 GraphHelper::CreatePacketContext(const std::shared_ptr<Packet>& pkt) {
     auto packet_context = std::make_shared<PacketContext>(pkt);
-    packet_context->SetInputSourceContext(pkt->GetSourceContext());
+    packet_context->SetInputStreamContext(pkt->GetStreamContext());
     packet_context->SetGraphView(graph_->GetGraphView());
     packet_context->Initialize();
     return std::move(packet_context);
@@ -177,8 +174,8 @@ std::vector<PackageGroup> GraphHelper::GetResult(size_t pkt_id) {
     return graph_->GetResult(pkt_id);
 }
 
-std::shared_ptr<InputStreamContext> GraphHelper::CreateInputSourceContext() {
-    return input_source_manager_->GenerateSourceContext();
+std::shared_ptr<InputStreamContext> GraphHelper::CreateInputStreamContext() {
+    return input_stream_manager_->GenerateStreamContext();
 }
 
 Status Graph::Initialize(std::shared_ptr<GraphSpec> graph_spec,
@@ -259,9 +256,10 @@ void Graph::AddCallFunct(const AsyncResultFunc& funct) {
 
 void Graph::Schedule(const std::shared_ptr<PacketContext>& pkt_ctx,
                      const std::shared_ptr<Packet>& pkt) {
+    SIMPLE_LOG_DEBUG("Graph::Schedule Start");
     AddGraphInput(pkt_ctx, pkt);
     scheduler_->AddPacketContext(pkt_ctx, pkt);
-    SIMPLE_LOG_DEBUG("Graph::Schedule return.");
+    SIMPLE_LOG_DEBUG("Graph::Schedule End");
 }
 
 void Graph::Propagate1(const PacketPerNodeContextPtr& packet_per_node_context,
@@ -336,7 +334,7 @@ Status Graph::AddPacketContext(std::shared_ptr<PacketContext> ctx) {
 Status Graph::RemovePacketContextIfFinished(const std::shared_ptr<PacketContext>& pkt_context) {
     if (pkt_context->IsFinished()) {
         SIMPLE_LOG_DEBUG("Packet processing finished. source_id {}, pkt_id: {}",
-                         pkt_context->GetSourceId(),
+                         pkt_context->GetStreamId(),
                          pkt_context->GetPacketId());
         // FIXME:
         // 获取结果的回调，理论上应该放到独立的线程池中执行，避免出现回调处理时间过长导致scheduler阻塞
