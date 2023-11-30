@@ -12,7 +12,7 @@
 
 namespace flow {
 
-GraphView::GraphView(std::shared_ptr<ElementaryRegistry> registry,
+GraphView::GraphView(std::shared_ptr<CalculatorRegistry> registry,
                      std::shared_ptr<DeviceRegistry> device_registry)
     : registry_(std::move(registry)), device_registry_(std::move(device_registry)) {}
 
@@ -137,7 +137,7 @@ Status GraphView::Initialize(std::shared_ptr<GraphSpecView> spec_view,
     }
 
     for (auto& node : nodes_map_) {
-        SIMPLE_LOG_TRACE("node: id = {}, name = {}", node.second->GetId(), node.second->GetName());
+        SIMPLE_LOG_DEBUG("node: id = {}, name = {}", node.second->GetId(), node.second->GetName());
     }
 
     //  Edges
@@ -189,8 +189,10 @@ std::vector<size_t> GraphView::GetNodeIdsByName(const std::vector<std::string>& 
     return node_ids;
 }
 std::shared_ptr<GraphTopology> GraphView::GetTopology() {
+    SIMPLE_LOG_DEBUG("GraphView::GetTopology Start");
     auto topology = std::make_shared<GraphTopology>();
     topology->Initialize(shared_from_this());
+    SIMPLE_LOG_DEBUG("GraphView::GetTopology End");
     return topology;
 }
 

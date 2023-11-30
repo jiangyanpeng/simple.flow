@@ -21,7 +21,7 @@ void SchedulerOneThread::DoSchedule(const PacketContextPtr& ctx,
         for (auto& node : l) {
             size_t id = node->GetId();
             if (id == 8) {
-                SIMPLE_LOG_TRACE("enter merge node");
+                SIMPLE_LOG_DEBUG("enter merge node");
             }
             auto per_node_ctx = ctx->GetNodeContextById(id);
             // check input ok
@@ -69,7 +69,7 @@ void SchedulerOneThread::DoPropagate(const PacketPerNodeContextPtr& per_node_ctx
 
         dst_ids.insert(dst_node_id);
 
-        SIMPLE_LOG_TRACE("Propagate: src node {}, port {}, dst node {}, port {}",
+        SIMPLE_LOG_DEBUG("Propagate: src node {}, port {}, dst node {}, port {}",
                          src_node_id,
                          src_port_id,
                          dst_node_id,
@@ -92,7 +92,7 @@ void SchedulerOneThread::AddPacketContext(const PacketContextPtr& ctx,
         DoSchedule(ctx, pkt);
         if (graph_call_back_) {
             graph_call_back_(ctx);
-            SIMPLE_LOG_TRACE("SchedulerOneThread process finished.");
+            SIMPLE_LOG_DEBUG("SchedulerOneThread process finished.");
         }
     });
 }

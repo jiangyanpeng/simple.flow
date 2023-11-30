@@ -1,17 +1,17 @@
 #include <iostream>
 
+#include "calculator/calculator.h"
+#include "calculator/calculator_option.h"
+#include "calculator/calculator_registry.h"
 #include "device/device_registry.h"
-#include "elementary/elementary.h"
-#include "elementary/elementary_option.h"
 #include "graph.h"
 #include "inout.h"
-#include "elementary_registry.h"
-#include "specs/graph_spec.h"
+#include "spec/graph_spec.h"
 
 #include <log.h>
 
 namespace flow {
-class ElemFakeGraphComplierOption : public ElementaryOption {
+class ElemFakeGraphComplierOption : public CalculatorOption {
 public:
     ~ElemFakeGraphComplierOption() override = default;
     std::vector<std::string> models_path_;
@@ -23,17 +23,17 @@ bool ElemFakeGraphComplierOption::Parse(std::string& json_str) {
     return true;
 }
 
-class ElemFakeGraphComplier : public Elementary {
+class ElemFakeGraphComplier : public Calculator {
 public:
     ElemFakeGraphComplier();
     static constexpr const char* kElemName    = "ElemFakeGraphComplier";
     static constexpr const char* kInput       = "IN_IMAGE_VECTOR";
     static constexpr const char* kOutput      = "OUT_ACTION_DETECTION_RESULT";
     virtual ~ElemFakeGraphComplier() override = default;
-    Status GetContract(ElementaryContract* contract) override;
-    Status Open(ElementaryContext* ctx) override;
-    Status Close(ElementaryContext* ctx) override;
-    Status Process(ElementaryContext* ctx) override;
+    Status GetContract(CalculatorContract* contract) override;
+    Status Open(CalculatorContext* ctx) override;
+    Status Close(CalculatorContext* ctx) override;
+    Status Process(CalculatorContext* ctx) override;
 
 private:
     size_t input_image_index_{0};
@@ -45,22 +45,22 @@ private:
 
 ElemFakeGraphComplier::ElemFakeGraphComplier() {}
 
-Status ElemFakeGraphComplier::GetContract(ElementaryContract* contract) {
+Status ElemFakeGraphComplier::GetContract(CalculatorContract* contract) {
     if (!contract) {
         return Status::InvalidArgument("elementary contract is null");
     }
 
     contract->AddInput(kInput, "::STImage")
         .AddOutput(kOutput, "action_result_t")
-        .SetElementaryName(kElemName)
-        .SetElemOptionName("ElemFakeGraphComplierOption")
+        .SetCalculatorName(kElemName)
+        .SetCalculatorOptionName("ElemFakeGraphComplierOption")
         .AddSupportedDevice("CPU")
         .AddSupportedDevice("GPU_CUDA");
 
     return Status::OkStatus();
 }
 
-Status ElemFakeGraphComplier::Open(ElementaryContext* ctx) {
+Status ElemFakeGraphComplier::Open(CalculatorContext* ctx) {
     SIMPLE_LOG_INFO("ElemFakeGraphComplier Open Start");
     if (!ctx) {
         return Status::InvalidArgument("elementary context is null");
@@ -81,11 +81,11 @@ Status ElemFakeGraphComplier::Open(ElementaryContext* ctx) {
     return Status::OkStatus();
 }
 
-Status ElemFakeGraphComplier::Close(ElementaryContext* ctx) {
-    return Elementary::Close(ctx);
+Status ElemFakeGraphComplier::Close(CalculatorContext* ctx) {
+    return Calculator::Close(ctx);
 }
 
-Status ElemFakeGraphComplier::Process(ElementaryContext* ctx) {
+Status ElemFakeGraphComplier::Process(CalculatorContext* ctx) {
     SIMPLE_LOG_DEBUG("ElemFakeGraphComplier::Process Start");
     auto input_images_pkg   = ctx->GetInputData(input_image_index_);
     auto input_images_index = input_images_pkg->GetDataIndex();
@@ -123,7 +123,7 @@ private:
     std::shared_ptr<GraphSpec> spec;
 
 public:
-    std::shared_ptr<ElementaryRegistry> registry;
+    std::shared_ptr<CalculatorRegistry> registry;
     std::shared_ptr<DeviceRegistry> device_registry;
 };
 
@@ -139,15 +139,15 @@ void GraphComplier::Init(const std::string& cur_path) {
 
     helper_ = std::make_shared<GraphHelper>(spec);
 
-    registry        = std::make_shared<ElementaryRegistry>();
+    registry        = std::make_shared<CalculatorRegistry>();
     device_registry = std::make_shared<DeviceRegistry>();
 
-    registry->RegisterElem<Elementary, ElementaryOption, InOutputHandler>("Elementary", "cpu");
+    registry->Register<Calculator, CalculatorOption, InOutputHandler>("Calculator", "cpu");
 
 
-    registry->RegisterElem<flow::ElemFakeGraphComplier,
-                           flow::ElemFakeGraphComplierOption,
-                           InputHandler>("ElemFakeGraphComplier", "cpu");
+    registry
+        ->Register<flow::ElemFakeGraphComplier, flow::ElemFakeGraphComplierOption, InputHandler>(
+            "ElemFakeGraphComplier", "cpu");
 
     device_registry->RegisterDevice<DeviceCPU>("CPU");
 }
@@ -240,7 +240,7 @@ int main() {
     gc_->Init("cur_path");
 
     auto helper = gc_->GetGraph();
-    helper->Initialize(gc_->registry, gc_->device_registry, GRAPH_SCH_ASYNC_ONE_THREAD);
+    helper->Initialize(gc_->registry, gc_->device_registry, GRAPH_SCH_ASYNC_NON_ORDER_PRESERVING);
     helper->Start();
 
     {

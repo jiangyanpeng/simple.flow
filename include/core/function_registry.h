@@ -1,7 +1,7 @@
 #ifndef SIMPLE_FLOW_FUNCTION_REGISTRY_H_
 #define SIMPLE_FLOW_FUNCTION_REGISTRY_H_
 
-#include "base/contract_coding.h"
+#include "core/contract_coding.h"
 
 #include <functional>
 #include <log.h>
@@ -10,9 +10,9 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+
 namespace flow {
 static std::string NormalizeNsName(const std::string& ns, const std::string& name);
-
 template <typename Ret, typename... Args>
 class FunctionRegistry final {
 public:

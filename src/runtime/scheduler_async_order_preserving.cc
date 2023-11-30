@@ -50,7 +50,7 @@ void SchedulerAsyncOrderPreserving::DoSchedule() {
 
                     // check input ok
                     if (!per_node_ctx->IsInputReady()) {
-                        SIMPLE_LOG_TRACE("Input not ready, node_id {}, pkt_id {}, source_id {} ",
+                        SIMPLE_LOG_DEBUG("Input not ready, node_id {}, pkt_id {}, source_id {} ",
                                          node_id,
                                          pkt_id,
                                          source_id);
@@ -59,7 +59,7 @@ void SchedulerAsyncOrderPreserving::DoSchedule() {
 
                     if (need_order &&
                         input_source->order_information_.GetNextPktId(node_id, next_pkt_id)) {
-                        SIMPLE_LOG_TRACE(
+                        SIMPLE_LOG_DEBUG(
                             "keep order, node id {}, pkt_id {}, next_pkt_id {}, source_id {} ",
                             node_id,
                             pkt_id,
@@ -67,7 +67,7 @@ void SchedulerAsyncOrderPreserving::DoSchedule() {
                             source_id);
                         if (next_pkt_id < pkt_id) {
                             //加到缓存，后面再处理
-                            SIMPLE_LOG_TRACE("add pkt to buffer, node id {}, pkt_id {}, "
+                            SIMPLE_LOG_DEBUG("add pkt to buffer, node id {}, pkt_id {}, "
                                              "next_pkt_id {}, source_id {}",
                                              node_id,
                                              pkt_id,
@@ -77,7 +77,7 @@ void SchedulerAsyncOrderPreserving::DoSchedule() {
                                 node_id, pkt_id, per_node_ctx);
                         } else if (next_pkt_id == pkt_id) {
                             // 继续处理
-                            SIMPLE_LOG_TRACE("prepare process pkt, node id {}, pkt_id {}, "
+                            SIMPLE_LOG_DEBUG("prepare process pkt, node id {}, pkt_id {}, "
                                              "next_pkt_id {}, source_id {} ",
                                              node_id,
                                              pkt_id,
@@ -100,7 +100,7 @@ void SchedulerAsyncOrderPreserving::DoSchedule() {
                             }
                             // check output ok
                             if (!per_node_ctx->IsOutputReady()) {
-                                SIMPLE_LOG_TRACE(
+                                SIMPLE_LOG_DEBUG(
                                     "Output not ready, node_id {}, pkt_id {}, source_id {} ",
                                     node_id,
                                     pkt_id,
@@ -130,7 +130,7 @@ void SchedulerAsyncOrderPreserving::DoSchedule() {
                             std::shared_ptr<PacketPerNodeContext> next_per_node_ctx = nullptr;
                             if (input_source->order_information_.GetSmallestUnprocessedPkt(
                                     node_id, smallest_pkt_id, next_per_node_ctx)) {
-                                SIMPLE_LOG_TRACE("process pkt from buffer, node id {}, pkt_id {},"
+                                SIMPLE_LOG_DEBUG("process pkt from buffer, node id {}, pkt_id {},"
                                                  "samllest_pkt_id {}, source_id {} ",
                                                  node_id,
                                                  pkt_id,
@@ -161,7 +161,7 @@ void SchedulerAsyncOrderPreserving::DoSchedule() {
                         }
                         // check output ok
                         if (!per_node_ctx->IsOutputReady()) {
-                            SIMPLE_LOG_TRACE(
+                            SIMPLE_LOG_DEBUG(
                                 "output not ready, node_id {}, pkt_id {}", node_id, pkt_id);
                             return;
                         }
@@ -206,7 +206,7 @@ SchedulerAsyncOrderPreserving::DoPropagate(const PacketPerNodeContextPtr& per_no
 
         dst_ids.insert(dst_node_id);
 
-        SIMPLE_LOG_TRACE("Propagate: src node {}, port {}, dst node {}, port {}",
+        SIMPLE_LOG_DEBUG("Propagate: src node {}, port {}, dst node {}, port {}",
                          src_node_id,
                          src_port_id,
                          dst_node_id,

@@ -1,26 +1,26 @@
-#include "elementary/elementary.h"
-#include "base/contract_coding.h"
+#include "calculator/calculator.h"
+#include "core/contract_coding.h"
 #include <log.h>
 #include <common.h>
 namespace flow {
 
-Status Elementary::GetContract(ElementaryContract* contract) {
+Status Calculator::GetContract(CalculatorContract* contract) {
     UNUSED_WARN(contract);
     return Status::OkStatus();
 }
 
-Status Elementary::Open(ElementaryContext* ctx) {
+Status Calculator::Open(CalculatorContext* ctx) {
     UNUSED_WARN(ctx);
     SIMPLE_ASSERT(option_);
     return Status::OkStatus();
 }
 
-Status Elementary::Close(ElementaryContext* ctx) {
+Status Calculator::Close(CalculatorContext* ctx) {
     UNUSED_WARN(ctx);
     return Status::OkStatus();
 }
 
-Status Elementary::Process(ElementaryContext* ctx) {
+Status Calculator::Process(CalculatorContext* ctx) {
     SIMPLE_LOG_INFO("elem process. elem id: {}", GetId());
 
     {
@@ -67,28 +67,28 @@ Status Elementary::Process(ElementaryContext* ctx) {
     return Status::OkStatus();
 }
 
-void Elementary::SetDevice(std::shared_ptr<Device> d) {
+void Calculator::SetDevice(std::shared_ptr<Device> d) {
     device_ = std::move(d);
     SIMPLE_ASSERT(device_);
 }
 
-void Elementary::SetElementaryOption(std::shared_ptr<ElementaryOption> option) {
+void Calculator::SetCalculatorOption(std::shared_ptr<CalculatorOption> option) {
     option_ = std::move(option);
 }
 
-size_t Elementary::GetId() const {
+size_t Calculator::GetId() const {
     return id_;
 }
 
-void Elementary::SetId(size_t id) {
+void Calculator::SetId(size_t id) {
     id_ = id;
 }
 
-std::shared_ptr<Device> Elementary::GetDevice() const {
+std::shared_ptr<Device> Calculator::GetDevice() const {
     return device_;
 }
 
-Status Elementary::DoProcess(const std::function<Status()>& f) {
+Status Calculator::DoProcess(const std::function<Status()>& f) {
     return f();
 }
 } // namespace flow

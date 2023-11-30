@@ -1,5 +1,5 @@
 #include "graph_spec_view.h"
-#include "base/contract_coding.h"
+#include "core/contract_coding.h"
 #include "graph_view.h"
 
 #include <log.h>
@@ -183,7 +183,7 @@ Status GraphSpecView::GenerateEdgeSpec() {
     // 环路校验
 
     for (auto& e : edges_) {
-        SIMPLE_LOG_TRACE("edge [{}] : [{}, {}, {}, {}], link name: {}",
+        SIMPLE_LOG_DEBUG("edge [{}] : [{}, {}, {}, {}], link name: {}",
                          e.second->edge_id,
                          e.second->src_node_spec_->GetName(),
                          e.second->src_port_spec_->name,

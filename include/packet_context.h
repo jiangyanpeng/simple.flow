@@ -1,7 +1,7 @@
 #ifndef SIMPLE_FLOW_PACKET_CONTEXT_H_
 #define SIMPLE_FLOW_PACKET_CONTEXT_H_
 
-#include "base/status.h"
+#include "core/status.h"
 #include "input_source_context.h"
 #include "packet_per_node_context.h"
 

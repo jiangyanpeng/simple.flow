@@ -3,7 +3,7 @@
 #ifndef SIMPLE_FLOW_SCHEDULER_ASYNC_H_
 #define SIMPLE_FLOW_SCHEDULER_ASYNC_H_
 
-#include "base/status.h"
+#include "core/status.h"
 #include "graph_topology.h"
 #include "packet.h"
 #include "packet_context.h"

@@ -1,7 +1,7 @@
 #ifndef SIMPLE_FLOW_INOUT_PORT_H_
 #define SIMPLE_FLOW_INOUT_PORT_H_
 
-#include "specs/graph_spec.h"
+#include "spec/graph_spec.h"
 
 namespace flow {
 class Node;

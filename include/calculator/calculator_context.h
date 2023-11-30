@@ -1,7 +1,7 @@
-#ifndef SIMPLE_FLOW_ELEMENTARY_CONTEXT_H_
-#define SIMPLE_FLOW_ELEMENTARY_CONTEXT_H_
+#ifndef SIMPLE_FLOW_CALCULATOR_CONTEXT_H_
+#define SIMPLE_FLOW_CALCULATOR_CONTEXT_H_
 
-#include "base/collection.h"
+#include "core/collection.h"
 #include "device/stream.h"
 #include "inout.h"
 
@@ -17,14 +17,14 @@ class PacketPerNodeContext;
 
 class InputSourceContext;
 
-class ElementaryContext {
+class CalculatorContext {
 public:
-    ElementaryContext(std::vector<std::shared_ptr<Package>>& inputs_data,
+    CalculatorContext(std::vector<std::shared_ptr<Package>>& inputs_data,
                       std::vector<std::shared_ptr<Package>>& outputs_data,
                       std::shared_ptr<Node> node,
                       const std::shared_ptr<Stream>& stream);
 
-    ~ElementaryContext();
+    ~CalculatorContext();
 
     size_t GetInputIdWithTag(const std::string& tag);
 
@@ -70,4 +70,4 @@ private:
 };
 
 } // namespace flow
-#endif // SIMPLE_FLOW_ELEMENTARY_CONTEXT_H_
+#endif // SIMPLE_FLOW_CALCULATOR_CONTEXT_H_

@@ -1,15 +1,14 @@
 #ifndef SIMPLE_FLOW_COLLECTION_H_
 #define SIMPLE_FLOW_COLLECTION_H_
 
-#include "base/contract_coding.h"
-#include "base/status.h"
+#include "core/contract_coding.h"
+#include "core/status.h"
 
 #include <map>
 #include <string>
 #include <vector>
 
 namespace flow {
-
 template <typename T>
 class Collection {
 public:

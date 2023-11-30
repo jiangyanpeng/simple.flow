@@ -1,7 +1,7 @@
 #ifndef SIMPLE_FLOW_PACKET_H_
 #define SIMPLE_FLOW_PACKET_H_
 
-#include "base/status.h"
+#include "core/status.h"
 #include "input_source_context.h"
 #include "package.h"
 

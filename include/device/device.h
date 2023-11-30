@@ -1,8 +1,8 @@
 #ifndef SIMPLE_FLOW_DEVICE_H_
 #define SIMPLE_FLOW_DEVICE_H_
 
-#include "base/status.h"
-#include "base/tagged_object.h"
+#include "core/status.h"
+#include "core/tagged_object.h"
 #include "device/stream.h"
 
 #include <functional>

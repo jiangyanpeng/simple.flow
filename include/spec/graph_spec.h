@@ -25,7 +25,7 @@ struct InoutSpec {
     std::string to_string();
 };
 
-class ElementaryOption;
+class CalculatorOption;
 
 /**
  * Device描述信息
@@ -103,7 +103,7 @@ public:
     NodeSpec& SetElementaryOptionJsonValue(std::string type);
     NodeSpec& SetInputHandler(std::string h);
     NodeSpec& SetOutputHandler(std::string h);
-    NodeSpec& SetElementaryOption(std::shared_ptr<ElementaryOption> o);
+    NodeSpec& SetCalculatorOption(std::shared_ptr<CalculatorOption> o);
     NodeSpec& SetOrderPreserving(bool preserving);
     NodeSpec& AddInputSpec(InoutSpec spec);
     //        InoutSpec& AddInputSpec();
@@ -132,7 +132,7 @@ public:
     std::string elementary_type{};
     std::string elementary_option_type{};
     std::string elementary_option_json_value{};
-    std::shared_ptr<ElementaryOption> option;
+    std::shared_ptr<CalculatorOption> option;
     std::string input_handler{};
     std::string output_handler{};
     std::vector<InoutSpec> inputs{};

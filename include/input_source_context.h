@@ -1,8 +1,8 @@
 #ifndef ARCHITECT_INPUT_SOURCE_CONTEXT_H
 #define ARCHITECT_INPUT_SOURCE_CONTEXT_H
 
-#include "base/collection.h"
-#include "base/status.h"
+#include "core/collection.h"
+#include "core/status.h"
 #include "packet.h"
 #include "packet_context.h"
 #include "packet_per_node_context.h"

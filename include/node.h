@@ -1,15 +1,16 @@
 #ifndef SIMPLE_FLOW_NODE_H_
 #define SIMPLE_FLOW_NODE_H_
 
-#include "base/collection.h"
-#include "base/status.h"
+#include "calculator/calculator.h"
+#include "calculator/calculator_registry.h"
+#include "core/collection.h"
+#include "core/status.h"
 #include "device/device.h"
-#include "elementary/elementary.h"
-#include "elementary_registry.h"
 #include "inout_port.h"
 #include "packet_per_node_context.h"
 #include "runtime/scheduler.h"
-#include "specs/graph_spec.h"
+#include "spec/graph_spec.h"
+
 #include <list>
 #include <mutex>
 
@@ -31,7 +32,7 @@ public:
     virtual Status Open();
 
     virtual Status Initialize(std::shared_ptr<NodeSpec> spec,
-                              const std::shared_ptr<ElementaryRegistry>& registry);
+                              const std::shared_ptr<CalculatorRegistry>& registry);
 
     virtual void Process();
 
@@ -83,9 +84,9 @@ public:
     std::map<std::string, size_t> output_name_to_id_map_;
 
 
-    std::vector<std::shared_ptr<Elementary>> elementarys_;
+    std::vector<std::shared_ptr<Calculator>> calculators_;
 
-    std::shared_ptr<ElementaryOption> elementary_option_;
+    std::shared_ptr<CalculatorOption> calculator_option_;
     std::shared_ptr<InOutputHandler> inout_put_handler_;
 
     // 此处为队列，隔离Packet粒度的调度与Node的执行

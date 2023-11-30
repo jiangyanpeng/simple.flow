@@ -22,7 +22,7 @@ public:
     ~Graph();
 
     Status Initialize(std::shared_ptr<GraphSpec> graph_spec,
-                      std::shared_ptr<ElementaryRegistry> registry,
+                      std::shared_ptr<CalculatorRegistry> registry,
                       std::shared_ptr<DeviceRegistry> device_registry,
                       GRAPH_SCHEDULE_POLICY policy,
                       std::shared_ptr<ExecutorOption> executor_option);
@@ -147,7 +147,7 @@ void GraphHelper::Stop() {
 }
 
 
-void GraphHelper::Initialize(const std::shared_ptr<ElementaryRegistry>& registry,
+void GraphHelper::Initialize(const std::shared_ptr<CalculatorRegistry>& registry,
                              const std::shared_ptr<DeviceRegistry>& device_registry,
                              GRAPH_SCHEDULE_POLICY policy,
                              std::shared_ptr<ExecutorOption> executor_option) {
@@ -182,7 +182,7 @@ std::shared_ptr<InputSourceContext> GraphHelper::CreateInputSourceContext() {
 }
 
 Status Graph::Initialize(std::shared_ptr<GraphSpec> graph_spec,
-                         std::shared_ptr<ElementaryRegistry> registry,
+                         std::shared_ptr<CalculatorRegistry> registry,
                          std::shared_ptr<DeviceRegistry> device_registry,
                          GRAPH_SCHEDULE_POLICY policy,
                          std::shared_ptr<ExecutorOption> executor_option) {
@@ -261,7 +261,7 @@ void Graph::Schedule(const std::shared_ptr<PacketContext>& pkt_ctx,
                      const std::shared_ptr<Packet>& pkt) {
     AddGraphInput(pkt_ctx, pkt);
     scheduler_->AddPacketContext(pkt_ctx, pkt);
-    SIMPLE_LOG_TRACE("Graph::Schedule return.");
+    SIMPLE_LOG_DEBUG("Graph::Schedule return.");
 }
 
 void Graph::Propagate1(const PacketPerNodeContextPtr& packet_per_node_context,
@@ -276,7 +276,7 @@ void Graph::Propagate1(const PacketPerNodeContextPtr& packet_per_node_context,
 
         dst_ids.insert(dst_node_id);
 
-        SIMPLE_LOG_TRACE("Propagate: src node {}, port {}, dst node {}, port {}",
+        SIMPLE_LOG_DEBUG("Propagate: src node {}, port {}, dst node {}, port {}",
                          src_node_id,
                          src_port_id,
                          dst_node_id,
@@ -335,7 +335,7 @@ Status Graph::AddPacketContext(std::shared_ptr<PacketContext> ctx) {
 
 Status Graph::RemovePacketContextIfFinished(const std::shared_ptr<PacketContext>& pkt_context) {
     if (pkt_context->IsFinished()) {
-        SIMPLE_LOG_TRACE("Packet processing finished. source_id {}, pkt_id: {}",
+        SIMPLE_LOG_DEBUG("Packet processing finished. source_id {}, pkt_id: {}",
                          pkt_context->GetSourceId(),
                          pkt_context->GetPacketId());
         // FIXME:

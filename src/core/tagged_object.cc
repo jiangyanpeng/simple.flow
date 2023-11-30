@@ -1,4 +1,4 @@
-#include "base/tagged_object.h"
+#include "core/tagged_object.h"
 
 namespace flow {
 TaggedObject& TaggedObject::SetName(std::string name) {

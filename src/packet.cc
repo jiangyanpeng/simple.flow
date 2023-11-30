@@ -1,6 +1,6 @@
 
 #include "packet.h"
-#include "base/contract_coding.h"
+#include "core/contract_coding.h"
 #include "package.h"
 
 #include <utility>

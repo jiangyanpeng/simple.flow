@@ -1,4 +1,4 @@
-#include "specs/graph_spec.h"
+#include "spec/graph_spec.h"
 
 #include <log.h>
 #include <sstream>
@@ -114,7 +114,7 @@ NodeSpec& NodeSpec::SetOutputHandler(std::string h) {
     return *this;
 }
 
-NodeSpec& NodeSpec::SetElementaryOption(std::shared_ptr<ElementaryOption> o) {
+NodeSpec& NodeSpec::SetCalculatorOption(std::shared_ptr<CalculatorOption> o) {
     option = std::move(o);
     return *this;
 }

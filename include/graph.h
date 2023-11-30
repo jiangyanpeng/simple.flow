@@ -1,17 +1,17 @@
 #ifndef SIMPLE_FLOW_GRAPH_H_
 #define SIMPLE_FLOW_GRAPH_H_
 
-#include "base/collection.h"
+#include "core/collection.h"
+#include "calculator/calculator.h"
+#include "calculator/calculator_registry.h"
 #include "device/device_registry.h"
-#include "elementary/elementary.h"
 #include "graph_view.h"
 #include "input_source_manager.h"
-#include "elementary_registry.h"
 #include "node.h"
 #include "packet.h"
 #include "runtime/scheduler_async.h"
 #include "runtime/scheduler_one_thread.h"
-#include "specs/graph_spec.h"
+#include "spec/graph_spec.h"
 
 #include <functional>
 #include <map>
@@ -105,7 +105,7 @@ public:
 
     void Stop();
 
-    void Initialize(const std::shared_ptr<ElementaryRegistry>& registry,
+    void Initialize(const std::shared_ptr<CalculatorRegistry>& registry,
                     const std::shared_ptr<DeviceRegistry>& device_registry,
                     GRAPH_SCHEDULE_POLICY policy                    = GRAPH_SCH_ASYNC_ONE_THREAD,
                     std::shared_ptr<ExecutorOption> executor_option = nullptr);

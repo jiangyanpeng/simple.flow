@@ -165,7 +165,7 @@ bool OrderInformation::AddSkipPktId(std::vector<size_t> node_ids, uint64_t pkt_i
                 node_id_2_skip_pkt_id_[node_id].insert(pkt_id);
             }
         }
-        SIMPLE_LOG_TRACE(
+        SIMPLE_LOG_DEBUG(
             "OrderInformation::AddSkipPktId, node_id: {}, pkt_id {}, pkt_size_for_node_id {}",
             node_id,
             pkt_id,

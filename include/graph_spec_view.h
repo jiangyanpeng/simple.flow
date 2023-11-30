@@ -1,8 +1,8 @@
 #ifndef SIMPLE_FLOW_GRAPH_SPEC_VIEW_H_
 #define SIMPLE_FLOW_GRAPH_SPEC_VIEW_H_
 
-#include "base/status.h"
-#include "specs/graph_spec.h"
+#include "core/status.h"
+#include "spec/graph_spec.h"
 
 #include <map>
 #include <memory>
