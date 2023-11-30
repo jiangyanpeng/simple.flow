@@ -26,9 +26,10 @@ Status GraphViewSpec::Initialize() {
         ++device_id;
     }
 
-    // GraphNodeSpec ??
+    // 处理图的信息
     size_t node_index      = 0;
     std::string graph_name = ori_graph_spec_->GetName();
+    SIMPLE_LOG_DEBUG("GraphViewSpec::Initialize graph_name: {}", graph_name);
     {
         auto s = ParsingNodeSpec(ori_graph_spec_, node_index, graph_name);
         if (!s.IsOk()) {
@@ -38,7 +39,7 @@ Status GraphViewSpec::Initialize() {
         graph_spec_ = ori_graph_spec_;
     }
 
-    // NodeSpec
+    // 处理图中节点的信息
     for (auto& n : ori_graph_spec_->GetNodeSpecs()) {
         auto s = ParsingNodeSpec(n, node_index, graph_name);
         if (!s.IsOk()) {
@@ -47,10 +48,9 @@ Status GraphViewSpec::Initialize() {
         ++node_index;
     }
 
-    SIMPLE_LOG_INFO("need_keep_order_node size {}", node_name_to_node_id_.size());
     for (auto it = node_name_to_node_id_.begin(); it != node_name_to_node_id_.end(); it++) {
         SIMPLE_LOG_INFO(
-            "need_keep_order_node, ori_node_name: {}, node id: {}", it->first, it->second);
+            "need_keep_order_node, ori_node_name: {}, node_id: {}", it->first, it->second);
     }
     SIMPLE_LOG_DEBUG("GraphViewSpec::Initialize End");
     return GenerateEdgeSpec();

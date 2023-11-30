@@ -16,14 +16,14 @@ public:
 
     void SetGraphInputCount(size_t count);
 
-    std::shared_ptr<InputStreamContext> GenerateSourceContext();
+    std::shared_ptr<InputStreamContext> GenerateStreamContext();
 
-    std::shared_ptr<InputStreamContext> DefaultSourceContext();
+    std::shared_ptr<InputStreamContext> DefaultStreamContext();
 
-    bool RemoveSourceContext(int64_t id);
+    bool RemoveStreamContext(int64_t id);
 
 private:
-    std::atomic_int_fast64_t source_id_{0};
+    std::atomic_int_fast64_t stream_id_{0};
     size_t graph_input_count_{0};
     std::map<int64_t, std::shared_ptr<InputStreamContext>> context_map_;
 };

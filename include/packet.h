@@ -2,8 +2,8 @@
 #define SIMPLE_FLOW_PACKET_H_
 
 #include "core/status.h"
-#include "stream/input_stream_context.h"
 #include "package.h"
+#include "stream/input_stream_context.h"
 
 #include <vector>
 
@@ -28,9 +28,9 @@ public:
 
     Status AddPackage(size_t package_index, std::shared_ptr<Package> package);
 
-    void SetSourceContext(const std::shared_ptr<InputStreamContext>& ctx);
+    void SetStreamContext(const std::shared_ptr<InputStreamContext>& ctx);
 
-    std::shared_ptr<InputStreamContext> GetSourceContext() const;
+    std::shared_ptr<InputStreamContext> GetStreamContext() const;
 
     std::shared_ptr<Package> GetPackage(size_t index);
 
@@ -38,14 +38,14 @@ public:
 
     std::shared_ptr<InputPktId> GetInputPktId() const;
 
-    uint8_t GetSourceId() const;
+    uint8_t GetStreamId() const;
 
     size_t GetPackageNum() const;
 
 private:
     std::vector<std::shared_ptr<Package>> package_;
     std::shared_ptr<InputPktId> id_;
-    std::weak_ptr<InputStreamContext> source_ctx_;
+    std::weak_ptr<InputStreamContext> stream_ctx_;
 };
 
 } // namespace flow

@@ -19,6 +19,7 @@ Packet::Packet(std::shared_ptr<InputPktId> id, size_t package_num) : id_(id) {
 
 Status Packet::AddPackage(size_t package_index, std::shared_ptr<Package> package) {
     SIMPLE_ASSERT(package_index < package_.size());
+    SIMPLE_LOG_DEBUG("package_index: {}, size: {}", package_index, GetPackageNum());
     package_[package_index] = std::move(package);
     return Status();
 }
@@ -36,17 +37,17 @@ size_t Packet::GetPackageNum() const {
     return package_.size();
 }
 
-void Packet::SetSourceContext(const std::shared_ptr<InputStreamContext>& ctx) {
-    SIMPLE_ASSERT(ctx->GetId() == id_->InputSourceId());
-    source_ctx_ = ctx;
+void Packet::SetStreamContext(const std::shared_ptr<InputStreamContext>& ctx) {
+    SIMPLE_ASSERT(ctx->GetId() == id_->InputStreamId());
+    stream_ctx_ = ctx;
 }
 
-std::shared_ptr<InputStreamContext> Packet::GetSourceContext() const {
-    return source_ctx_.lock();
+std::shared_ptr<InputStreamContext> Packet::GetStreamContext() const {
+    return stream_ctx_.lock();
 }
 
-uint8_t Packet::GetSourceId() const {
-    return id_->InputSourceId();
+uint8_t Packet::GetStreamId() const {
+    return id_->InputStreamId();
 }
 
 std::shared_ptr<InputPktId> Packet::GetInputPktId() const {
